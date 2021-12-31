@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200"  >#FF03DAC5</color>
+    <color name="teal_700"  >#FF018786</color>
+    <color name="black"     >#FF000000</color>
+    <color name="white"     >#FFFFFFFF</color>
+
+    <color name="transparente"    >#00000000</color>
+    <color name="traslucidoNegro" >#B5000000</color>
+    <color name="traslucidoNegro3">#232842</color>
+    <color name="traslucidoNegro2">#0F0F20</color>
+
+    <color name="fondo"       >#0F0F20</color>
+    <color name="fondoToolbar">#0A0A15</color>
+    <color name="fondoItem1"  >#0F0F20</color>
+    <color name="fondoItem2"  >#232842</color>
+
+    <color name="gris1">#171717</color>
+    <color name="gris2">#232842</color>
+    <color name="gris3">#171717</color>
+    <color name="gris4">#232842</color>
+    <color name="gris5">#878787</color>
+
+    /*TEXTO*/
+    <color name="blanco" >#ffffff</color>
+    <color name="blanco1">#EFEFEF</color>
+    <color name="blanco2">#DFDFDF</color>
+
+    <color name="itemChat">#8E8E93</color>
+
+    /*BOTONES*/
+    <color name="naranja" >#394681</color>
+    <color name="naranja1">#68C3C6</color>
+    <color name="verde"   >#8BC34A</color>
+
+
+    /*CHAT*/
+    <color name="messageRecibido">#272A35</color>
+    <color name="messageEnviado" >#373E4E</color>
+</resources>

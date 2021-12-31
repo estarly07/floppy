@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <dimen name="_2dp" tools:ignore="MissingDefaultResource" >2dp</dimen>
+    <dimen name="_10dp" tools:ignore="MissingDefaultResource">10dp</dimen>
+    <dimen name="_15dp" tools:ignore="MissingDefaultResource">15dp</dimen>
+    <dimen name="_20dp" tools:ignore="MissingDefaultResource" >20dp</dimen>
+    <dimen name="_25dp" tools:ignore="MissingDefaultResource">25dp</dimen>
+    <dimen name="_30dp" tools:ignore="MissingDefaultResource">30dp</dimen>
+    <dimen name="_35dp" tools:ignore="MissingDefaultResource">35dp</dimen>
+    <dimen name="_40dp" tools:ignore="MissingDefaultResource" >40dp</dimen>
+    <dimen name="_45dp" tools:ignore="MissingDefaultResource" >45dp</dimen>
+    <dimen name="_50dp" tools:ignore="MissingDefaultResource" >50dp</dimen>
+    <dimen name="_55dp" tools:ignore="MissingDefaultResource" >55dp</dimen>
+    <dimen name="_70dp" tools:ignore="MissingDefaultResource" >70dp</dimen>
+
+
+    <dimen name="_100dp" tools:ignore="MissingDefaultResource">100dp</dimen>
+    <dimen name="_150dp" tools:ignore="MissingDefaultResource">150dp</dimen>
+    <dimen name="_200dp" tools:ignore="MissingDefaultResource">200dp</dimen>
+    <dimen name="_300dp" tools:ignore="MissingDefaultResource">300dp</dimen>
+
+
+    <dimen name="_10sp" tools:ignore="MissingDefaultResource">10sp</dimen>
+    <dimen name="_15sp" tools:ignore="MissingDefaultResource">15sp</dimen>
+    <dimen name="_25sp" tools:ignore="MissingDefaultResource">25sp</dimen>
+    <dimen name="_30sp" tools:ignore="MissingDefaultResource">30sp</dimen>
+    <dimen name="_35sp" tools:ignore="MissingDefaultResource">35sp</dimen>
+    <dimen name="_40sp" tools:ignore="MissingDefaultResource" >40sp</dimen>
+    <dimen name="_45sp" tools:ignore="MissingDefaultResource" >45sp</dimen>
+    <dimen name="_70sp" tools:ignore="MissingDefaultResource" >70sp</dimen>
+
+
+</resources>

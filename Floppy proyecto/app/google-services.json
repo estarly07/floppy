@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "922897646935",
+    "project_id": "floppy-76907",
+    "storage_bucket": "floppy-76907.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922897646935:android:07a66759272d2f1d052a12",
+        "android_client_info": {
+          "package_name": "com.example.floppy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922897646935-kb71sgt07usikcqnui8noan26h0cj7ev.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.floppy",
+            "certificate_hash": "908cd0434e4aa96bfdb20946a608a5c5eabd930c"
+          }
+        },
+        {
+          "client_id": "922897646935-gjclnb3pf67c7q7fp3upeh1l3liciop6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHtIO4pFshMDOoM9LYWUwJq0FijaIIjpg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922897646935-gjclnb3pf67c7q7fp3upeh1l3liciop6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

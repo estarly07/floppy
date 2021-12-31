@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">Floppy</string>
+
+    <string name="comenzar">Comenzar</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="register">Registrar</string>
+    <string name="online">Conectado</string>
+    <string name="offline">Desconectado</string>
+    <string name="nick">Sin Apodo</string>
+
+    <string name="stickers">Tus stickers</string>
+    <string name="registro">Registro</string>
+    <string name="estado">Estados</string>
+    <string name="chat">Chats</string>
+    <string name="Grupos">Grupos</string>
+    <string name="Settings">Ajustes</string>
+    <string name="buscar">Buscar..</string>
+    <string name="Bienvenido">Bienvenido!!</string>
+    <string name="Bienvenido2">Bienvenido a\nFloppy</string>
+    <string name="iniciar">Iniciar</string>
+    <string name="pass_user">Contraseña</string>
+    <string name="email_user">Ejemplo@floppy.com</string>
+    <string name="codigo">Codigo</string>
+    <string name="input_data">Ingresa tus datos para iniciar</string>
+    <string name="mensage">Mensaje</string>
+    <string name="agregar">Agregar</string>
+    <string name="about">Floppy es un proyecto que desea obtener un parecido a aplicaciones de chat tipo whatsapp y telegram 🤑\n\nQue la disfrutes :)</string>
+
+    <string-array name="frases">
+        <item>Soy Floppy</item>
+        <item>¿Como estas?</item>
+        <item>💤</item>
+        <item>eso tilin</item>
+        <item>😴</item>
+        <item>Bienvenido</item>
+        <item>uwu</item>
+        <item>👀</item>
+        <item>👉👈</item>
+        <item>💩</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

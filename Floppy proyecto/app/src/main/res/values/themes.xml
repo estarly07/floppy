@@ -1,0 +1,41 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Floppy" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/fondo</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+    <!--My styles-->
+    <style name="EdittextLogin" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:imeOptions">actionNext</item>
+        <item name="android:textColor" >@color/white  </item>
+        <item name="hintTextColor"     >@color/blanco2</item>
+        <item name="drawableTint"      >@color/blanco2</item>
+        <item name="android:textSize"  >@dimen/_15sp</item>
+    </style>
+
+    <style name="Title" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="subtitle" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColor">@color/blanco2</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+    <style name="ButtonLogin" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:padding">@dimen/_15dp</item>
+        <item name="android:textSize">@dimen/_15sp</item>
+        <item name="android:textColor">@color/blanco2</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+
+</resources>
