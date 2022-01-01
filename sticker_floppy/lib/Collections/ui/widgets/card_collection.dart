@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:sticker_floppy/Sticker/ui/Widgets/widgets.dart';
+import 'package:sticker_floppy/widgets/widgets.dart';
 
 class CardCollection extends StatelessWidget {
   final Color color;

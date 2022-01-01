@@ -4,8 +4,8 @@ import 'package:http/http.dart';
 import 'package:sticker_floppy/Collections/model/collection.dart';
 import 'package:sticker_floppy/Utils/global.dart';
 
-class ServiceSticker {
-  Future getAllStickers() async {
+class CollectionService {
+  Future getAllCollections() async {
     final url = Uri.parse("$baseUrl/collections.json");
     final response = await get(url);
     final List<Collection> collections = [];
