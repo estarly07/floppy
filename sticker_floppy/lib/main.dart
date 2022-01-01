@@ -10,6 +10,8 @@ class MyApp extends StatelessWidget {
       title: 'Material App',
       routes: routes,
       initialRoute: "/",
+      theme:
+          ThemeData.light().copyWith(scaffoldBackgroundColor: Colors.grey[100]),
     );
   }
 }
