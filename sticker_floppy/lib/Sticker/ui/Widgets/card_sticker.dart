@@ -10,6 +10,8 @@ class CardSticker extends StatelessWidget {
       padding: EdgeInsets.all(5),
       width: size.width * 0.25,
       child: FadeInImage(
+          height: size.height * 0.2,
+          width: size.height * 0.2,
           fit: BoxFit.contain,
           placeholder: AssetImage('assets/no-image.jpg'),
           image: NetworkImage(
