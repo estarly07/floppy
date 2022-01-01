@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:sticker_floppy/Sticker/data/service_sticker.dart';
 import 'package:sticker_floppy/Sticker/ui/Widgets/widgets.dart';
 import 'package:sticker_floppy/Utils/colors.dart';
 
@@ -12,6 +13,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    ServiceSticker().getAllStickers();
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -29,19 +31,6 @@ class MainScreen extends StatelessWidget {
                   children: [
                     _Titles(),
                     _Collections(),
-                    _Stickers(),
-                    _Stickers(),
-                    _Stickers(),
-                    _Stickers(),
-                    _Stickers(),
-                    _Stickers(),
-                    _Stickers(),
-                    _Stickers(),
-                    _Stickers(),
-                    _Stickers(),
-                    _Stickers(),
-                    _Stickers(),
-                    _Stickers(),
                     _Stickers(),
                   ],
                 ),
