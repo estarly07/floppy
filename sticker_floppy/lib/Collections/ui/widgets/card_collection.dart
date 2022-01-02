@@ -8,8 +8,13 @@ import 'package:sticker_floppy/widgets/widgets.dart';
 
 class CardCollection extends StatelessWidget {
   final Collection collection;
+  final bool showTextAndButton;
   final Color color;
-  CardCollection({Key? key, required this.color, required this.collection})
+  CardCollection(
+      {Key? key,
+      required this.color,
+      required this.collection,
+      this.showTextAndButton = true})
       : super(key: key);
 
   @override
@@ -60,6 +65,7 @@ class CardCollection extends StatelessWidget {
               _Body(
                   collection: collection,
                   size: size,
+                  showTitleAndButton: showTextAndButton,
                   texColor: color,
                   background: Colors.white),
             ],
@@ -73,12 +79,14 @@ class CardCollection extends StatelessWidget {
 class _Body extends StatelessWidget {
   final Color background, texColor;
   final Collection collection;
+  final bool showTitleAndButton;
   const _Body({
     Key? key,
     required this.size,
     required this.background,
     required this.texColor,
     required this.collection,
+    required this.showTitleAndButton,
   }) : super(key: key);
 
   final Size size;
@@ -92,7 +100,8 @@ class _Body extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FadeInImage(
-              height: size.height * 0.2,
+              height:
+                  (showTitleAndButton) ? size.height * 0.2 : size.height * 0.3,
               width: size.height * 0.2,
               fit: BoxFit.contain,
               placeholder: AssetImage('assets/no-image.jpg'),
@@ -100,19 +109,26 @@ class _Body extends StatelessWidget {
           Container(
             height: 15,
           ),
-          Text(
-            collection.nameCollection,
-            maxLines: 2,
-            style: TextStyle(
-                fontSize: size.height * 0.025,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
-          ),
-          Container(
-              child: Align(
-                  alignment: Alignment.centerRight,
-                  child: CustomButton(
-                      size: size, texColor: texColor, background: background)))
+          (showTitleAndButton)
+              ? Text(
+                  collection.nameCollection,
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontSize: size.height * 0.025,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                )
+              : Container(),
+          (showTitleAndButton)
+              ? Container(
+                  child: Align(
+                      alignment: Alignment.centerRight,
+                      child: CustomButton(
+                          text: "Obtener",
+                          width: size.width * 0.2,
+                          texColor: texColor,
+                          background: background)))
+              : Container()
         ],
       ),
     );

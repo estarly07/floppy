@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 
 class CustomButton extends StatelessWidget {
+  final String text;
+  final double width;
   CustomButton({
-    required this.size,
     required this.texColor,
     required this.background,
+    required this.text,
+    required this.width,
   });
 
-  final Size size;
   final Color texColor;
   final Color background;
 
@@ -16,10 +18,10 @@ class CustomButton extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(8.0),
       alignment: Alignment.center,
-      width: size.width * 0.2,
+      width: width,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text("Obtener",
+        child: Text(text,
             style: TextStyle(color: texColor, fontWeight: FontWeight.bold)),
       ),
       decoration: BoxDecoration(

@@ -18,7 +18,6 @@ class Collection {
     Map<String, dynamic> stickersMap = json["stickers"];
     List<Sticker> newStickers = [];
     stickersMap.forEach((key, value) {
-      print("VALUE " + value.toString());
       newStickers.add(Sticker.fromMap(value));
     });
     return Collection(

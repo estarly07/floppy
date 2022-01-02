@@ -26,7 +26,7 @@ class MainScreen extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   height: size.height * 0.25,
-                  child: _Decoration(),
+                  child: DecorationFondo(),
                 ),
                 (state.collections.isEmpty)
                     ? Center(
@@ -39,7 +39,7 @@ class MainScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _Titles(),
+                              const _Titles(),
                               _Collections(collections: state.collections),
                               Column(
                                 children: state.collections
@@ -56,68 +56,6 @@ class MainScreen extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class _Decoration extends StatelessWidget {
-  _Decoration({
-    Key? key,
-  }) : super(key: key);
-
-  var firstCircle = LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      stops: [0.01, 0.6],
-      colors: [Colors.white, colors[2]]);
-  var secondCircle = LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      stops: [0.01, 0.6],
-      colors: [Colors.white, colors[1]]);
-  var thirdCircle = LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      stops: [0.01, 0.6],
-      colors: [Colors.white, colors[3]]);
-  var fourthCircle = LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      stops: [0.01, 0.6],
-      colors: [Colors.white, colors[0]]);
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Container(
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Positioned(
-              top: size.height * -0.1,
-              bottom: size.height * 0.05,
-              right: size.height * -0.05,
-              left: size.height * 0.25,
-              child: Circle(width: size.width * 0.25, gradient: firstCircle)),
-          Positioned(
-              top: size.height * -0.2,
-              bottom: size.height * 0.035,
-              right: size.height * -0.1,
-              left: size.height * 0.38,
-              child: Circle(width: size.width * 0.25, gradient: secondCircle)),
-          Positioned(
-              top: size.height * 0.12,
-              bottom: size.height * 0.03,
-              right: size.height * 0.065,
-              left: size.height * 0.2,
-              child: Circle(width: size.width * 0.5, gradient: fourthCircle)),
-          Positioned(
-              top: size.height * 0.1,
-              bottom: size.height * 0.11,
-              right: size.height * 0.05,
-              left: size.height * 0.2,
-              child: Circle(width: size.width * 0.5, gradient: thirdCircle)),
-        ],
       ),
     );
   }
@@ -187,9 +125,15 @@ class _Collections extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemBuilder: (_, i) {
-                return CardCollection(
-                  collection: collections[i],
-                  color: colors[Random().nextInt(colors.length)],
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, "detail",
+                        arguments: collections[i]);
+                  },
+                  child: CardCollection(
+                    collection: collections[i],
+                    color: colors[Random().nextInt(colors.length)],
+                  ),
                 );
               },
               itemCount: collections.length,

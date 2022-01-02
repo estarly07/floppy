@@ -10,8 +10,6 @@ class CollectionService {
     final response = await get(url);
     final List<Collection> collections = [];
     final Map<String, dynamic> data = json.decode(response.body);
-    print(data.toString());
-
     data.forEach((key, value) {
       collections.add(Collection.fromMap(value));
     });
