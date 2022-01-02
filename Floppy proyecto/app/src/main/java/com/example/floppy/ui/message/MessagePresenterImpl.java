@@ -14,6 +14,7 @@ import com.example.floppy.data.Models.Message;
 import com.example.floppy.data.Entitys.StickersEntity;
 import com.example.floppy.data.Models.User;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
+import com.example.floppy.utils.Extensions;
 import com.example.floppy.utils.Global.GlobalUtils;
 
 import java.util.ArrayList;
@@ -117,16 +118,18 @@ public class MessagePresenterImpl implements MessagePresenter {
 
     @Override
     public void addSticker(String image) {
-    new Thread(() -> {
-        StickersEntity stickersEntity = new StickersEntity();
-        stickersEntity.fk_idUser = User.getInstance().getIdUser();
-        stickersEntity.urlImage  = image;
+        if(image.isEmpty() || Extensions.Companion.validateUrl(image)){ return; }
+        new Thread(() -> {
+            StickersEntity stickersEntity = new StickersEntity();
+            stickersEntity.fk_idUser = User.getInstance().getIdUser();
+            stickersEntity.urlImage  = image;
 
-        interactorLocal.insertSticker(stickersEntity);
-        getStickers();
-    }).start();
-
+            interactorLocal.insertSticker(stickersEntity);
+        getStickers(); }).start();
     }
+
+    @Override
+    public void showDialogAddSticker() { messageView.showDialogAddSticker();}
 
 
     public void showMessagesChat(FriendEntity friendEntity) {

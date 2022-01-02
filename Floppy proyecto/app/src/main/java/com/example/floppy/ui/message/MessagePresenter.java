@@ -37,4 +37,6 @@ public interface MessagePresenter {
     void insertFriendLocal(User friend, String idChat);
 
     void addSticker(String image);
+
+    void showDialogAddSticker();
 }

@@ -109,11 +109,6 @@
         layout="@layout/dialogo_estado"
         android:visibility="gone" />
 
-    <include
-        android:id="@+id/include_fotoUser"
-        layout="@layout/dialogo_user"
-        android:visibility="gone" />
-
     <ProgressBar
         android:id="@+id/progressGeneral"
         android:layout_width="wrap_content"

@@ -8,6 +8,13 @@
     <string name="offline">Desconectado</string>
     <string name="nick">Sin Apodo</string>
 
+    <string name="addSticker">Añade un sticker</string>
+    <string name="howAddSticker">Ingresa la url de una imagen</string>
+    <string name="downloadFloppySticker">Descargar app</string>
+    <string name="poor">(No puedes subir imagenes porque no tenemos servidor para guardarlas somos pobres 🙄 )
+    \nSi quieres descarga nuestra aplicacion de stickers
+    </string>
+
     <string name="stickers">Tus stickers</string>
     <string name="registro">Registro</string>
     <string name="estado">Estados</string>
@@ -38,7 +45,7 @@
         <item>👉👈</item>
         <item>💩</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="url">Url</string>
 
 </resources>

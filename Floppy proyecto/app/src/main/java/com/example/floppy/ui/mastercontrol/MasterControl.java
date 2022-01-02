@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.airbnb.lottie.LottieAnimationView;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -24,6 +25,7 @@ import com.example.floppy.data.Models.Estado;
 import com.example.floppy.data.Models.Estado_User;
 import com.example.floppy.data.Models.User;
 import com.example.floppy.ui.Chat.ChatActivity;
+import com.example.floppy.ui.factory.DialogFactory;
 import com.example.floppy.ui.message.MessageFragment;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.ui.global_presenter.GlobalPresenterImpl;
@@ -108,18 +110,13 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
 
     @Override
     public void showUsesDialog(User friend) {
-        RelativeLayout dialog = findViewById(R.id.include_fotoUser);
-        RoundedImageView imgFriend = findViewById(R.id.imgDialogoUser);
-
+        Dialog dialog = DialogFactory.getInstance().getDialog(this, DialogFactory.TypeDialog.SHOW_PHOTO_USER);
+        RoundedImageView imgFriend = dialog.findViewById(R.id.imgDialogoUser);
         Glide.with(this)
                 .load(friend.getPhoto())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imgFriend);
-
-        animAparecer(dialog);
-        dialog.setOnClickListener(view -> {
-            animDesaparecer(dialog);
-        });
+                .into( imgFriend);
+        dialog.show();
     }
 
 

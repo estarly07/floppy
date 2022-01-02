@@ -16,4 +16,5 @@ public interface MessageView {
 
     void showStickers(ArrayList<StickersEntity> stickers);
 
+    void showDialogAddSticker();
 }

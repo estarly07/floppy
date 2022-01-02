@@ -1,6 +1,7 @@
 package com.example.floppy.ui.message;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,9 +12,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -30,6 +33,7 @@ import com.example.floppy.data.Entitys.FriendEntity;
 import com.example.floppy.data.Models.Message;
 import com.example.floppy.data.Entitys.StickersEntity;
 import com.example.floppy.ui.aboutfriend.AboutFriendFragment;
+import com.example.floppy.ui.factory.DialogFactory;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.R;
 import com.example.floppy.ui.mastercontrol.MasterControl;
@@ -91,7 +95,7 @@ public class MessageFragment extends Fragment implements MessageView {
         btnOptions    = view.findViewById(R.id.btnOptions);
         btnSticker    = view.findViewById(R.id.btnSticker);
         edtMessage    = view.findViewById(R.id.edtMensaje);
-        btnAddSticker = view.findViewById(R.id.btnAddSticker);
+        btnAddSticker = view.findViewById(R.id.btnShowDialogAddSticker);
         options       = view.findViewById(R.id.containerOptions);
 
         recyclerStickers       = view.findViewById(R.id.recyclerStickers);
@@ -131,10 +135,7 @@ public class MessageFragment extends Fragment implements MessageView {
             }else{ presenter.createChat(user, message); }
         });
 
-        btnAddSticker.setOnClickListener(view13 -> {
-            presenter.addSticker("https://static-s.aa-cdn.net/img/gp/20600010880491/6B_E3fpIWVGj2XTDxuWNfWmZRHiQS1tcC61mxeb2uZ7zc9lIBUYH0TAzr-e4Oex01g=s300?v=1");
-        });
-
+        btnAddSticker.setOnClickListener(view13 -> { presenter.showDialogAddSticker(); });
 
         recyclerMessages = view.findViewById(R.id.reciclerChat);
         recyclerMessages . setHasFixedSize(false);
@@ -206,6 +207,29 @@ public class MessageFragment extends Fragment implements MessageView {
             });
             recyclerStickers.setAdapter(adapterSticker);
         });
+    }
+
+    @Override
+    public void showDialogAddSticker() {
+        Dialog dialog       = DialogFactory.getInstance().getDialog(getContext(), DialogFactory.TypeDialog.ADD_STICKER);
+        Button btnAdd       = dialog.findViewById(R.id.btnAddSticker);
+        Button btnDownload  = dialog.findViewById(R.id.btnDownload);
+        EditText edtUrl     = dialog.findViewById(R.id.txtUrlSticker);
+        ImageView imgSticker= dialog.findViewById(R.id.imgStickerAdd);
+
+        Extensions.Companion.listenerEditText(edtUrl,url ->{
+            if(Extensions.Companion.validateUrl(url)){ imgSticker.setImageResource(R.drawable.no_image); }else{
+            Glide.with(getContext())
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgSticker);
+            }
+            return null;
+        });
+
+        btnAdd.setOnClickListener(view -> presenter.addSticker(edtUrl.getText().toString().trim()));
+
+        dialog.show();
     }
 
 }

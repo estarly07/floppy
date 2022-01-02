@@ -3,6 +3,7 @@ package com.example.floppy.utils
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -26,6 +27,10 @@ class Extensions {
                 override fun afterTextChanged(p0: Editable?) {}
             })
         }
+        /**
+         * Validate URL
+         * */
+        fun String.validateUrl () : Boolean = !Patterns.WEB_URL.matcher(this).matches()
 
         /**
          * Clean the EditText

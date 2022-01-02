@@ -19,7 +19,7 @@
     <dimen name="_150dp" tools:ignore="MissingDefaultResource">150dp</dimen>
     <dimen name="_200dp" tools:ignore="MissingDefaultResource">200dp</dimen>
     <dimen name="_300dp" tools:ignore="MissingDefaultResource">300dp</dimen>
-
+    <dimen name="_400dp" tools:ignore="MissingDefaultResource">400dp</dimen>
 
     <dimen name="_10sp" tools:ignore="MissingDefaultResource">10sp</dimen>
     <dimen name="_15sp" tools:ignore="MissingDefaultResource">15sp</dimen>
