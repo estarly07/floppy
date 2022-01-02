@@ -47,6 +47,8 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSticker();
+
         presenter = new GlobalPresenterImpl(this, this, this);
         activity  = this;
         setContentView(R.layout.activity_master_control);
@@ -55,6 +57,20 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
         findViewById(R.id.btnAddFriend).setOnClickListener(view -> {
             MenuFragment.getCallbackNavigationFragments().navigateTo();
         });
+
+    }
+    /**OBTENER LO COMPARTIDO POR LA APP Sticker Floppy */
+    private void getSticker() {
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                String sharedStickers = intent.getStringExtra(Intent.EXTRA_TEXT);
+                if (sharedStickers != null) { showToast(sharedStickers); }
+            }
+        }
 
     }
 
