@@ -43,15 +43,17 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
     public GlobalView globalView = this;
     public static Activity activity;
     public static User user;
+    public static String stickersReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSticker();
-
         presenter = new GlobalPresenterImpl(this, this, this);
         activity  = this;
         setContentView(R.layout.activity_master_control);
+        if(!stickersReceiver.equals("")){
+         showAlertDialog();
+        }
         Button btnChats = findViewById(R.id.btnChats);
         presenter.updateState(Estado_User.ONLINE);
         findViewById(R.id.btnAddFriend).setOnClickListener(view -> {
@@ -59,19 +61,18 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
         });
 
     }
-    /**OBTENER LO COMPARTIDO POR LA APP Sticker Floppy */
-    private void getSticker() {
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
 
-        if (Intent.ACTION_SEND.equals(action) && type != null) {
-            if ("text/plain".equals(type)) {
-                String sharedStickers = intent.getStringExtra(Intent.EXTRA_TEXT);
-                if (sharedStickers != null) { showToast(sharedStickers); }
-            }
-        }
+    private void showAlertDialog() {
+        Dialog dialog = DialogFactory.getInstance().getDialog(this, DialogFactory.TypeDialog.ADD_ALL_STICKER);
+        dialog.setCancelable(false);
+        Button btnInsertStickers = dialog.findViewById(R.id.btnAccept);
+        btnInsertStickers.setOnClickListener(view -> {
+            Animations.Companion.animVanish(dialog.findViewById(R.id.btnAccept));
+            Animations.Companion.animAppear(dialog.findViewById(R.id.progress));
 
+            presenter.addAllStickers(stickersReceiver,dialog );
+        });
+        dialog.show();
     }
 
     @Override

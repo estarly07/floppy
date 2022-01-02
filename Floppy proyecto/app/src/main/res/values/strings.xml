@@ -47,5 +47,7 @@
     </string-array>
 
     <string name="url">Url</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="addAllStickers">¿Quieres añadir los stickers?</string>
 
 </resources>

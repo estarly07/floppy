@@ -31,7 +31,7 @@ public class LoginPresenterImpl implements LoginPresenter {
     }
 
     @Override
-    public void isLogged() {
+    public Boolean isLogged() {
         String idOwner = preferences.getIdOwner();
         if(!idOwner.equals("")){
             new Thread(() -> {
@@ -45,7 +45,9 @@ public class LoginPresenterImpl implements LoginPresenter {
 
                 nextActivity();
             }).start();
+            return true;
         }
+        return false;
     }
 
     /**

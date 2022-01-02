@@ -1,5 +1,7 @@
 package com.example.floppy.ui.global_presenter;
 
+import android.app.Dialog;
+
 import com.example.floppy.data.Models.Estado;
 import com.example.floppy.data.Models.Estado_User;
 import com.example.floppy.data.Models.User;
@@ -23,4 +25,5 @@ public interface GlobalPresenter {
 
     void nextActivity();
 
+    void addAllStickers(String stickersReceiver, Dialog dialog);
 }

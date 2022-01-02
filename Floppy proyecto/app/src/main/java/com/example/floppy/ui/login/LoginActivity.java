@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private Bitmap              bitmapImageUser = null;
     private EditText            edtName;
     private EditText            edtState;
-
+    private String              stickersReceived;
     enum Pages {
         INIT,
         EMAIL,
@@ -46,7 +46,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        presenter       = new LoginPresenterImpl(this, this, this);
+        presenter        = new LoginPresenterImpl(this, this, this);
+        stickersReceived = getSticker();
         presenter.isLogged();
 
         btnLogin        = findViewById(R.id.btnLogin);
@@ -222,6 +223,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public void nextActivity() {
         runOnUiThread(() -> {
             Intent intent = new Intent(LoginActivity.this, MasterControl.class);
+            MasterControl.stickersReceiver = stickersReceived;
             startActivity(intent);
             finish();
         });
@@ -240,6 +242,22 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private void animTraslationY(boolean show, View view) {
         float moveX = show ? 0 : (view.getWidth() * -2);
         view.animate().translationX(moveX).setStartDelay(0).setDuration(1000).start();
+    }
+    /**OBTENER LO COMPARTIDO POR LA APP Sticker Floppy */
+    private String getSticker() {
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                String sharedStickers = intent.getStringExtra(Intent.EXTRA_TEXT);
+                if (sharedStickers != null) { 
+                    return sharedStickers;               
+                }
+            }
+        }
+        return  "";
     }
 
 }

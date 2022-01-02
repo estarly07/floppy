@@ -11,7 +11,8 @@ public class DialogFactory {
     public enum TypeDialog {
         ADD_STICKER,
         SHOW_PHOTO_USER,
-        SHOW_STATE_USER
+        SHOW_STATE_USER,
+        ADD_ALL_STICKER
     }
 
     private static DialogFactory dialogFactory;
@@ -36,6 +37,9 @@ public class DialogFactory {
                 break;
             case SHOW_PHOTO_USER:
                 view = LayoutInflater.from(context).inflate(R.layout.dialogo_user, null, false);
+                break;
+            case ADD_ALL_STICKER:
+                view = LayoutInflater.from(context).inflate(R.layout.alertdialog_add_stickers, null, false);
                 break;
         }
         dialog.setContentView(view);
