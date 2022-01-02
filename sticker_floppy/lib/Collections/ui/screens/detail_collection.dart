@@ -1,8 +1,9 @@
-import 'dart:math';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:share/share.dart';
 import 'package:sticker_floppy/Collections/model/collection.dart';
 import 'package:sticker_floppy/widgets/widgets.dart';
 
@@ -49,11 +50,17 @@ class DetailCollection extends StatelessWidget {
                       Container(
                         margin:
                             EdgeInsets.only(left: 0.2, top: size.height * 0.03),
-                        child: CustomButton(
-                            text: "Compartir",
-                            width: size.width * 0.35,
-                            texColor: Colors.black,
-                            background: Colors.white),
+                        child: GestureDetector(
+                          onTap: () {
+                            print(collection.toMap().toString());
+                            Share.share(collection.toMap().toString());
+                          },
+                          child: CustomButton(
+                              text: "Compartir",
+                              width: size.width * 0.35,
+                              texColor: Colors.black,
+                              background: Colors.white),
+                        ),
                       )
                     ],
                   ),

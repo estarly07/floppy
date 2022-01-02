@@ -25,4 +25,8 @@ class Collection {
         nameCollection: json["nameCollection"],
         stickers: newStickers);
   }
+  Map<String, dynamic> toMap() => {
+        "stickers": List<dynamic>.from(
+            stickers.map((x) => '"${x.toMap()["picture"]}"')),
+      };
 }
