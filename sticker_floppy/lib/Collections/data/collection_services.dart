@@ -5,7 +5,7 @@ import 'package:sticker_floppy/Collections/model/collection.dart';
 import 'package:sticker_floppy/Utils/global.dart';
 
 class CollectionService {
-  Future getAllCollections() async {
+  Future<List<Collection>> getAllCollections() async {
     final url = Uri.parse("$baseUrl/collections.json");
     final response = await get(url);
     final List<Collection> collections = [];
@@ -15,5 +15,6 @@ class CollectionService {
     data.forEach((key, value) {
       collections.add(Collection.fromMap(value));
     });
+    return collections;
   }
 }

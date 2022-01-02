@@ -3,11 +3,14 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:sticker_floppy/Collections/model/collection.dart';
 import 'package:sticker_floppy/widgets/widgets.dart';
 
 class CardCollection extends StatelessWidget {
+  final Collection collection;
   final Color color;
-  CardCollection({Key? key, required this.color}) : super(key: key);
+  CardCollection({Key? key, required this.color, required this.collection})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +57,11 @@ class CardCollection extends StatelessWidget {
                   bottom: size.height * -0.7,
                   child: Circle(
                       width: size.width * 0.1, gradient: gradientBottom)),
-              _Body(size: size, texColor: color, background: Colors.white),
+              _Body(
+                  collection: collection,
+                  size: size,
+                  texColor: color,
+                  background: Colors.white),
             ],
           ),
         ),
@@ -65,11 +72,13 @@ class CardCollection extends StatelessWidget {
 
 class _Body extends StatelessWidget {
   final Color background, texColor;
+  final Collection collection;
   const _Body({
     Key? key,
     required this.size,
     required this.background,
     required this.texColor,
+    required this.collection,
   }) : super(key: key);
 
   final Size size;
@@ -87,13 +96,12 @@ class _Body extends StatelessWidget {
               width: size.height * 0.2,
               fit: BoxFit.contain,
               placeholder: AssetImage('assets/no-image.jpg'),
-              image: NetworkImage(
-                  "https://stickershop.line-scdn.net/stickershop/v1/product/8894057/LINEStorePC/main.png;compress=true")),
+              image: NetworkImage(collection.frontPage)),
           Container(
             height: 15,
           ),
           Text(
-            "Monkey",
+            collection.nameCollection,
             maxLines: 2,
             style: TextStyle(
                 fontSize: size.height * 0.025,

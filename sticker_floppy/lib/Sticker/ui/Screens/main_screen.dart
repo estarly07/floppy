@@ -3,7 +3,10 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:sticker_floppy/Sticker/data/service_sticker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sticker_floppy/Collections/bloc/collections_bloc.dart';
+import 'package:sticker_floppy/Collections/model/collection.dart';
+import 'package:sticker_floppy/Sticker/model/sticker.dart';
 import 'package:sticker_floppy/widgets/widgets.dart';
 import 'package:sticker_floppy/Utils/colors.dart';
 
@@ -13,31 +16,46 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    ServiceSticker().getAllStickers();
+    BlocProvider.of<CollectionsBloc>(context).add(GetCollectionsEvent());
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Container(
-              width: double.infinity,
-              height: size.height * 0.25,
-              child: _Decoration(),
-            ),
-            Container(
-              margin: EdgeInsets.all(10),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _Titles(),
-                    _Collections(),
-                    _Stickers(),
-                  ],
+      body: BlocBuilder<CollectionsBloc, CollectionsState>(
+        builder: (context, state) {
+          return SafeArea(
+            child: Stack(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: size.height * 0.25,
+                  child: _Decoration(),
                 ),
-              ),
+                (state.collections.isEmpty)
+                    ? Center(
+                        child: CircularProgressIndicator(
+                        color: colors[1],
+                      ))
+                    : Container(
+                        margin: EdgeInsets.all(10),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _Titles(),
+                              _Collections(collections: state.collections),
+                              Column(
+                                children: state.collections
+                                    .map((e) => _Stickers(
+                                        stickers: e.stickers,
+                                        nameCollection: e.nameCollection))
+                                    .toList(),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -141,8 +159,10 @@ class _Titles extends StatelessWidget {
 }
 
 class _Collections extends StatelessWidget {
+  final List<Collection> collections;
   const _Collections({
     Key? key,
+    required this.collections,
   }) : super(key: key);
 
   @override
@@ -168,10 +188,11 @@ class _Collections extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (_, i) {
                 return CardCollection(
+                  collection: collections[i],
                   color: colors[Random().nextInt(colors.length)],
                 );
               },
-              itemCount: 5,
+              itemCount: collections.length,
             )),
       ],
     );
@@ -179,8 +200,12 @@ class _Collections extends StatelessWidget {
 }
 
 class _Stickers extends StatelessWidget {
+  final List<Sticker> stickers;
+  final String nameCollection;
   const _Stickers({
     Key? key,
+    required this.stickers,
+    required this.nameCollection,
   }) : super(key: key);
 
   @override
@@ -192,7 +217,7 @@ class _Stickers extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Ms Been",
+            nameCollection,
             maxLines: 1,
             style: TextStyle(
                 fontSize: size.height * 0.025,
@@ -205,8 +230,10 @@ class _Stickers extends StatelessWidget {
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemBuilder: (_, i) => CardSticker(),
-              itemCount: 10,
+              itemBuilder: (_, i) => CardSticker(
+                sticker: stickers[i],
+              ),
+              itemCount: stickers.length,
             ),
           ),
         ],
