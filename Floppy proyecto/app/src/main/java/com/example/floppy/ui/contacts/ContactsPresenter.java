@@ -8,4 +8,6 @@ public interface ContactsPresenter {
     void getAllUsers();
 
     void showContacts(ArrayList<User> users);
+
+    void getFriend(String idUser);
 }

@@ -129,9 +129,7 @@ public class MessageFragment extends Fragment implements MessageView {
         btnSend.setOnClickListener(view1 -> {
             message.setMessage(edtMessage.getText().toString().trim());
             message.setTypeMessage(Message.TypesMessages.TEXT);
-            if(!idChat.equals("")){
-                if(presenter.sendMessages(idChat, message)){ edtMessage.setText(""); }
-            }else{ presenter.createChat(user, message); }
+            sendMessage();
         });
 
         btnAddSticker.setOnClickListener(view13 -> { presenter.showDialogAddSticker(); });
@@ -147,6 +145,13 @@ public class MessageFragment extends Fragment implements MessageView {
             presenter.searchChat(user);
         }
         presenter.showDataFriend(user.getName(), user.getPhoto());
+    }
+
+    private void sendMessage(){
+        if(!idChat.equals("")){
+            //BUSCARLO EN LA BD Y SI NO CREARLO
+            presenter.searchFriend(user.getIdUser());
+        }else{ presenter.createChat(user, message); }
     }
 
     Boolean translate = true;
@@ -202,7 +207,7 @@ public class MessageFragment extends Fragment implements MessageView {
             adapterSticker.setClick((view, stickersEntity) -> {
                message.setTypeMessage(Message.TypesMessages.STICKER);
                message.setMessage(stickersEntity.urlImage);
-               presenter.sendMessages(idChat, message);
+               sendMessage();
             });
             recyclerStickers.setAdapter(adapterSticker);
         });
@@ -228,12 +233,9 @@ public class MessageFragment extends Fragment implements MessageView {
         String openApk    = getContext().getResources().getString(R.string.openApk);
         String installApk = getContext().getResources().getString(R.string.installApk);
 
-        if(presenter.validateInstalledApk()){
-            btnDownload.setText(openApk);
-        }else{
-            if(presenter.validateDownloadedApk()){
-                btnDownload.setText(installApk);
-            }
+        if(presenter.validateInstalledApk()){ btnDownload.setText(openApk); }
+        else{
+            if(presenter.validateDownloadedApk()){ btnDownload.setText(installApk); }
         }
 
         btnAdd     .setOnClickListener(view -> presenter.addSticker(edtUrl.getText().toString().trim()));
@@ -251,8 +253,15 @@ public class MessageFragment extends Fragment implements MessageView {
             }
 
         });
-
         dialog.show();
+    }
+
+    @Override
+    public void sendAndInsertFriend(Boolean insertFriend) {
+        if (insertFriend){
+            presenter.insertFriendLocal(user,idChat);
+        }
+        if(presenter.sendMessages(idChat, message)){ edtMessage.setText(""); }
     }
 
 }

@@ -31,7 +31,9 @@ public interface MessagePresenter {
     void showStickers(ArrayList<StickersEntity> list);
 
     void searchChat(User userSelect);
-    /**CREAR UN NUEVO CHAT*/
+    /**CREAR UN NUEVO CHAT
+     *@param userSelect el amigo
+     * */
     void createChat(User userSelect, Message message);
 
     void insertFriendLocal(User friend, String idChat);
@@ -49,4 +51,6 @@ public interface MessagePresenter {
     void installApk();
 
     boolean validateDownloadedApk();
+
+    void searchFriend(String idUser);
 }

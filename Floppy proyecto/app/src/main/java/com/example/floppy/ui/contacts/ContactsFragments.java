@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.floppy.data.Entitys.FriendEntity;
 import com.example.floppy.data.Models.User;
 import com.example.floppy.ui.Chat.ChatActivity;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
@@ -21,6 +22,7 @@ import com.example.floppy.ui.mastercontrol.MasterControl;
 
 
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 
 public class ContactsFragments extends Fragment implements ContactsView {
@@ -58,8 +60,18 @@ public class ContactsFragments extends Fragment implements ContactsView {
             recyclerContacts. setAdapter(adapterContacts);
             adapterContacts .setClick((view, position, user) -> {
                 ChatActivity.friend = user;
-                presenterMaster.nextActivity();
+                //buscar si el amigo esta guardado en la bd local
+                presenter.getFriend(user.getIdUser());
             });
         });
+    }
+
+    @Override
+    public void showChat(FriendEntity friendEntity) {
+        if(friendEntity != null){
+            System.out.println("YA ESTA BB");
+            ChatActivity.friendEntity = friendEntity;
+        }
+        presenterMaster.nextActivity();
     }
 }

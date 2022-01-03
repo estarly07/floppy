@@ -190,6 +190,13 @@ public class MessagePresenterImpl implements MessagePresenter {
         return file.exists();
     }
 
+    @Override
+    public void searchFriend(String idUser) {
+        new Thread(() -> {
+            messageView.sendAndInsertFriend(interactorLocal.getFriend(idUser) == null);
+        }).start();
+    }
+
 
     public void showMessagesChat(FriendEntity friendEntity) {
         String[] users = new String[2];
