@@ -227,7 +227,8 @@ public class MessageFragment extends Fragment implements MessageView {
             return null;
         });
 
-        btnAdd.setOnClickListener(view -> presenter.addSticker(edtUrl.getText().toString().trim()));
+        btnAdd     .setOnClickListener(view -> presenter.addSticker(edtUrl.getText().toString().trim()));
+        btnDownload.setOnClickListener(view -> presenter.downloadApp());
 
         dialog.show();
     }

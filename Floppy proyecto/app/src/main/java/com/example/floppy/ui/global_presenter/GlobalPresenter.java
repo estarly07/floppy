@@ -1,6 +1,7 @@
 package com.example.floppy.ui.global_presenter;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 
 import com.example.floppy.data.Models.Estado;
 import com.example.floppy.data.Models.Estado_User;
@@ -28,4 +29,6 @@ public interface GlobalPresenter {
     void addAllStickers(String stickersReceiver, Dialog dialog);
 
     void insertStickers(String stickersReceiver);
+
+    void beginDownloadApp(BroadcastReceiver onDownloadComplete);
 }

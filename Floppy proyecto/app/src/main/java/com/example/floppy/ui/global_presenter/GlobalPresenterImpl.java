@@ -2,6 +2,7 @@ package com.example.floppy.ui.global_presenter;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 
 import com.example.floppy.data.Entitys.StickersEntity;
@@ -100,5 +101,10 @@ public class GlobalPresenterImpl implements GlobalPresenter {
     @Override
     public void insertStickers(String stickersReceiver) {
         if(stickersReceiver.contains("stickers:")) { globalView.showAlertDialog(); }
+    }
+
+    @Override
+    public void beginDownloadApp(BroadcastReceiver onDownloadComplete) {
+        globalView.beginDownload(onDownloadComplete);
     }
 }

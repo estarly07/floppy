@@ -1,5 +1,7 @@
 package com.example.floppy.ui;
 
+import android.content.BroadcastReceiver;
+
 import com.example.floppy.data.Models.Estado;
 import com.example.floppy.data.Models.User;
 
@@ -38,4 +40,6 @@ public interface GlobalView {
     void showContacts(ArrayList<User> users);
 
     void nextActivity();
+
+    void beginDownload(BroadcastReceiver broadcastReceiver);
 }

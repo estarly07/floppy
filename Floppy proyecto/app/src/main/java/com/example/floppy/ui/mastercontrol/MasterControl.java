@@ -7,6 +7,7 @@ import com.airbnb.lottie.LottieAnimationView;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -235,6 +236,11 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
     public void nextActivity() {
         Intent intent = new Intent(MasterControl.this, ChatActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void beginDownload(BroadcastReceiver broadcastReceiver) {
+
     }
 
     private void animDesaparecer(View view) {

@@ -39,4 +39,6 @@ public interface MessagePresenter {
     void addSticker(String image);
 
     void showDialogAddSticker();
+
+    void downloadApp();
 }

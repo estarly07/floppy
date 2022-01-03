@@ -13,6 +13,7 @@ import com.example.floppy.data.Models.Chat;
 import com.example.floppy.data.Models.Message;
 import com.example.floppy.data.Entitys.StickersEntity;
 import com.example.floppy.data.Models.User;
+import com.example.floppy.data.Services.ServiceDownload;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.utils.Extensions;
 import com.example.floppy.utils.Global.GlobalUtils;
@@ -24,12 +25,14 @@ public class MessagePresenterImpl implements MessagePresenter {
     private MessageView     messageView;
     private Interactor      interactor;
     private InteractorLocal interactorLocal;
+    private GlobalPresenter globalPresenter;
 
     public MessagePresenterImpl(Context context, Activity activity, MessageView messageView, GlobalPresenter globalPresenter) {
         this.context         = context;
         this.messageView     = messageView;
         this.interactor      = new InteractorFirestoreImpl(context, globalPresenter, activity);
         this.interactorLocal = new InteractorSqlite(context);
+        this.globalPresenter = globalPresenter;
     }
 
     public void showStateUser(String response) {
@@ -130,6 +133,13 @@ public class MessagePresenterImpl implements MessagePresenter {
 
     @Override
     public void showDialogAddSticker() { messageView.showDialogAddSticker();}
+
+    @Override
+    public void downloadApp() {
+        ServiceDownload serviceDownload = new ServiceDownload();
+        globalPresenter.beginDownloadApp(serviceDownload.onDownloadComplete);
+        serviceDownload.beginDownload(context);
+    }
 
 
     public void showMessagesChat(FriendEntity friendEntity) {

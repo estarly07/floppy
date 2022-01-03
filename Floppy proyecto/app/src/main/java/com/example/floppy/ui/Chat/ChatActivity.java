@@ -2,6 +2,9 @@ package com.example.floppy.ui.Chat;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.example.floppy.R;
@@ -21,6 +24,7 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     public static User            friend;
     public static FriendEntity    friendEntity;
     public static GlobalPresenter presenter;
+    public BroadcastReceiver      broadcastReceiver = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +52,9 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(broadcastReceiver != null){
+            unregisterReceiver(broadcastReceiver);
+        }
         presenter.updateState(Estado_User.OFFLINE);
     }
 
@@ -96,5 +103,10 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     @Override
     public void nextActivity() {
 
+    }
+
+    @Override
+    public void beginDownload(BroadcastReceiver broadcastReceiver) {
+        registerReceiver(broadcastReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 }
