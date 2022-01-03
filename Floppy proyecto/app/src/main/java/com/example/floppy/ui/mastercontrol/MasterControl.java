@@ -7,8 +7,10 @@ import com.airbnb.lottie.LottieAnimationView;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -41,10 +43,11 @@ import java.util.ArrayList;
 public class MasterControl extends AppCompatActivity implements GlobalView {
 
     public static GlobalPresenter presenter;
-    public GlobalView globalView = this;
-    public static Activity activity;
-    public static User user;
-    public static String stickersReceiver;
+    public GlobalView             globalView = this;
+    public static Activity        activity;
+    public static User            user;
+    public static String          stickersReceiver;
+    public BroadcastReceiver      broadcastReceiver = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,7 +243,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
 
     @Override
     public void beginDownload(BroadcastReceiver broadcastReceiver) {
-
+        registerReceiver(broadcastReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
     private void animDesaparecer(View view) {
@@ -263,6 +266,9 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(broadcastReceiver != null){
+            unregisterReceiver(broadcastReceiver);
+        }
         presenter.updateState(Estado_User.OFFLINE);
     }
 
