@@ -97,5 +97,8 @@ public class GlobalPresenterImpl implements GlobalPresenter {
         }).start();
     }
 
-
+    @Override
+    public void insertStickers(String stickersReceiver) {
+        if(stickersReceiver.contains("stickers:")) { globalView.showAlertDialog(); }
+    }
 }

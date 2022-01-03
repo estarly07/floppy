@@ -26,4 +26,6 @@ public interface GlobalPresenter {
     void nextActivity();
 
     void addAllStickers(String stickersReceiver, Dialog dialog);
+
+    void insertStickers(String stickersReceiver);
 }

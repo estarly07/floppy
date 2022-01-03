@@ -59,6 +59,11 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     }
 
     @Override
+    public void showAlertDialog() {
+
+    }
+
+    @Override
     public void showToast(String msg) {
 
     }

@@ -52,7 +52,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
         activity  = this;
         setContentView(R.layout.activity_master_control);
         if(!stickersReceiver.equals("")){
-         showAlertDialog();
+            presenter.insertStickers(stickersReceiver);
         }
         Button btnChats = findViewById(R.id.btnChats);
         presenter.updateState(Estado_User.ONLINE);
@@ -62,16 +62,18 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
 
     }
 
-    private void showAlertDialog() {
+    @Override
+    public void showAlertDialog() {
         Dialog dialog = DialogFactory.getInstance().getDialog(this, DialogFactory.TypeDialog.ADD_ALL_STICKER);
         dialog.setCancelable(false);
         Button btnInsertStickers = dialog.findViewById(R.id.btnAccept);
+        Button btnCancel         = dialog.findViewById(R.id.btnCancel);
         btnInsertStickers.setOnClickListener(view -> {
             Animations.Companion.animVanish(dialog.findViewById(R.id.btnAccept));
             Animations.Companion.animAppear(dialog.findViewById(R.id.progress));
-
             presenter.addAllStickers(stickersReceiver,dialog );
         });
+        btnCancel.setOnClickListener(view -> dialog.dismiss());
         dialog.show();
     }
 
