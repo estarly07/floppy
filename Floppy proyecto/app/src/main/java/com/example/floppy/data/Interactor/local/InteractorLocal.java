@@ -22,4 +22,6 @@ public interface InteractorLocal {
     FriendEntity getFriend(String idFriend);
 
     void getStickers(MessagePresenterImpl messagePresenter,String idUser);
+
+    void deleteSticker(String sticker);
 }

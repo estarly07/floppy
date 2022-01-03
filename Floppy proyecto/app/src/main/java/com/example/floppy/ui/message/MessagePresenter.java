@@ -49,4 +49,8 @@ public interface MessagePresenter {
     void installApk();
 
     boolean validateDownloadedApk();
+
+    void showDialogAddOrDeleteSticker(Message message);
+
+    void deleteSticker(String message);
 }

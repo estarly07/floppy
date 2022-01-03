@@ -34,6 +34,7 @@
     <string name="input_data">Ingresa tus datos para iniciar</string>
     <string name="mensage">Mensaje</string>
     <string name="agregar">Agregar</string>
+    <string name="delete">Eliminar sticker</string>
     <string name="about">Floppy es un proyecto que desea obtener un parecido a aplicaciones de chat tipo whatsapp y telegram 🤑\n\nQue la disfrutes :)</string>
 
     <string-array name="frases">

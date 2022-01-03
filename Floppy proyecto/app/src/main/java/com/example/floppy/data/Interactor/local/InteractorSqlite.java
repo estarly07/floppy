@@ -49,5 +49,8 @@ public class InteractorSqlite implements InteractorLocal{
     @Override
     public void getStickers(MessagePresenterImpl messagePresenter, String idUser) { messagePresenter.showStickers((ArrayList<StickersEntity>) stickerDao.getStickers(idUser)); }
 
+    @Override
+    public void deleteSticker(String sticker) { stickerDao.deleteSticker(sticker); }
+
 
 }

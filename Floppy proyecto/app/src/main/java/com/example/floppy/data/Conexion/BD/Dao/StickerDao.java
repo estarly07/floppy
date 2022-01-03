@@ -19,4 +19,7 @@ public interface StickerDao {
     @Query("SELECT * FROM " + GlobalUtils.stickersTable + " WHERE fk_idUser = :fk_idUser")
     List<StickersEntity> getStickers(String fk_idUser);
 
+    @Query("DELETE FROM "+ GlobalUtils.stickersTable + " WHERE urlImage = :sticker")
+    void deleteSticker(String sticker);
+
 }

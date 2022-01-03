@@ -12,7 +12,8 @@ public class DialogFactory {
         ADD_STICKER,
         SHOW_PHOTO_USER,
         SHOW_STATE_USER,
-        ADD_ALL_STICKER
+        ADD_ALL_STICKER,
+        STICKER,//mostrar un sialog para añadir o eliminar un sticker
     }
 
     private static DialogFactory dialogFactory;
@@ -41,6 +42,10 @@ public class DialogFactory {
             case ADD_ALL_STICKER:
                 view = LayoutInflater.from(context).inflate(R.layout.alertdialog_add_stickers, null, false);
                 break;
+            case STICKER:
+                view = LayoutInflater.from(context).inflate(R.layout.alertdialog_delete_or_add_sticker, null, false);
+                break;
+
         }
         dialog.setContentView(view);
         return dialog;

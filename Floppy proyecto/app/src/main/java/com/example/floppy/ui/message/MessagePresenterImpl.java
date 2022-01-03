@@ -190,6 +190,18 @@ public class MessagePresenterImpl implements MessagePresenter {
         return file.exists();
     }
 
+    @Override
+    public void showDialogAddOrDeleteSticker(Message message) {
+        messageView.showDialogAddOrDeleteSticker(context,message, message.getUser().equals(User.getInstance().getIdUser()));
+    }
+
+    @Override
+    public void deleteSticker(String sticker) {
+        new Thread(() -> {
+            interactorLocal.deleteSticker(sticker);
+            getStickers();
+        }).start();
+    }
 
     public void showMessagesChat(FriendEntity friendEntity) {
         String[] users = new String[2];

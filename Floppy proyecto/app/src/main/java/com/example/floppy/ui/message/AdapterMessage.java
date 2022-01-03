@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.floppy.data.Entitys.FriendEntity;
 import com.example.floppy.data.Models.Message;
 import com.example.floppy.R;
 
@@ -36,16 +35,14 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
         return new ViewHolder(view);
     }
 
-    public interface Clic {
-        void clic(View view, int position, FriendEntity friendEntity);
-
-        void clicChat(View view, int position, FriendEntity friendEntity);
+    public interface Click {
+        void clickMessage(View view, int position, Message message);
     }
 
-    private Clic clic;
+    private Click click;
 
-    public void setClic(Clic clic) {
-        this.clic = clic;
+    public void setClick(Click click) {
+        this.click = click;
     }
 
 
@@ -87,6 +84,9 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
 
                 break;
         }
+        holder.itemView.setOnClickListener(view -> {
+          if(click != null) { click.clickMessage(view,position,messages.get(position)); }
+        });
 
     }
 

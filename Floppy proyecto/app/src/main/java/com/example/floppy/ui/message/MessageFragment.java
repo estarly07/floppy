@@ -2,6 +2,7 @@ package com.example.floppy.ui.message;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -171,12 +172,40 @@ public class MessageFragment extends Fragment implements MessageView {
     public void showMessages(ArrayList<Message> messages, String myId, String idChat) {
         activity.runOnUiThread(() -> {
             this.idChat = idChat;
-            AdapterMessage adapterMensage = new AdapterMessage(messages, myId);
+            AdapterMessage adapterMessage = new AdapterMessage(messages, myId);
+            adapterMessage.setClick((view, position, message) -> {
+               presenter.showDialogAddOrDeleteSticker(message);
+            });
 //            adapterMensage.setHasStableIds(true);
-            recyclerMessages.setAdapter(adapterMensage);
+            recyclerMessages.setAdapter(adapterMessage);
             recyclerMessages.scheduleLayoutAnimation();
         });
 
+    }
+    @Override
+    public void showDialogAddOrDeleteSticker(Context context, Message message,Boolean delete) {
+        if(message.getTypeMessage() == Message.TypesMessages.STICKER) {
+            DialogFactory.TypeDialog typeDialog = DialogFactory.TypeDialog.valueOf(message.getTypeMessage().toString());
+            Dialog dialog = DialogFactory.getInstance().getDialog(context, typeDialog);
+            ImageView imgSticker = dialog.findViewById(R.id.imgStickerDeleteOrADd);
+            Button btnAddOrDelete = dialog.findViewById(R.id.btnAddOrDelete);
+
+            if(delete){ btnAddOrDelete.setText(context.getResources().getString(R.string.delete)); }
+
+            btnAddOrDelete.setOnClickListener(v->{
+                if(delete){
+                    presenter.deleteSticker(message.getMessage());
+                }else{
+                    presenter.addSticker   (message.getMessage());
+                }
+            });
+
+            Glide.with(context)
+                    .load(message.getMessage())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgSticker);
+            dialog.show();
+        }
     }
 
 
