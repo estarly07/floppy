@@ -21,4 +21,8 @@ public interface MessageView {
     void showStickers(ArrayList<StickersEntity> stickers);
 
     void showDialogAddSticker();
+
+    /**ENVIAR UN MENSAJE Y INSERTAR EL AMIGO EN LA BD O NO
+     * @param insertFriend*/
+    void sendAndInsertFriend(Boolean insertFriend);
 }
