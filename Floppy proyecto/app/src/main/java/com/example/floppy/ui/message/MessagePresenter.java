@@ -41,4 +41,12 @@ public interface MessagePresenter {
     void showDialogAddSticker();
 
     void downloadApp();
+
+    Boolean validateInstalledApk();
+
+    void openApk();
+
+    void installApk();
+
+    boolean validateDownloadedApk();
 }

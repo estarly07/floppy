@@ -1,8 +1,15 @@
 package com.example.floppy.ui.message;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 
+import androidx.core.content.FileProvider;
+
+import com.example.floppy.BuildConfig;
 import com.example.floppy.data.Entitys.FriendEntity;
 import com.example.floppy.data.Entitys.UserEntity;
 import com.example.floppy.data.Interactor.local.InteractorLocal;
@@ -18,6 +25,7 @@ import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.utils.Extensions;
 import com.example.floppy.utils.Global.GlobalUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class MessagePresenterImpl implements MessagePresenter {
@@ -136,9 +144,50 @@ public class MessagePresenterImpl implements MessagePresenter {
 
     @Override
     public void downloadApp() {
-        ServiceDownload serviceDownload = new ServiceDownload();
+        ServiceDownload serviceDownload = new ServiceDownload(this);
         globalPresenter.beginDownloadApp(serviceDownload.onDownloadComplete);
         serviceDownload.beginDownload(context);
+    }
+
+    @Override
+    public Boolean validateInstalledApk() { return Extensions.Companion.validateInstallApk(GlobalUtils.packageStickerApk, context); }
+
+    @Override
+    public void openApk() {
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage(GlobalUtils.packageStickerApk);
+        if(intent == null){
+            //TODO no open app message
+        }else{
+            context.startActivity(intent);
+        }
+    }
+
+    @Override
+    public void installApk() {
+        File file = new File(context.getExternalFilesDir(null), GlobalUtils.nameStickerApk);
+        Intent intentApk ;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Uri path = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
+            intentApk = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+            intentApk.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intentApk.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intentApk.setData(path);
+        }else{
+            Uri apkUri = Uri.fromFile(file);
+            intentApk = new Intent(Intent.ACTION_VIEW);
+            intentApk.setDataAndType(apkUri, "application/vnd.android.package-archive");
+            intentApk.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        try {
+            context.startActivity(intentApk);
+        } catch (ActivityNotFoundException e) {
+        }
+    }
+
+    @Override
+    public boolean validateDownloadedApk() {
+        File file = new File(context.getExternalFilesDir(null), GlobalUtils.nameStickerApk);
+        return file.exists();
     }
 
 

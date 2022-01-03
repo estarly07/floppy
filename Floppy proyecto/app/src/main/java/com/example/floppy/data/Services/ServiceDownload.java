@@ -12,11 +12,17 @@ import android.os.Environment;
 import androidx.core.content.FileProvider;
 
 import com.example.floppy.BuildConfig;
+import com.example.floppy.ui.message.MessagePresenter;
 
 import java.io.File;
 
 public class ServiceDownload {
     private static long downloadId;
+    private MessagePresenter presenter;
+
+    public ServiceDownload(MessagePresenter presenter) {
+        this.presenter = presenter;
+    }
 
     public void beginDownload(Context context) {
         File file = new File(context.getExternalFilesDir(null), "StickerFloppy.apk");
@@ -47,27 +53,7 @@ public class ServiceDownload {
         @Override
         public void onReceive(Context context, Intent intent) {
             long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-            if (downloadId == id) {
-
-                File file = new File(context.getExternalFilesDir(null), "StickerFloppy.apk");
-                Intent intentApk ;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    Uri path = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
-                    intentApk = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-                    intentApk.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intentApk.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    intentApk.setData(path);
-                }else{
-                    Uri apkUri = Uri.fromFile(file);
-                    intentApk = new Intent(Intent.ACTION_VIEW);
-                    intentApk.setDataAndType(apkUri, "application/vnd.android.package-archive");
-                    intentApk.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
-                try {
-                    context.startActivity(intentApk);
-                } catch (ActivityNotFoundException e) {
-                }
-            }
+            if (downloadId == id) { presenter.installApk(); }
         }
     };
 

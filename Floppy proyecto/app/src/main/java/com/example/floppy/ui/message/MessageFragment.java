@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -226,9 +225,32 @@ public class MessageFragment extends Fragment implements MessageView {
             }
             return null;
         });
+        String openApk    = getContext().getResources().getString(R.string.openApk);
+        String installApk = getContext().getResources().getString(R.string.installApk);
+
+        if(presenter.validateInstalledApk()){
+            btnDownload.setText(openApk);
+        }else{
+            if(presenter.validateDownloadedApk()){
+                btnDownload.setText(installApk);
+            }
+        }
 
         btnAdd     .setOnClickListener(view -> presenter.addSticker(edtUrl.getText().toString().trim()));
-        btnDownload.setOnClickListener(view -> presenter.downloadApp());
+        btnDownload.setOnClickListener(view -> {
+            switch (btnDownload.getText().toString()){
+                case "Abrir":
+                    presenter.openApk();
+                    break;
+                case "Instalar":
+                    presenter.installApk();
+                    break;
+                default:
+                    presenter.downloadApp();
+                    break;
+            }
+
+        });
 
         dialog.show();
     }

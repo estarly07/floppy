@@ -1,6 +1,7 @@
 package com.example.floppy.utils
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
@@ -89,6 +90,19 @@ class Extensions {
             )
             val matcher = pattern.matcher(this)
             return matcher.find()
+        }
+
+        /**Validate if the Sticker Floppy application is installed
+         *@return true =>Installed false => No installed
+         * */
+        fun String.validateInstallApk(context: Context) :Boolean{
+            val packageManager = context.packageManager
+            return try{
+                packageManager.getPackageInfo(this,PackageManager.GET_ACTIVITIES)
+                true
+            } catch (e : PackageManager.NameNotFoundException ) {
+                false
+            }
         }
 
     }

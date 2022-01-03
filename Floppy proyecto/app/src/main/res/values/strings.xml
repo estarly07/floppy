@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Floppy</string>
 
+    <string name="installApk">Instalar</string>
+    <string name="openApk">Abrir</string>
+
     <string name="comenzar">Comenzar</string>
     <string name="login">Iniciar Sesión</string>
     <string name="register">Registrar</string>

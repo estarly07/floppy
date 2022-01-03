@@ -19,6 +19,9 @@ public class GlobalUtils {
         int      minutes  = calendar.get(Calendar.MINUTE);
         return String.format("%02d:%02d", hour, minutes);
     }
+    //Strings
+    public static final String packageStickerApk = "com.example.sticker_floppy";
+    public static final String nameStickerApk    = "StickerFloppy.apk";
 
     //DATABASE
     public static final String nameDatabase  = "floppy.db";
