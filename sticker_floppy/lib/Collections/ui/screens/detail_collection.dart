@@ -52,7 +52,6 @@ class DetailCollection extends StatelessWidget {
                             EdgeInsets.only(left: 0.2, top: size.height * 0.03),
                         child: GestureDetector(
                           onTap: () {
-                            print(collection.toMap().toString());
                             Share.share(collection.toMap().toString());
                           },
                           child: CustomButton(
