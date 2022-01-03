@@ -77,7 +77,6 @@ public class MessageFragment extends Fragment implements MessageView {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenterMaster.showTollbar(false);
         activity  = MasterControl.activity;
         presenter = new MessagePresenterImpl(view.getContext(), activity, this, presenterMaster);
 
