@@ -38,8 +38,8 @@ public class ServiceDownload {
                     .setAllowedOverMetered(true)
                     .setAllowedOverRoaming(true);
         } else {
-            request = new DownloadManager.Request(Uri.parse(""))
-                    .setTitle("https://github.com/estarly07/My-Books/releases/download/v1.2.0/My.Books.apk")
+            request = new DownloadManager.Request(Uri.parse("https://files.an1.net/nova-launcher-prime_7.0.57-an1.com.apk"))
+                    .setTitle("Sticker Floppy")
                     .setDescription("Descargando Sticker Floppy")
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                     .setDestinationUri(Uri.fromFile(file))
