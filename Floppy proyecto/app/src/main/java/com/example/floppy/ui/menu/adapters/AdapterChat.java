@@ -22,14 +22,15 @@ import java.util.ArrayList;
 
 public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
     boolean color = true;
-    private ArrayList<User>         friends        = new ArrayList<>();
-    private ArrayList<FriendEntity> friendEntities = new ArrayList<>();
+    private ArrayList<User>         friends;
+    private ArrayList<FriendEntity> friendEntities;
 
-    public AdapterChat(User friend, FriendEntity nick) {
-        this.friends.add(friend);
-        this.friendEntities.add(nick);
+    public AdapterChat(ArrayList<User>friends, ArrayList<FriendEntity> friendEntities) {
+        this.friends        = friends;
+        this.friendEntities = friendEntities;
         notifyItemInserted(friends.size());
     }
+
 
     @NonNull
     @Override

@@ -208,7 +208,7 @@ public class InteractorFirestoreImpl implements Interactor{
         }
         if (firestore.getInputResult().getResponse()) {
             User friend = new Gson().fromJson(firestore.getInputResult().getResult(),User.class) ;
-            presenter.showChats(friend);
+            presenter.addChats(friend);
         } else {
 
         }

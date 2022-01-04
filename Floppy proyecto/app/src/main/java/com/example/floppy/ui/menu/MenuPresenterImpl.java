@@ -19,7 +19,9 @@ public class MenuPresenterImpl implements MenuPresenter {
     final private Interactor      interactor;
     final private GlobalPresenter presenterMaster;
     final private InteractorLocal interactorLocal;
-    ArrayList<FriendEntity> friends = new ArrayList<>();
+
+    ArrayList<FriendEntity> friendEntities = new ArrayList<>();
+    ArrayList<User>         friends        = new ArrayList<>();
 
 
     public MenuPresenterImpl(MenuView view, Context context, Activity activity, GlobalPresenter presenterMaster) {
@@ -46,14 +48,16 @@ public class MenuPresenterImpl implements MenuPresenter {
             for (FriendEntity friendEntity :friends) {
                 interactor.getFriends(friendEntity.idFriend,this );
             }
+            view.showChats(this.friends,friendEntities);
         }).start();
     }
 
     @Override
-    public void showChats(User friend) {
+    public void addChats(User friend) {
         new Thread(() -> {
             FriendEntity friendEntity = interactorLocal.getFriend(friend.getIdUser());
-            view.showChats(friend, friendEntity);
+            this.friends.add(friend);
+            this.friendEntities.add(friendEntity);
         }).start();
 
     }
