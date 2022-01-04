@@ -3,6 +3,7 @@ package com.example.floppy.data.Conexion.BD.Dao;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.floppy.data.Entitys.FriendEntity;
 import com.example.floppy.utils.Global.GlobalUtils;
@@ -21,4 +22,6 @@ public interface FriendDao {
     @Query("SELECT * FROM "+GlobalUtils.friendTable+" WHERE idFriend =:idFriend")
     FriendEntity getFriend(String idFriend);
 
+    @Query("UPDATE "+GlobalUtils.friendTable+" SET nick = :nick")
+    void updateFriendNick(String nick);
 }

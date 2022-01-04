@@ -9,7 +9,7 @@
     <string name="register">Registrar</string>
     <string name="online">Conectado</string>
     <string name="offline">Desconectado</string>
-    <string name="nick">Sin Apodo</string>
+    <string name="nick">Apodo</string>
 
     <string name="addSticker">Añade un sticker</string>
     <string name="howAddSticker">Ingresa la url de una imagen</string>
@@ -53,5 +53,7 @@
     <string name="url">Url</string>
     <string name="cancelar">Cancelar</string>
     <string name="addAllStickers">¿Quieres añadir los stickers?</string>
+    <string name="update">Modificación</string>
+    <string name="accept">Aceptar</string>
 
 </resources>
