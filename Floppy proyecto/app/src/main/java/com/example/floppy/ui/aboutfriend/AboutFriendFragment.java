@@ -1,6 +1,7 @@
 package com.example.floppy.ui.aboutfriend;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,17 +26,19 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.floppy.R;
 import com.example.floppy.data.Entitys.FriendEntity;
 import com.example.floppy.data.Models.User;
+import com.example.floppy.ui.factory.DialogFactory;
 
 
-public class AboutFriendFragment extends Fragment {
-    private RelativeLayout     triangleContainer;
-    private ImageView          imgFriend;
-    private TextView           nick;
-    private TextView           name;
-    private TextView           info;
-    public static User         friend;
-    public static FriendEntity friendEntity;
-
+public class AboutFriendFragment extends Fragment implements AboutFriendView{
+    private RelativeLayout       triangleContainer;
+    private ImageView            imgFriend;
+    private TextView             nick;
+    private TextView             name;
+    private TextView             info;
+    private RelativeLayout       btnUpdateFriend;
+    public static User           friend;
+    public static FriendEntity   friendEntity;
+    private AboutFriendPresenter aboutFriendPresenter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,11 +49,16 @@ public class AboutFriendFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        aboutFriendPresenter = new AboutFriendPresenterImpl(getContext(),this);
+
         triangleContainer = view.findViewById(R.id.triangleContainer);
         imgFriend         = view.findViewById(R.id.imgFriend);
         nick              = view.findViewById(R.id.txtNick);
         name              = view.findViewById(R.id.txtName);
         info              = view.findViewById(R.id.txtInfo);
+        btnUpdateFriend   = view.findViewById(R.id.btnUpdateFriend);
+
+        btnUpdateFriend.setOnClickListener(v->{ aboutFriendPresenter.updateFriend(); });
 
         setInfo(view.getContext());
         Triangle triangle = new Triangle(view.getContext());
@@ -57,14 +66,28 @@ public class AboutFriendFragment extends Fragment {
     }
 
     private void setInfo(Context context) {
-        Glide.with(context)
-                .load(friend.getPhoto())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imgFriend);
+        if(!friend.getPhoto().equals("")){
+            Glide.with(context)
+                    .load(friend.getPhoto())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgFriend);
+        }
 
         if (friendEntity!=null){ nick.setText(friendEntity.nick); }
         name.setText(friend.getName());
         info.setText(friend.getMessageUser());
+    }
+
+    @Override
+    public void showDialog() {
+        Dialog dialog = DialogFactory.getInstance().getDialog(getContext(), DialogFactory.TypeDialog.SET_NICK);
+        EditText nick = dialog.findViewById(R.id.txtNickFriend);
+        dialog.findViewById(R.id.btnAccept).setOnClickListener(v->{
+            if(aboutFriendPresenter.updateNick(nick.getText().toString().trim())){
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     private class Triangle extends View {

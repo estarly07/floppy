@@ -15,11 +15,13 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            
             android:layout_weight="1">
 
             <ImageView
                 android:id="@+id/imgFriend"
                 android:layout_width="match_parent"
+                android:src="@drawable/ic_sinuser"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop" />
 
@@ -81,6 +83,7 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/circle"
         android:layout_marginEnd="@dimen/_25dp"
+        android:id="@+id/btnUpdateFriend"
         android:backgroundTint="@color/verde"
         android:layout_marginBottom="@dimen/_50dp">
 

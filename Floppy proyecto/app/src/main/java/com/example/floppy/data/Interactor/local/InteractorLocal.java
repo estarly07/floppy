@@ -24,4 +24,6 @@ public interface InteractorLocal {
     void getStickers(MessagePresenterImpl messagePresenter,String idUser);
 
     void deleteSticker(String sticker);
+
+    void updateNickFriend(String nick);
 }

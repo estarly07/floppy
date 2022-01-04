@@ -52,5 +52,8 @@ public class InteractorSqlite implements InteractorLocal{
     @Override
     public void deleteSticker(String sticker) { stickerDao.deleteSticker(sticker); }
 
+    @Override
+    public void updateNickFriend(String nick) { friendDao.updateFriendNick(nick); }
+
 
 }

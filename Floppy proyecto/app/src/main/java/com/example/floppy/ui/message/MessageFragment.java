@@ -141,10 +141,11 @@ public class MessageFragment extends Fragment implements MessageView {
         if (friendEntity != null){
             idChat = friendEntity.idChat;
             presenter.showMessagesChat(friendEntity);
+            presenter.showDataFriend(friendEntity.nick, user.getPhoto());
         }else{
             presenter.searchChat(user);
+            presenter.showDataFriend(user.getName(), user.getPhoto());
         }
-        presenter.showDataFriend(user.getName(), user.getPhoto());
     }
 
     private void sendMessage(){
