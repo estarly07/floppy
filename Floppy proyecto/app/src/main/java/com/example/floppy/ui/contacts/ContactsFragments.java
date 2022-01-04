@@ -68,10 +68,7 @@ public class ContactsFragments extends Fragment implements ContactsView {
 
     @Override
     public void showChat(FriendEntity friendEntity) {
-        if(friendEntity != null){
-            System.out.println("YA ESTA BB");
-            ChatActivity.friendEntity = friendEntity;
-        }
+        ChatActivity.friendEntity = friendEntity;
         presenterMaster.nextActivity();
     }
 }

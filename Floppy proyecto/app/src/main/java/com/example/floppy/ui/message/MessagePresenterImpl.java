@@ -215,7 +215,7 @@ public class MessagePresenterImpl implements MessagePresenter {
         users [0]      = User.getInstance().getIdUser();
         users [1]      = friendEntity.idFriend;
         Chat chat      = new Chat();
-
+        System.out.println("ID CHAT "+friendEntity.idChat);
         chat.setIdChat  (friendEntity.idChat);
         chat.setUsers   (users);
         chat.setMensajes(new Message[]{});

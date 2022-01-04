@@ -13,8 +13,8 @@ public interface MenuView  {
     void showState(ArrayList<ArrayList<Estado>> estados);
     /**
      * MOSTRAR UN RECYCLER CON LOS CHATS DEL AMIGO DEL USUARIO
-     *  @param friend array de los amigos
-     * @param friendEntity data local
+     * @param friends array de los amigos
+     * @param friendEntities amigos guardados en local
      */
-    void showChats(User friend, FriendEntity friendEntity);
+    void showChats(ArrayList<User> friends, ArrayList<FriendEntity> friendEntities);
 }

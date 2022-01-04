@@ -289,7 +289,7 @@ public class MessageFragment extends Fragment implements MessageView {
         if (insertFriend){
             presenter.insertFriendLocal(user,idChat);
         }
-        if(presenter.sendMessages(idChat, message)){ edtMessage.setText(""); }
+        if(presenter.sendMessages(idChat, message)){ activity.runOnUiThread(() -> edtMessage.setText("")); }
     }
 
 }

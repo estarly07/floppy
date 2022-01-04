@@ -30,8 +30,8 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
         super.onCreate(savedInstanceState);
         if (friend != null)
             MessageFragment.user = friend;
-        if (friendEntity != null)
-            MessageFragment.friendEntity = friendEntity;
+
+        MessageFragment.friendEntity = friendEntity;
 
         setContentView(R.layout.activity_chat);
 

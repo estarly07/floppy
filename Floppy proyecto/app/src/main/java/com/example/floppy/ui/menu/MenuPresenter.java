@@ -18,10 +18,10 @@ public interface MenuPresenter {
     void getMyFriends();
 
     /**
-     * MOSTRAR LOS CONTACTOS QUE TIENE EL USUARIO DE AMIGO
+     * AÑADIR LOS CONTACTOS QUE TIENE EL USUARIO DE AMIGOS EN UN ARRAY
      *
      * @param friend usuario que se va agregar a la lista que tiene el adapter
      */
-    void showChats(User friend);
+    void addChats(User friend);
 
 }

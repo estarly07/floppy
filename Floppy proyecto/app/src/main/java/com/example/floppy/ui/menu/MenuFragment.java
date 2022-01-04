@@ -162,10 +162,14 @@ public class MenuFragment extends Fragment implements MenuView{
         });
     }
 
+
+
+
+
     @Override
-    public void showChats(User friend, FriendEntity friendEntity) {
+    public void showChats(ArrayList<User> friends, ArrayList<FriendEntity> friendEntities) {
         activity.runOnUiThread(() -> {
-            AdapterChat adapterChat = new AdapterChat(friend,friendEntity);
+            AdapterChat adapterChat = new AdapterChat(friends,friendEntities);
             adapterChat.setHasStableIds(true);
             adapterChat.setClick(new AdapterChat.Clic() {
                 @Override

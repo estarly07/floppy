@@ -35,9 +35,7 @@ public class ContactsPresenterImpl implements ContactsPresenter {
     @Override
     public void getFriend(String idUser)
     {
-        new Thread(() -> {
-            contactsView.showChat(interactorLocal.getFriend(idUser));
-        }).start();
+        new Thread(() -> contactsView.showChat(interactorLocal.getFriend(idUser))).start();
     }
 }
 
