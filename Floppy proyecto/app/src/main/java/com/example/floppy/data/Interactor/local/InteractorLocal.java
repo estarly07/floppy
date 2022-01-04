@@ -25,5 +25,5 @@ public interface InteractorLocal {
 
     void deleteSticker(String sticker);
 
-    void updateNickFriend(String nick);
+    void updateNickFriend(String nick,String idFriend);
 }
