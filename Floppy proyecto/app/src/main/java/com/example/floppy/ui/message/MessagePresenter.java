@@ -1,10 +1,10 @@
 package com.example.floppy.ui.message;
 
-import com.example.floppy.data.Entitys.FriendEntity;
-import com.example.floppy.data.Models.Chat;
-import com.example.floppy.data.Models.Message;
-import com.example.floppy.data.Entitys.StickersEntity;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.Domain.Entitys.FriendEntity;
+import com.example.floppy.Domain.Models.Chat;
+import com.example.floppy.Domain.Models.Message;
+import com.example.floppy.Domain.Entitys.StickersEntity;
+import com.example.floppy.Domain.Models.User;
 
 import java.util.ArrayList;
 

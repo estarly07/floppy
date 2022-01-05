@@ -1,6 +1,6 @@
-package com.example.floppy.data.Models;
+package com.example.floppy.Domain.Models;
 
-import com.example.floppy.data.Entitys.FriendEntity;
+import com.example.floppy.Domain.Entitys.FriendEntity;
 
 import java.util.ArrayList;
 

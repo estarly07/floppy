@@ -1,4 +1,4 @@
-package com.example.floppy.data.Entitys;
+package com.example.floppy.Domain.Entitys;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -6,7 +6,6 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-import com.example.floppy.data.Models.User;
 import com.example.floppy.utils.Global.GlobalUtils;
 
 @Entity(

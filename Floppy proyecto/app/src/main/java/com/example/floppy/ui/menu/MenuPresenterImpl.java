@@ -3,14 +3,14 @@ package com.example.floppy.ui.menu;
 import android.app.Activity;
 import android.content.Context;
 
-import com.example.floppy.data.Interactor.local.InteractorLocal;
-import com.example.floppy.data.Interactor.local.InteractorSqlite;
-import com.example.floppy.data.Interactor.remote.Interactor;
-import com.example.floppy.data.Interactor.remote.InteractorFirestoreImpl;
-import com.example.floppy.data.Models.Estado;
-import com.example.floppy.data.Entitys.FriendEntity;
-import com.example.floppy.data.Models.Message;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.Domain.local.InteractorLocal;
+import com.example.floppy.Domain.local.InteractorSqlite;
+import com.example.floppy.Domain.remote.Interactor;
+import com.example.floppy.Domain.remote.InteractorFirestoreImpl;
+import com.example.floppy.Domain.Models.Estado;
+import com.example.floppy.Domain.Entitys.FriendEntity;
+import com.example.floppy.Domain.Models.Message;
+import com.example.floppy.Domain.Models.User;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 
 import java.util.ArrayList;

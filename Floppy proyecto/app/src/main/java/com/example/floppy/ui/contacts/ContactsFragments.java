@@ -13,8 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.floppy.data.Entitys.FriendEntity;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.Domain.Entitys.FriendEntity;
+import com.example.floppy.Domain.Models.User;
 import com.example.floppy.ui.Chat.ChatActivity;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.R;
@@ -22,7 +22,6 @@ import com.example.floppy.ui.mastercontrol.MasterControl;
 
 
 import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
 
 
 public class ContactsFragments extends Fragment implements ContactsView {

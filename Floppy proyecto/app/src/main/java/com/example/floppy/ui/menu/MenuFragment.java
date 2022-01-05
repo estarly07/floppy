@@ -23,10 +23,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.floppy.Callbacks.CallbackNavigationFragments;
-import com.example.floppy.data.Entitys.FriendEntity;
-import com.example.floppy.data.Models.Estado;
-import com.example.floppy.data.Models.Message;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.Domain.Entitys.FriendEntity;
+import com.example.floppy.Domain.Models.Estado;
+import com.example.floppy.Domain.Models.Message;
+import com.example.floppy.Domain.Models.User;
 import com.example.floppy.ui.Chat.ChatActivity;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.R;

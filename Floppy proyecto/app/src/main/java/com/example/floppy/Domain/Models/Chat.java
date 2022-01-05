@@ -1,4 +1,4 @@
-package com.example.floppy.data.Models;
+package com.example.floppy.Domain.Models;
 
 public class Chat {
     private String idChat;

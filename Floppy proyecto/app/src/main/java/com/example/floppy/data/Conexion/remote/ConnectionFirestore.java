@@ -2,11 +2,11 @@ package com.example.floppy.data.Conexion.remote;
 
 import com.example.floppy.Callbacks.CallBackObjects;
 import com.example.floppy.Callbacks.CallbackList;
-import com.example.floppy.data.Interactor.remote.Interactor;
-import com.example.floppy.data.Models.Chat;
-import com.example.floppy.data.Models.Estado_User;
-import com.example.floppy.data.Models.Message;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.Domain.remote.Interactor;
+import com.example.floppy.Domain.Models.Chat;
+import com.example.floppy.Domain.Models.Estado_User;
+import com.example.floppy.Domain.Models.Message;
+import com.example.floppy.Domain.Models.User;
 import com.example.floppy.ui.login.LoginPresenter;
 import com.example.floppy.ui.message.MessagePresenter;
 

@@ -23,8 +23,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.floppy.R;
-import com.example.floppy.data.Entitys.FriendEntity;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.Domain.Entitys.FriendEntity;
+import com.example.floppy.Domain.Models.User;
 import com.example.floppy.ui.factory.DialogFactory;
 
 

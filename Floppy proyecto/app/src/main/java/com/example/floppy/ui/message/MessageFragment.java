@@ -26,12 +26,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.Domain.Models.User;
 import com.example.floppy.ui.Adapters.AdapterSticker;
-import com.example.floppy.data.Models.Estado_User;
-import com.example.floppy.data.Entitys.FriendEntity;
-import com.example.floppy.data.Models.Message;
-import com.example.floppy.data.Entitys.StickersEntity;
+import com.example.floppy.Domain.Models.Estado_User;
+import com.example.floppy.Domain.Entitys.FriendEntity;
+import com.example.floppy.Domain.Models.Message;
+import com.example.floppy.Domain.Entitys.StickersEntity;
 import com.example.floppy.ui.aboutfriend.AboutFriendFragment;
 import com.example.floppy.ui.factory.DialogFactory;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;

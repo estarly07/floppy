@@ -1,5 +1,5 @@
 package com.example.floppy.ui.contacts;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.Domain.Models.User;
 
 import java.util.ArrayList;
 

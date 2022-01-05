@@ -3,9 +3,9 @@ package com.example.floppy.ui.global_presenter;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 
-import com.example.floppy.data.Models.Estado;
-import com.example.floppy.data.Models.Estado_User;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.Domain.Models.Estado;
+import com.example.floppy.Domain.Models.Estado_User;
+import com.example.floppy.Domain.Models.User;
 
 import java.util.ArrayList;
 
