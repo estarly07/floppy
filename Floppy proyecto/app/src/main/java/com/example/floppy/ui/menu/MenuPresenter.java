@@ -2,6 +2,7 @@ package com.example.floppy.ui.menu;
 
 import com.example.floppy.data.Models.Estado;
 import com.example.floppy.data.Entitys.FriendEntity;
+import com.example.floppy.data.Models.Message;
 import com.example.floppy.data.Models.User;
 
 import java.util.ArrayList;
@@ -24,4 +25,9 @@ public interface MenuPresenter {
      */
     void addChats(User friend);
 
+    void friendIsWriting(FriendEntity friendEntity, Message message);
+
+    void listenerChatFriend(FriendEntity friendEntity);
+
+    void destroyAllListenersFriends();
 }

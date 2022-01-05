@@ -1,5 +1,6 @@
 package com.example.floppy.data.Interactor.remote;
 
+import com.example.floppy.data.Entitys.FriendEntity;
 import com.example.floppy.data.Models.Chat;
 import com.example.floppy.data.Models.Estado_User;
 import com.example.floppy.data.Models.Message;
@@ -34,7 +35,7 @@ public interface Interactor {
 
     void getAllUsers(ContactsPresenter contactsPresenter);
 
-    void sendMessages(String idChat, Message message);
+    void sendMessages(String idChat, Message message,String date);
 
     void getEstadoUser(String idUser);
 
@@ -45,4 +46,10 @@ public interface Interactor {
     void showStickers(MessagePresenter presenter, ArrayList<StickersEntity> list);
 
     void getFriends(String idFriend,MenuPresenter presenter);
+
+    void listenerChatFriend(FriendEntity friendEntity,MenuPresenter menuPresenter);
+
+    void destroyAllListenersFriends();
+
+    void friendIsWriting(FriendEntity friendEntity, MenuPresenter menuPresenter, Message message);
 }

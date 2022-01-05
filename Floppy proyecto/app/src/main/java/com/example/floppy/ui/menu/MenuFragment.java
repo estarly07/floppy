@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.example.floppy.Callbacks.CallbackNavigationFragments;
 import com.example.floppy.data.Entitys.FriendEntity;
 import com.example.floppy.data.Models.Estado;
+import com.example.floppy.data.Models.Message;
 import com.example.floppy.data.Models.User;
 import com.example.floppy.ui.Chat.ChatActivity;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
@@ -38,13 +39,16 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MenuFragment extends Fragment implements MenuView{
-    GlobalPresenter presenterMaster;
-    MenuPresenter   presenter;
-    RecyclerView    recyclerState, recyclerChat;
-    Activity        activity;
-    RelativeLayout  message;
-    TextView        txtMessage;
-    CountDownTimer  countDownTimer;
+    private GlobalPresenter presenterMaster;
+    private MenuPresenter   presenter;
+    private RecyclerView    recyclerState, recyclerChat;
+    private Activity        activity;
+    private RelativeLayout  message;
+    private TextView        txtMessage;
+    private CountDownTimer  countDownTimer;
+
+    ArrayList<FriendEntity> friendEntities;
+    ArrayList<User>         friends;
 
     private static CallbackNavigationFragments callbackNavigationFragments;
     public  static CallbackNavigationFragments getCallbackNavigationFragments(){ return callbackNavigationFragments;}
@@ -104,7 +108,25 @@ public class MenuFragment extends Fragment implements MenuView{
     @Override
     public void onResume() {
         super.onResume();
-        //timer(1500);
+        if(friendEntities != null){
+            System.out.println("RESUME");
+            for (FriendEntity friend:
+                 friendEntities) {
+                presenter.listenerChatFriend(friend);
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.destroyAllListenersFriends();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.destroyAllListenersFriends();
     }
 
     /**
@@ -162,14 +184,13 @@ public class MenuFragment extends Fragment implements MenuView{
         });
     }
 
-
-
-
-
+    AdapterChat adapterChat;
     @Override
     public void showChats(ArrayList<User> friends, ArrayList<FriendEntity> friendEntities) {
         activity.runOnUiThread(() -> {
-            AdapterChat adapterChat = new AdapterChat(friends,friendEntities);
+            this.friendEntities = friendEntities;
+            this.friends = friends;
+            adapterChat  = new AdapterChat(friends,friendEntities);
             adapterChat.setHasStableIds(true);
             adapterChat.setClick(new AdapterChat.Clic() {
                 @Override
@@ -187,5 +208,12 @@ public class MenuFragment extends Fragment implements MenuView{
 
             recyclerChat.setAdapter(adapterChat);
         });
+    }
+
+    @Override
+    public void friendIsWriting(FriendEntity friendEntity, Message message) {
+        if(adapterChat!=null){
+            activity.runOnUiThread(() -> adapterChat.setFriendEntities(friendEntity, message));
+        }
     }
 }

@@ -9,6 +9,7 @@ import com.example.floppy.data.Interactor.remote.Interactor;
 import com.example.floppy.data.Interactor.remote.InteractorFirestoreImpl;
 import com.example.floppy.data.Models.Estado;
 import com.example.floppy.data.Entitys.FriendEntity;
+import com.example.floppy.data.Models.Message;
 import com.example.floppy.data.Models.User;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 
@@ -45,10 +46,10 @@ public class MenuPresenterImpl implements MenuPresenter {
     public void getMyFriends() {
         new Thread(() -> {
             ArrayList<FriendEntity> friends = (ArrayList<FriendEntity>) interactorLocal.getFriends(User.getInstance().getIdUser());
+            view.showChats(this.friends,friendEntities);
             for (FriendEntity friendEntity :friends) {
                 interactor.getFriends(friendEntity.idFriend,this );
             }
-            view.showChats(this.friends,friendEntities);
         }).start();
     }
 
@@ -58,8 +59,18 @@ public class MenuPresenterImpl implements MenuPresenter {
             FriendEntity friendEntity = interactorLocal.getFriend(friend.getIdUser());
             this.friends.add(friend);
             this.friendEntities.add(friendEntity);
+            listenerChatFriend(friendEntity);
         }).start();
-
     }
 
+    @Override
+    public void friendIsWriting(FriendEntity friendEntity, Message message) {
+        view.friendIsWriting(friendEntity, message);
+    }
+
+    @Override
+    public void listenerChatFriend(FriendEntity friendEntity) { interactor.listenerChatFriend(friendEntity,this); }
+
+    @Override
+    public void destroyAllListenersFriends() { interactor.destroyAllListenersFriends(); }
 }

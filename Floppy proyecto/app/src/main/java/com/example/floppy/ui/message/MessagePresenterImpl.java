@@ -50,8 +50,8 @@ public class MessagePresenterImpl implements MessagePresenter {
     public Boolean sendMessages(String idChat, Message message) {
         if (message.getMessage().trim().isEmpty()) { return false; }
         message.setUser(User.getInstance().getIdUser());
-        message.setHora(GlobalUtils.getHora());
-        new Thread(() -> interactor.sendMessages(idChat, message)).start();
+        message.setHora(GlobalUtils.getHour());
+        new Thread(() -> interactor.sendMessages(idChat, message, GlobalUtils.getDateNow())).start();
         return true;
     }
 

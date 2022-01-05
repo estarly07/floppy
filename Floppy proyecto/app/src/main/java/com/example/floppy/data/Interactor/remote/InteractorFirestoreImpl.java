@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.example.floppy.data.Conexion.remote.Firestore;
+import com.example.floppy.data.Entitys.FriendEntity;
 import com.example.floppy.data.Models.Chat;
 import com.example.floppy.data.Models.Estado_User;
 import com.example.floppy.data.Models.Message;
@@ -175,8 +176,8 @@ public class InteractorFirestoreImpl implements Interactor{
     }
 
     @Override
-    public void sendMessages(String idChat, Message message) {
-      firestore.sendMessages(idChat, message);
+    public void sendMessages(String idChat, Message message, String date) {
+      firestore.sendMessages(idChat, message, date);
     }
 
     @Override
@@ -214,4 +215,20 @@ public class InteractorFirestoreImpl implements Interactor{
         }
 
     }
+
+    @Override
+    public void listenerChatFriend(FriendEntity friendEntity, MenuPresenter menuPresenter) {
+        firestore.listenerChatFriend(friendEntity,this,menuPresenter);
+    }
+
+    @Override
+    public void destroyAllListenersFriends() {
+        firestore.destroyAllListenersFriends();
+    }
+
+    @Override
+    public void friendIsWriting(FriendEntity friendEntity, MenuPresenter menuPresenter, Message message) {
+        menuPresenter.friendIsWriting(friendEntity, message);
+    }
+
 }

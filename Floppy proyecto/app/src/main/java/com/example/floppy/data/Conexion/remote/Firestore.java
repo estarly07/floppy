@@ -7,7 +7,9 @@ import android.util.Log;
 import com.example.floppy.Callbacks.CallBackObjects;
 import com.example.floppy.Callbacks.CallbackList;
 import com.example.floppy.data.Entitys.FriendEntity;
+import com.example.floppy.data.Interactor.remote.InteractorFirestoreImpl;
 import com.example.floppy.ui.login.LoginPresenter;
+import com.example.floppy.ui.menu.MenuPresenter;
 import com.example.floppy.ui.message.MessagePresenter;
 import com.example.floppy.utils.Global.GlobalUtils;
 import com.example.floppy.data.Interactor.remote.Interactor;
@@ -30,7 +32,6 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -298,17 +299,17 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                 messages = new ArrayList<>();
                 if (value.exists()) {
                     System.out.println("DATQA " + value.getData());
-                    ArrayList<Map<String, Object>> mensajes = (ArrayList<Map<String, Object>>) value.getData().get("mensajes");
-                    if (mensajes == null || mensajes.isEmpty()) {
+                    ArrayList<Map<String, Object>> messages = (ArrayList<Map<String, Object>>) value.getData().get("mensajes");
+                    if (messages == null || messages.isEmpty()) {
                         callback.showList(this.messages);
                         return;
                     }
-                    for (int i = mensajes.size() - 1; i >= 0; i--) {
+                    for (int i = messages.size() - 1; i >= 0; i--) {
                         Message message = new Message();
-                        message.setMessage(mensajes.get(i).get("mensage").toString());
-                        message.setUser(mensajes.get(i).get("user").toString());
-                        message.setDate(mensajes.get(i).get("hora").toString());
-                        message.setTypeMessage(Message.TypesMessages.valueOf(mensajes.get(i).get("typeMessage").toString()));
+                        message.setMessage(messages.get(i).get("mensage").toString());
+                        message.setUser(messages.get(i).get("user").toString());
+                        message.setDate(messages.get(i).get("hora").toString());
+                        message.setTypeMessage(Message.TypesMessages.valueOf(messages.get(i).get("typeMessage").toString()));
                         this.messages.add(message);
                     }
 
@@ -323,7 +324,7 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
     }
 
     @Override
-    public void sendMessages(String idChat, Message message) {
+    public void sendMessages(String idChat, Message message, String date) {
         Map<String, String> map = new HashMap<>();
         map.put("idMensage", UUID.randomUUID().toString());
         map.put("user", message.getUser());
@@ -331,7 +332,8 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
         map.put("hora", message.getHora());
         map.put("typeMessage", String.valueOf(message.getTypeMessage()));
 
-        firebaseFirestore.collection("Conversations").document(idChat).update("mensajes", FieldValue.arrayUnion(map));
+        firebaseFirestore.collection(COLLECTIONS[2]).document(idChat).update("lastMessage", date);
+        firebaseFirestore.collection(COLLECTIONS[2]).document(idChat).update("mensajes", FieldValue.arrayUnion(map));
     }
 
     @Override
@@ -403,5 +405,37 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
 
     public User getUser() {
         return user;
+    }
+
+    ArrayList<ListenerRegistration> listenersfriends = new ArrayList<>();
+    public void listenerChatFriend(FriendEntity friendEntity, InteractorFirestoreImpl interactorFirestore, MenuPresenter menuPresenter) {
+        listenersfriends.add(firebaseFirestore.collection(COLLECTIONS[2]).document(friendEntity.idChat).addSnapshotListener((value, error) -> {
+            if (error != null) {
+                Log.w("TAG", "Listen failed.", error);
+                return;
+            }
+
+            if (value != null && value.exists()) {
+                ArrayList<Map<String, Object>> messages = (ArrayList<Map<String, Object>>) value.getData().get("mensajes");
+                Message message = new Message();
+                message.setMessage(messages.get(messages.size() - 1).get("mensage").toString());
+                message.setUser(messages.get(messages.size() - 1).get("user").toString());
+                message.setHora(messages.get(messages.size() - 1).get("hora").toString());
+                message.setTypeMessage(Message.TypesMessages.valueOf(messages.get(messages.size() - 1).get("typeMessage").toString()));
+                System.out.println("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAA "+listenersfriends.size()+ " "+message.getTypeMessage().toString());
+                interactorFirestore.friendIsWriting(friendEntity, menuPresenter, message);
+            } else {
+                Log.d("TAG", "Current data: null");
+            }
+        }));
+    }
+
+    public void destroyAllListenersFriends(){
+        if(!listenersfriends.isEmpty()){
+            for (ListenerRegistration listenerRegistration:
+                 listenersfriends) {
+                listenerRegistration.remove();
+            }
+        }
     }
 }

@@ -9,7 +9,6 @@ import com.example.floppy.data.Models.Message;
 import com.example.floppy.data.Models.User;
 import com.example.floppy.ui.login.LoginPresenter;
 import com.example.floppy.ui.message.MessagePresenter;
-import com.example.floppy.ui.menu.MenuPresenter;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -41,7 +40,7 @@ public interface ConnectionFirestore {
 
     void getMessagesByIdChat(Chat chat, CallbackList<Message> callback, MessagePresenter presenter);
 
-    void sendMessages(String idChat, Message message);
+    void sendMessages(String idChat, Message message,String date);
 
     void cancelListener();
 
