@@ -10,7 +10,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.helper.widget.CircularFlow;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -58,7 +57,7 @@ public class AboutFriendFragment extends Fragment implements AboutFriendView{
         info              = view.findViewById(R.id.txtInfo);
         btnUpdateFriend   = view.findViewById(R.id.btnUpdateFriend);
 
-        btnUpdateFriend.setOnClickListener(v->{ aboutFriendPresenter.updateFriend(); });
+        btnUpdateFriend.setOnClickListener(v->{ aboutFriendPresenter.updateFriend(friendEntity.idFriend); });
 
         setInfo(view.getContext());
         Triangle triangle = new Triangle(view.getContext());
@@ -79,11 +78,11 @@ public class AboutFriendFragment extends Fragment implements AboutFriendView{
     }
 
     @Override
-    public void showDialog() {
+    public void showDialog(String idFriend) {
         Dialog dialog = DialogFactory.getInstance().getDialog(getContext(), DialogFactory.TypeDialog.SET_NICK);
         EditText nick = dialog.findViewById(R.id.txtNickFriend);
         dialog.findViewById(R.id.btnAccept).setOnClickListener(v->{
-            if(aboutFriendPresenter.updateNick(nick.getText().toString().trim())){
+            if(aboutFriendPresenter.updateNick(nick.getText().toString().trim(), idFriend)){
                 dialog.dismiss();
             }
         });

@@ -15,12 +15,12 @@ public class AboutFriendPresenterImpl implements AboutFriendPresenter {
     }
 
     @Override
-    public void updateFriend() { aboutFriendView.showDialog(); }
+    public void updateFriend(String idFriend) { aboutFriendView.showDialog(idFriend); }
 
     @Override
-    public Boolean updateNick(String nick) {
+    public Boolean updateNick(String nick, String idFriend) {
         if(nick.isEmpty()){ return false; }
-        new Thread(()-> interactorLocal.updateNickFriend(nick)).start();
+        new Thread(()-> interactorLocal.updateNickFriend(nick, idFriend)).start();
         return true;
     }
 }

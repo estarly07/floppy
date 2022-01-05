@@ -53,7 +53,7 @@ public class InteractorSqlite implements InteractorLocal{
     public void deleteSticker(String sticker) { stickerDao.deleteSticker(sticker); }
 
     @Override
-    public void updateNickFriend(String nick) { friendDao.updateFriendNick(nick); }
+    public void updateNickFriend(String nick, String idFriend) { friendDao.updateFriendNick(nick,idFriend ); }
 
 
 }
