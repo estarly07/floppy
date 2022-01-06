@@ -34,15 +34,16 @@
                 android:layout_weight="1"
                 android:background="@drawable/circle"
                 android:backgroundTint="@color/fondoToolbar"
-                android:padding="@dimen/_15dp">
+                android:padding="@dimen/_10dp">
 
-                <ImageView
+                <com.airbnb.lottie.LottieAnimationView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_pencil"
-                    app:tint="@color/white" />
+                    app:lottie_rawRes="@raw/addfriend"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    />
             </RelativeLayout>
-
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"

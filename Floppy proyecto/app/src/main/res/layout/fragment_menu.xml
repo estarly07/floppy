@@ -119,7 +119,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_100dp"
+                            android:layout_height="@dimen/_55dp"
                             android:orientation="horizontal">
 
                             <RelativeLayout
@@ -158,9 +158,8 @@
 
                             <androidx.cardview.widget.CardView
                                 android:id="@+id/btnAddUser"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_70dp"
-                                android:layout_weight="5"
+                                android:layout_width="@dimen/_55dp"
+                                android:layout_height="@dimen/_55dp"
                                 app:cardBackgroundColor="@color/naranja"
                                 app:cardCornerRadius="@dimen/_10dp">
 
