@@ -89,8 +89,6 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
                 (friendEntities.get(position).nick.equals(""))?
                 friends.get(position).getName():friendEntities.get(position).nick);
 
-        Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.anim_recicler_chats);
-        holder.binding.getRoot().setAnimation(animation);
         holder.binding.imgUserItemChat.setOnClickListener(view -> click.clickPhoto(view, position, friends.get(position)));
         holder.binding.getRoot().setOnClickListener(view -> click.clickChat(view, position, friends.get(position), friendEntities.get(position)));
 

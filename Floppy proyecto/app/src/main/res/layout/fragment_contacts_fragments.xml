@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/fondo"
-    tools:context=".ui.contacts.ContactsFragments">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/reciclerContacts"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<data>
+    <variable
+        name="adapter"
+        type="com.example.floppy.ui.contacts.AdapterContacts" />
+    <variable
+        name="layout"
+        type="androidx.recyclerview.widget.RecyclerView.LayoutManager" />
+</data>
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp" />
+        android:layout_height="match_parent"
+        android:background="@color/fondo"
+        tools:context=".ui.contacts.ContactsFragments">
 
-</RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reciclerContacts"
+            android:layout_width="match_parent"
+            app:layoutManager="@{layout}"
+            android:adapter="@{adapter}"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" />
+
+    </RelativeLayout>
+</layout>

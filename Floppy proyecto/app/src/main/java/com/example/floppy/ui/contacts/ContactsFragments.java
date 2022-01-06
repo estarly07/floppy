@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.floppy.databinding.FragmentContactsFragmentsBinding;
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.Chat.ChatActivity;
@@ -25,17 +27,17 @@ import java.util.ArrayList;
 
 
 public class ContactsFragments extends Fragment implements ContactsView {
-    GlobalPresenter presenterMaster;
-    ContactsPresenter presenter;
-    Activity activity;
-    RecyclerView recyclerContacts;
-    AdapterContacts adapterContacts;
+    private GlobalPresenter   presenterMaster;
+    private ContactsPresenter presenter;
+    private Activity          activity;
+    private AdapterContacts   adapterContacts;
+    private FragmentContactsFragmentsBinding  binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contacts_fragments, container, false);
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_contacts_fragments, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -44,9 +46,10 @@ public class ContactsFragments extends Fragment implements ContactsView {
         activity         = MasterControl.activity;
         presenterMaster  = MasterControl.presenter;
         presenter        = new ContactsPresenterImpl( getContext(),this, presenterMaster, activity);
-        recyclerContacts = view.findViewById(R.id.reciclerContacts);
-        recyclerContacts . setHasFixedSize(true);
-        recyclerContacts . setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
+
+        binding.reciclerContacts . setHasFixedSize(true);
+        binding.setLayout(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
+
         presenter.getAllUsers();
     }
 
@@ -56,7 +59,8 @@ public class ContactsFragments extends Fragment implements ContactsView {
             adapterContacts = new AdapterContacts(users);
             adapterContacts . setHasStableIds(true);
             adapterContacts . notifyItemRangeInserted(0,users.size()-1);
-            recyclerContacts. setAdapter(adapterContacts);
+            binding         . setAdapter(adapterContacts);
+
             adapterContacts .setClick((view, position, user) -> {
                 ChatActivity.friend = user;
                 //buscar si el amigo esta guardado en la bd local
