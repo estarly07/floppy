@@ -2,6 +2,7 @@ package com.example.floppy.ui.mastercontrol;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -19,11 +20,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.floppy.databinding.ActivityMasterControlBinding;
 import com.example.floppy.domain.models.Estado;
 import com.example.floppy.domain.models.Estado_User;
 import com.example.floppy.domain.models.User;
@@ -48,6 +49,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
     public static User            user;
     public static String          stickersReceiver;
     public BroadcastReceiver      broadcastReceiver = null;
+    private ActivityMasterControlBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +57,13 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
         presenter = new GlobalPresenterImpl(this, this, this);
         activity  = this;
         setContentView(R.layout.activity_master_control);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_master_control);
+
         if(!stickersReceiver.equals("")){
             presenter.insertStickers(stickersReceiver);
         }
-        Button btnChats = findViewById(R.id.btnChats);
         presenter.updateState(Estado_User.ONLINE);
-        findViewById(R.id.btnAddFriend).setOnClickListener(view -> {
+        binding.btnAddFriend.setOnClickListener(view -> {
             MenuFragment.getCallbackNavigationFragments().navigateTo();
         });
 
@@ -90,45 +93,60 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
      * ACCION PARA PASAR O DEVOLVER LOS ESTADOS
      */
     public interface CallBack {
-        void pasarImagen();
+        void nextImage();
 
-        void volverImagen();
+        void backImage();
     }
 
     CallBack callBack;
     private int contador = 0;
 
     @Override
-    public void showStateDialog(ArrayList<Estado> estados) {
-        RelativeLayout dialogoEstado = findViewById(R.id.include_estado);
-        ImageView imagenEstado = findViewById(R.id.imgEstado);
-        TextView txtMensage = findViewById(R.id.txtMensajeEstado);
-        LottieAnimationView animLike = findViewById(R.id.animLike);
-
-        Button btnIzq = findViewById(R.id.btnEstadoIzq);
-        Button btnCenter = findViewById(R.id.btnEstadoCenter);
-        Button btnDer = findViewById(R.id.btnEstadoRight);
-
-        ProgressBar progressEstado = findViewById(R.id.progressEstado);
+    public void showStateDialog(ArrayList<Estado> states) {
         contador = 0;
-        animAparecer(dialogoEstado);
-        progressEstado.setProgress(0);
-        View[] botones = new View[]{btnIzq, btnCenter, btnDer};
+
+        animAparecer(binding.includeEstado.getRoot());
+        binding.includeEstado.progressEstado.setProgress(0);
+        View[] buttons = new View[]{
+                binding.includeEstado.btnEstadoIzq,
+                binding.includeEstado.btnEstadoCenter,
+                binding.includeEstado.btnEstadoRight};
 
         callBack = new CallBack() {
             @Override
-            public void pasarImagen() {
+            public void nextImage() {
                 contador++;
-                mostrarEstados(estados.get(contador), txtMensage, progressEstado, botones, dialogoEstado, imagenEstado, estados.get(estados.size() - 1) == estados.get(contador), callBack, animLike);
+                showStates(states.get(contador),
+                        binding.includeEstado.txtMensajeEstado,
+                        binding.includeEstado.progressEstado,
+                        buttons,
+                        binding.includeEstado.getRoot(),
+                        binding.includeEstado.imgEstado,
+                        states.get(states.size() - 1) == states.get(contador), callBack,
+                        binding.includeEstado.animLike);
             }
 
             @Override
-            public void volverImagen() {
+            public void backImage() {
                 contador--;
-                mostrarEstados(estados.get(contador), txtMensage, progressEstado, botones, dialogoEstado, imagenEstado, estados.get(estados.size() - 1) == estados.get(contador), callBack, animLike);
+                showStates(states.get(contador),
+                        binding.includeEstado.txtMensajeEstado,
+                        binding.includeEstado.progressEstado,
+                        buttons,
+                        binding.includeEstado.getRoot(),
+                        binding.includeEstado.imgEstado,
+                        states.get(states.size() - 1) == states.get(contador), callBack,
+                        binding.includeEstado.animLike);
             }
         };
-        mostrarEstados(estados.get(contador), txtMensage, progressEstado, botones, dialogoEstado, imagenEstado, estados.get(estados.size() - 1) == estados.get(contador), callBack, animLike);
+        showStates(states.get(contador),
+                binding.includeEstado.txtMensajeEstado,
+                binding.includeEstado.progressEstado,
+                buttons,
+                binding.includeEstado.getRoot(),
+                binding.includeEstado.imgEstado,
+                states.get(states.size() - 1) == states.get(contador), callBack,
+                binding.includeEstado.animLike);
     }
 
     @Override
@@ -146,16 +164,13 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
 
     @Override
     public void showHandlingGeneral(boolean show) {
-        ProgressBar progressBar = findViewById(R.id.progressGeneral);
-        if (show)
-            animAparecer(progressBar);
-        else
-            animDesaparecer(progressBar);
+        if (show) animAparecer(binding.progressGeneral);
+        else animDesaparecer(binding.progressGeneral);
     }
 
 
-    private void mostrarEstados(Estado estado, TextView txtMensaje, ProgressBar progressEstado, View[] botones, View dialogoEstado,
-                                ImageView imagenEstado, boolean finish, CallBack callBack, LottieAnimationView like) {
+    private void showStates(Estado estado, TextView txtMensaje, ProgressBar progressEstado, View[] botones, View dialogoEstado,
+                            ImageView imagenEstado, boolean finish, CallBack callBack, LottieAnimationView like) {
         like.setVisibility(View.GONE);
 
         progressEstado.setProgress(0);
@@ -177,7 +192,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
                 if (finish) {
                     animDesaparecer(dialogoEstado);
                 } else {
-                    callBack.pasarImagen();
+                    callBack.nextImage();
                 }
                 cancelar(this);
 
@@ -188,7 +203,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
 
             if (contador > 0) {
 
-                callBack.volverImagen();
+                callBack.backImage();
                 cancelar(countDownTimer);
             }
         });
@@ -202,7 +217,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
             if (finish) {
                 animDesaparecer(dialogoEstado);
             } else {
-                callBack.pasarImagen();
+                callBack.nextImage();
             }
             cancelar(countDownTimer);
         });

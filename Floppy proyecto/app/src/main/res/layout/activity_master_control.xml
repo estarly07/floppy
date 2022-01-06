@@ -1,120 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.mastercontrol.MasterControl">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentoContenedor"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context=".ui.mastercontrol.MasterControl">
 
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_principal" />
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentoContenedor"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_principal" />
 
-        <RelativeLayout
-            android:id="@+id/btnAddFriend"
-            android:layout_width="@dimen/_55dp"
-            android:layout_height="@dimen/_55dp"
-            android:layout_gravity="right"
-            android:layout_marginEnd="@dimen/_15dp"
-            android:layout_marginBottom="@dimen/_15dp"
-            android:layout_weight="1"
-            android:background="@drawable/circle"
-            android:backgroundTint="@color/fondoToolbar"
-            android:padding="@dimen/_15dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_pencil"
-                app:tint="@color/white" />
-        </RelativeLayout>
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:backgroundTint="@color/fondoToolbar"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme">
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/btnAddFriend"
+                android:layout_width="@dimen/_55dp"
+                android:layout_height="@dimen/_55dp"
+                android:layout_gravity="right"
+                android:layout_marginEnd="@dimen/_15dp"
+                android:layout_marginBottom="@dimen/_15dp"
+                android:layout_weight="1"
+                android:background="@drawable/circle"
+                android:backgroundTint="@color/fondoToolbar"
+                android:padding="@dimen/_15dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_pencil"
+                    app:tint="@color/white" />
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:background="?attr/colorPrimary"
+                android:backgroundTint="@color/fondoToolbar"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme">
 
-                <Button
-                    android:id="@+id/btnChats"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@color/transparente"
-                    android:drawableTop="@drawable/ic_chat"
-                    android:drawableTint="@color/blanco"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="@string/chat"
-                    android:textColor="@color/blanco"
-                    android:textSize="10sp" />
+                    android:orientation="horizontal">
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@color/transparente"
-                    android:drawableTop="@drawable/ic_group"
-                    android:drawableTint="@color/blanco"
-                    android:gravity="center"
+                    <Button
+                        android:id="@+id/btnChats"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@color/transparente"
+                        android:drawableTop="@drawable/ic_chat"
+                        android:drawableTint="@color/blanco"
+                        android:gravity="center"
+                        android:text="@string/chat"
+                        android:textColor="@color/blanco"
+                        android:textSize="10sp" />
 
-                    android:text="@string/chat"
-                    android:textColor="@color/blanco"
-                    android:textSize="10sp" />
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@color/transparente"
+                        android:drawableTop="@drawable/ic_group"
+                        android:drawableTint="@color/blanco"
+                        android:gravity="center"
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@color/transparente"
-                    android:drawableTop="@drawable/ic_settings"
-                    android:drawableTint="@color/blanco"
-                    android:gravity="center"
-                    android:text="@string/Settings"
-                    android:textColor="@color/blanco"
+                        android:text="@string/chat"
+                        android:textColor="@color/blanco"
+                        android:textSize="10sp" />
 
-                    android:textSize="10sp" />
-            </LinearLayout>
-        </androidx.appcompat.widget.Toolbar>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@color/transparente"
+                        android:drawableTop="@drawable/ic_settings"
+                        android:drawableTint="@color/blanco"
+                        android:gravity="center"
+                        android:text="@string/Settings"
+                        android:textColor="@color/blanco"
 
-    </LinearLayout>
+                        android:textSize="10sp" />
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
 
-    <include
-        android:id="@+id/include_estado"
-        layout="@layout/dialogo_estado"
-        android:visibility="gone" />
+        </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/progressGeneral"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/naranja"
-        android:visibility="gone" />
-</RelativeLayout>
+        <include
+            android:id="@+id/include_estado"
+            layout="@layout/dialogo_estado"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/progressGeneral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/naranja"
+            android:visibility="gone" />
+    </RelativeLayout>
+</layout>

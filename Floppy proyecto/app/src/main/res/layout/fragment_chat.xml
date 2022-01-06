@@ -1,48 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/fondo"
-    tools:context=".ui.message.MessageFragment">
-    <LinearLayout
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar2"
-        android:orientation="vertical">
+        android:background="@color/fondo"
+        tools:context=".ui.message.MessageFragment">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="10" />
+            android:layout_below="@id/toolbar2"
+            android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/reciclerChat"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:layoutAnimation="@anim/layout_scale_center"
-                android:scrollbarStyle="outsideOverlay"
-                app:stackFromEnd="true"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1" />
-            <RelativeLayout
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/reciclerChat"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:layoutAnimation="@anim/layout_scale_center"
+                    android:scrollbarStyle="outsideOverlay"
+                    app:stackFromEnd="true" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="10" />
+                android:layout_alignParentBottom="true"
+                android:background="@color/fondoToolbar"
+                android:layoutAnimation="@anim/layout_scale_center"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layoutAnimation="@anim/layout_scale_center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:orientation="horizontal"
+                            android:padding="2dp">
+
+
+                            <ImageView
+                                android:id="@+id/btnSticker"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="2dp"
+                                android:layout_weight="1"
+                                android:src="@drawable/ic_sticker"
+                                app:tint="@color/naranja" />
+                        </LinearLayout>
+
+
+                        <EditText
+                            android:id="@+id/edtMensaje"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:background="@color/transparente"
+                            android:fontFamily="@font/roboto_medium"
+                            android:hint="@string/mensage"
+                            android:maxLines="5"
+                            android:textColor="@color/blanco2"
+                            android:textColorHint="@color/blanco1"
+                            android:textSize="15sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="3"
+                            android:gravity="bottom">
+
+                            <ImageView
+                                android:id="@+id/btnLogin"
+                                android:layout_width="25dp"
+                                android:layout_height="30dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/ic_send"
+                                app:tint="@color/naranja" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <include
+                        android:id="@+id/includeSticker"
+                        layout="@layout/layout_teclado"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+            </androidx.appcompat.widget.Toolbar>
         </LinearLayout>
 
+        <include
+            android:id="@+id/containerOptions"
+            layout="@layout/card_options" />
+
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarEdit"
+            android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layoutAnimation="@anim/layout_scale_center"
             android:background="@color/fondoToolbar"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme">
@@ -50,185 +142,103 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layoutAnimation="@anim/layout_scale_center"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/imgUserChat"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_sinuser"
+                    app:riv_corner_radius="50dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="5dp">
 
                     <LinearLayout
+                        android:id="@+id/layoutInfoFriend"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:orientation="horizontal"
-                        android:padding="2dp">
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-
-                        <ImageView
-                            android:id="@+id/btnSticker"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="2dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_sticker"
-                            app:tint="@color/naranja" />
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/txtNombreUser"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/roboto_bold"
+                                android:paddingStart="10dp"
+                                android:textColor="@color/blanco"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/txtStateOffline"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/roboto_medium"
+                                android:paddingLeft="10dp"
+                                android:text="@string/offline"
+                                android:textColor="@color/itemChat"
+                                android:textSize="14sp"
+                                android:visibility="gone" />
+
+                            <TextView
+                                android:id="@+id/txtStateOnline"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/roboto_medium"
+                                android:paddingLeft="10dp"
+                                android:text="@string/online"
+                                android:textColor="@color/verde"
+                                android:textSize="14sp"
+                                android:visibility="gone" />
+                        </LinearLayout>
                     </LinearLayout>
 
-
-                    <EditText
-                        android:id="@+id/edtMensaje"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/btnOptions"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
-                        android:background="@color/transparente"
-                        android:fontFamily="@font/roboto_medium"
-                        android:hint="@string/mensage"
-                        android:maxLines="5"
-                        android:textColor="@color/blanco2"
-                        android:textColorHint="@color/blanco1"
-                        android:textSize="15sp" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="3"
-                        android:gravity="bottom">
-
-                        <ImageView
-                            android:id="@+id/btnLogin"
-                            android:layout_width="25dp"
-                            android:layout_height="30dp"
-                            android:layout_centerInParent="true"
-                            android:src="@drawable/ic_send"
-                            app:tint="@color/naranja" />
-                    </RelativeLayout>
-
+                        android:src="@drawable/ic_adjuntar"
+                        app:tint="@color/naranja" />
                 </LinearLayout>
 
-                <include
-                    android:id="@+id/includeSticker"
-                    layout="@layout/layout_teclado"
-                    android:visibility="gone" />
-            </LinearLayout>
 
+            </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
-    </LinearLayout>
-    <include
-        android:id="@+id/containerOptions"
-        layout="@layout/card_options"/>
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/fondoToolbar"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layoutAnimation="@anim/layout_scale_center"
-            android:orientation="horizontal">
-
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/imgUserChat"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="13dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_sinuser"
-                app:riv_corner_radius="50dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <LinearLayout
-                    android:id="@+id/layoutInfoFriend"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/txtNombreUser"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/roboto_bold"
-                            android:paddingStart="10dp"
-                            android:textColor="@color/blanco"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
 
 
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/txtStateOffline"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/offline"
-                            android:fontFamily="@font/roboto_medium"
-                            android:paddingLeft="10dp"
-                            android:visibility="gone"
-                            android:textColor="@color/itemChat"
-                            android:textSize="14sp" />
-                        <TextView
-                            android:id="@+id/txtStateOnline"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/online"
-                            android:visibility="gone"
-                            android:fontFamily="@font/roboto_medium"
-                            android:paddingLeft="10dp"
-                            android:textColor="@color/verde"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/btnOptions"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_adjuntar"
-                    app:tint="@color/naranja" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-    </androidx.appcompat.widget.Toolbar>
-
-
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

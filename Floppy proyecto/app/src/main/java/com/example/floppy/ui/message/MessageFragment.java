@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.floppy.databinding.FragmentChatBinding;
 import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.Adapters.AdapterSticker;
 import com.example.floppy.domain.models.Estado_User;
@@ -51,24 +53,17 @@ public class MessageFragment extends Fragment implements MessageView {
 
     private String           idChat="";
     private GlobalPresenter  presenterMaster;
-    private RoundedImageView imgUser;
-    private TextView         txtUser, txtOnline,txtOffline;
-    private ImageView        btnSend;
-    private ImageView        btnOptions;
     private Activity         activity;
-    private RecyclerView     recyclerMessages, recyclerStickers;
-    private RelativeLayout   keyboardSticker, btnSalir;
-    private LinearLayout     layoutInfoFriend;
-    private ImageView        btnSticker;
-    private EditText         edtMessage;
-    private ImageButton      btnAddSticker;
     private Message          message = new Message();//Create just one message and change it its properties
-    private View             options;
-    private LinearLayout     layoutAnimationOptions;
+
+    private FragmentChatBinding binding;
+
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         presenterMaster = MasterControl.presenter;
-        return inflater.inflate(R.layout.fragment_chat, container, false);
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_chat, container, false);
+        return binding.getRoot();
     }
 
     public  interface CloseListeners { void closeListeners();}
@@ -83,60 +78,44 @@ public class MessageFragment extends Fragment implements MessageView {
 
         closeListeners = () -> presenter.cancelListener();
 
-        keyboardSticker  = view.findViewById(R.id.includeSticker);
-        layoutInfoFriend = view.findViewById(R.id.layoutInfoFriend);
+        binding.includeSticker.recyclerStickers . setHasFixedSize(true);
+        binding.includeSticker.recyclerStickers . setLayoutManager(new GridLayoutManager(view.getContext(), 4));
 
-        imgUser       = view.findViewById(R.id.imgUserChat);
-        txtUser       = view.findViewById(R.id.txtNombreUser);
-        txtOnline     = view.findViewById(R.id.txtStateOnline);
-        txtOffline    = view.findViewById(R.id.txtStateOffline);
-        btnSend       = view.findViewById(R.id.btnLogin);
-        btnOptions    = view.findViewById(R.id.btnOptions);
-        btnSticker    = view.findViewById(R.id.btnSticker);
-        edtMessage    = view.findViewById(R.id.edtMensaje);
-        btnAddSticker = view.findViewById(R.id.btnShowDialogAddSticker);
-        options       = view.findViewById(R.id.containerOptions);
-
-        recyclerStickers       = view.findViewById(R.id.recyclerStickers);
-        layoutAnimationOptions = options.findViewById(R.id.layoutOptions);
-        recyclerStickers . setHasFixedSize(true);
-        recyclerStickers . setLayoutManager(new GridLayoutManager(view.getContext(), 4));
-
-        Extensions.Companion.listenerFocusChange(edtMessage, (view1,showStickers) -> {
+        Extensions.Companion.listenerFocusChange(binding.edtMensaje, (view1,showStickers) -> {
             if(showStickers){
                 Extensions.Companion.hideKeyboard(view1);
-                keyboardSticker.setVisibility(View.VISIBLE);
-            }else{ keyboardSticker.setVisibility(View.GONE); }
+                binding.includeSticker.getRoot().setVisibility(View.VISIBLE);
+            }else{ binding.includeSticker.getRoot().setVisibility(View.GONE); }
             return null;
         });
 
-        layoutInfoFriend.setOnClickListener(v->{
+        binding.layoutInfoFriend.setOnClickListener(v->{
             AboutFriendFragment.friend = user;
             if(friendEntity!=null){ AboutFriendFragment.friendEntity = friendEntity; }
             NavHostFragment.findNavController(this).navigate(R.id.action_messageFragment_to_aboutFriendFragment);
 
         });
-        btnOptions.setOnClickListener(v-> showOptions(options,layoutAnimationOptions));
+        binding.btnOptions.setOnClickListener(v-> showOptions(binding.containerOptions.getRoot(),binding.containerOptions.layoutOptions));
 
-        btnSticker.setOnClickListener(view12 -> {
-            if( keyboardSticker.getVisibility() == (View.GONE)){
-                edtMessage.clearFocus();
+        binding.btnSticker.setOnClickListener(view12 -> {
+            if( binding.includeSticker.getRoot().getVisibility() == (View.GONE)){
+                binding.edtMensaje.clearFocus();
                 presenter .getStickers();
-            }else{ keyboardSticker.setVisibility(View.GONE); }
+            }else{ binding.includeSticker.getRoot().setVisibility(View.GONE); }
         });
         presenter.getStateUser(user.getIdUser());
 
-        btnSend.setOnClickListener(view1 -> {
-            message.setMessage(edtMessage.getText().toString().trim());
+        binding.btnLogin.setOnClickListener(view1 -> {
+            message.setMessage(binding.edtMensaje.getText().toString().trim());
             message.setTypeMessage(Message.TypesMessages.TEXT);
             sendMessage();
         });
 
-        btnAddSticker.setOnClickListener(view13 -> { presenter.showDialogAddSticker(); });
+        binding.includeSticker.btnShowDialogAddSticker.setOnClickListener(view13 -> { presenter.showDialogAddSticker(); });
 
-        recyclerMessages = view.findViewById(R.id.reciclerChat);
-        recyclerMessages . setHasFixedSize(false);
-        recyclerMessages . setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, true));
+
+        binding.reciclerChat . setHasFixedSize(false);
+        binding.reciclerChat . setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, true));
 
         if (friendEntity != null){
             idChat = friendEntity.idChat;
@@ -169,8 +148,8 @@ public class MessageFragment extends Fragment implements MessageView {
             Glide.with(activity.getApplicationContext())
                     .load(photo)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(imgUser);
-        txtUser.setText(nick);
+                    .into(binding.imgUserChat);
+        binding.txtNombreUser.setText(nick);
     }
 
 
@@ -182,8 +161,8 @@ public class MessageFragment extends Fragment implements MessageView {
                presenter.showDialogAddOrDeleteSticker(message);
             });
 //            adapterMensage.setHasStableIds(true);
-            recyclerMessages.setAdapter(adapterMessage);
-            recyclerMessages.scheduleLayoutAnimation();
+            binding.reciclerChat.setAdapter(adapterMessage);
+            binding.reciclerChat.scheduleLayoutAnimation();
         });
 
     }
@@ -217,11 +196,11 @@ public class MessageFragment extends Fragment implements MessageView {
     public void showStateUser(String response) {
         activity.runOnUiThread(() -> {
             if (response.equals(Estado_User.ONLINE.toString())) {
-                Animations.Companion.animVanish(txtOffline);
-                Animations.Companion.animAppear(txtOnline);
+                Animations.Companion.animVanish(binding.txtStateOffline);
+                Animations.Companion.animAppear(binding.txtStateOnline);
             }else{
-                Animations.Companion.animAppear(txtOffline);
-                Animations.Companion.animVanish(txtOnline);
+                Animations.Companion.animAppear(binding.txtStateOffline);
+                Animations.Companion.animVanish(binding.txtStateOnline);
             }
         });
     }
@@ -229,8 +208,8 @@ public class MessageFragment extends Fragment implements MessageView {
 
     public void showStickers(ArrayList<StickersEntity> stickers) {
         activity.runOnUiThread(() -> {
-            recyclerStickers.scheduleLayoutAnimation();
-            Animations.Companion.animAppear(keyboardSticker);
+            binding.includeSticker.recyclerStickers.scheduleLayoutAnimation();
+            Animations.Companion.animAppear(binding.includeSticker.getRoot());
 
             AdapterSticker adapterSticker = new AdapterSticker(stickers);
             adapterSticker.setClick((view, stickersEntity) -> {
@@ -238,7 +217,7 @@ public class MessageFragment extends Fragment implements MessageView {
                message.setMessage(stickersEntity.urlImage);
                sendMessage();
             });
-            recyclerStickers.setAdapter(adapterSticker);
+            binding.includeSticker.recyclerStickers.setAdapter(adapterSticker);
         });
     }
 
@@ -290,7 +269,7 @@ public class MessageFragment extends Fragment implements MessageView {
         if (insertFriend){
             presenter.insertFriendLocal(user,idChat);
         }
-        if(presenter.sendMessages(idChat, message)){ activity.runOnUiThread(() -> edtMessage.setText("")); }
+        if(presenter.sendMessages(idChat, message)){ activity.runOnUiThread(() -> binding.edtMensaje.setText("")); }
     }
 
 }
