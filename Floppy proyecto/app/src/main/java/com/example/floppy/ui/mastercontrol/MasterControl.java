@@ -56,7 +56,6 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
         super.onCreate(savedInstanceState);
         presenter = new GlobalPresenterImpl(this, this, this);
         activity  = this;
-        setContentView(R.layout.activity_master_control);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_master_control);
 
         if(!stickersReceiver.equals("")){
