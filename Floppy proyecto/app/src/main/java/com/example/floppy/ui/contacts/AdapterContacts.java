@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.floppy.Domain.Models.User;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 

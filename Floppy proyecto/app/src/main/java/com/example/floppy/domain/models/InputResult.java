@@ -1,4 +1,4 @@
-package com.example.floppy.Domain.Models;
+package com.example.floppy.domain.models;
 
 public class InputResult {
     private String result;

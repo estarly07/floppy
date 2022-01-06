@@ -8,10 +8,10 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.example.floppy.R;
-import com.example.floppy.Domain.Entitys.FriendEntity;
-import com.example.floppy.Domain.Models.Estado;
-import com.example.floppy.Domain.Models.Estado_User;
-import com.example.floppy.Domain.Models.User;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.Estado;
+import com.example.floppy.domain.models.Estado_User;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.GlobalView;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.ui.global_presenter.GlobalPresenterImpl;

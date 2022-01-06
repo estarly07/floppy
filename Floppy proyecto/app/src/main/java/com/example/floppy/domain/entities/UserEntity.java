@@ -1,4 +1,4 @@
-package com.example.floppy.Domain.Entitys;
+package com.example.floppy.domain.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

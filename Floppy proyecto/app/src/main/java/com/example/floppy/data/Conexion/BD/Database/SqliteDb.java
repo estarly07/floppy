@@ -9,9 +9,9 @@ import androidx.room.RoomDatabase;
 import com.example.floppy.data.Conexion.BD.Dao.FriendDao;
 import com.example.floppy.data.Conexion.BD.Dao.StickerDao;
 import com.example.floppy.data.Conexion.BD.Dao.UserDao;
-import com.example.floppy.Domain.Entitys.FriendEntity;
-import com.example.floppy.Domain.Entitys.StickersEntity;
-import com.example.floppy.Domain.Entitys.UserEntity;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.entities.StickersEntity;
+import com.example.floppy.domain.entities.UserEntity;
 import com.example.floppy.utils.Global.GlobalUtils;
 
 @Database(

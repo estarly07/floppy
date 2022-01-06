@@ -1,11 +1,11 @@
-package com.example.floppy.Domain.remote;
+package com.example.floppy.domain.remote;
 
-import com.example.floppy.Domain.Entitys.FriendEntity;
-import com.example.floppy.Domain.Models.Chat;
-import com.example.floppy.Domain.Models.Estado_User;
-import com.example.floppy.Domain.Models.Message;
-import com.example.floppy.Domain.Entitys.StickersEntity;
-import com.example.floppy.Domain.Models.User;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.Chat;
+import com.example.floppy.domain.models.Estado_User;
+import com.example.floppy.domain.models.Message;
+import com.example.floppy.domain.entities.StickersEntity;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.message.MessagePresenter;
 import com.example.floppy.ui.contacts.ContactsPresenter;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;

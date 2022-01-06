@@ -4,7 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.floppy.Domain.Entitys.UserEntity;
+import com.example.floppy.domain.entities.UserEntity;
 import com.example.floppy.utils.Global.GlobalUtils;
 
 @Dao

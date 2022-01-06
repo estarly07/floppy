@@ -1,8 +1,8 @@
-package com.example.floppy.Domain.local;
+package com.example.floppy.domain.local;
 
-import com.example.floppy.Domain.Entitys.FriendEntity;
-import com.example.floppy.Domain.Entitys.StickersEntity;
-import com.example.floppy.Domain.Entitys.UserEntity;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.entities.StickersEntity;
+import com.example.floppy.domain.entities.UserEntity;
 import com.example.floppy.ui.message.MessagePresenterImpl;
 
 import java.util.List;

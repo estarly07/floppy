@@ -2,8 +2,8 @@ package com.example.floppy.ui.aboutfriend;
 
 import android.content.Context;
 
-import com.example.floppy.Domain.local.InteractorLocal;
-import com.example.floppy.Domain.local.InteractorSqlite;
+import com.example.floppy.domain.local.InteractorLocal;
+import com.example.floppy.domain.local.InteractorSqlite;
 
 public class AboutFriendPresenterImpl implements AboutFriendPresenter {
     private final AboutFriendView aboutFriendView;

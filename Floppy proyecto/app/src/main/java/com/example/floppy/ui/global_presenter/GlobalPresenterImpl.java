@@ -5,14 +5,14 @@ import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 
-import com.example.floppy.Domain.Entitys.StickersEntity;
-import com.example.floppy.Domain.local.InteractorLocal;
-import com.example.floppy.Domain.local.InteractorSqlite;
-import com.example.floppy.Domain.remote.Interactor;
-import com.example.floppy.Domain.remote.InteractorFirestoreImpl;
-import com.example.floppy.Domain.Models.Estado;
-import com.example.floppy.Domain.Models.Estado_User;
-import com.example.floppy.Domain.Models.User;
+import com.example.floppy.domain.entities.StickersEntity;
+import com.example.floppy.domain.local.InteractorLocal;
+import com.example.floppy.domain.local.InteractorSqlite;
+import com.example.floppy.domain.remote.Interactor;
+import com.example.floppy.domain.remote.InteractorFirestoreImpl;
+import com.example.floppy.domain.models.Estado;
+import com.example.floppy.domain.models.Estado_User;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.GlobalView;
 import com.google.gson.Gson;
 

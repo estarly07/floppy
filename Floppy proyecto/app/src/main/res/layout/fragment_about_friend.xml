@@ -1,98 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.aboutfriend.AboutFriendFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+        <variable
+            name="friend"
+            type="com.example.floppy.domain.models.User" />
+        <variable
+            name="friendEntity"
+            type="com.example.floppy.domain.entities.FriendEntity" />
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/fondo"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            
-            android:layout_weight="1">
-
-            <ImageView
-                android:id="@+id/imgFriend"
-                android:layout_width="match_parent"
-                android:src="@drawable/ic_sinuser"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
-
-            <RelativeLayout
-                android:id="@+id/triangleContainer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-
-            </RelativeLayout>
-
-        </RelativeLayout>
+        tools:context=".ui.aboutfriend.AboutFriendFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/_20dp"
-            android:layout_weight="3"
+            android:background="@color/fondo"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txtNick"
-                style="@style/Title"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/nick"
-                android:textSize="@dimen/_45sp" />
+                android:layout_height="match_parent"
 
-            <TextView
-                android:id="@+id/txtName"
-                style="@style/subtitle"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/imgFriend"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_sinuser" />
+
+                <RelativeLayout
+                    android:id="@+id/triangleContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10dp"
-                android:layout_marginTop="@dimen/_2dp"
-                android:textSize="@dimen/_25sp" />
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_weight="3"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtNick"
+                    style="@style/Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{friendEntity != null? friendEntity.nick : @string/nick}"
+                    android:textSize="@dimen/_45sp" />
+
+                <TextView
+                    android:id="@+id/txtName"
+                    style="@style/subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:layout_marginTop="@dimen/_2dp"
+                    android:text="@{friend.getName()}"
+                    android:textSize="@dimen/_25sp" />
 
 
+                <TextView
+                    android:id="@+id/txtInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_marginEnd="@dimen/_100dp"
+                    android:text="@{friend.getMessageUser()}"
+                    android:maxLength="250"
+                    android:maxLines="3"
+                    android:textColor="@color/gris5"
+                    android:textSize="@dimen/_15sp" />
 
-            <TextView
-                android:id="@+id/txtInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10dp"
-                android:layout_marginRight="@dimen/_100dp"
-                android:layout_marginTop="@dimen/_10dp"
-                android:textColor="@color/gris5"
-                android:maxLines="3"
-                android:maxLength="250"
-                android:textSize="@dimen/_15sp" />
-
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="@dimen/_55dp"
-        android:layout_height="@dimen/_55dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/circle"
-        android:layout_marginEnd="@dimen/_25dp"
-        android:id="@+id/btnUpdateFriend"
-        android:backgroundTint="@color/verde"
-        android:layout_marginBottom="@dimen/_50dp">
+        <RelativeLayout
+            android:id="@+id/btnUpdateFriend"
+            android:layout_width="@dimen/_55dp"
+            android:layout_height="@dimen/_55dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="@dimen/_25dp"
+            android:layout_marginBottom="@dimen/_50dp"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/verde">
 
-        <ImageView
-            android:layout_width="@dimen/_20dp"
-            android:layout_height="@dimen/_20dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_pencil"
-            app:tint="@color/white" />
+            <ImageView
+                android:layout_width="@dimen/_20dp"
+                android:layout_height="@dimen/_20dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_pencil"
+                app:tint="@color/white" />
 
+        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+</layout>
+

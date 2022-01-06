@@ -1,9 +1,9 @@
 package com.example.floppy.ui.menu;
 
-import com.example.floppy.Domain.Models.Estado;
-import com.example.floppy.Domain.Entitys.FriendEntity;
-import com.example.floppy.Domain.Models.Message;
-import com.example.floppy.Domain.Models.User;
+import com.example.floppy.domain.models.Estado;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.Message;
+import com.example.floppy.domain.models.User;
 
 import java.util.ArrayList;
 

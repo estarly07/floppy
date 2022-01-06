@@ -13,8 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.floppy.Domain.Entitys.FriendEntity;
-import com.example.floppy.Domain.Models.User;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.Chat.ChatActivity;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.R;

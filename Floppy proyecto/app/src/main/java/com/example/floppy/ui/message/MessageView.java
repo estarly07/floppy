@@ -2,8 +2,8 @@ package com.example.floppy.ui.message;
 
 import android.content.Context;
 
-import com.example.floppy.Domain.Models.Message;
-import com.example.floppy.Domain.Entitys.StickersEntity;
+import com.example.floppy.domain.models.Message;
+import com.example.floppy.domain.entities.StickersEntity;
 
 
 import java.util.ArrayList;

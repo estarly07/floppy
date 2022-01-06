@@ -1,7 +1,7 @@
 package com.example.floppy.ui.contacts;
 
-import com.example.floppy.Domain.Entitys.FriendEntity;
-import com.example.floppy.Domain.Models.User;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.User;
 
 import java.util.ArrayList;
 
