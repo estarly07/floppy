@@ -65,7 +65,6 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
         binding.btnAddFriend.setOnClickListener(view -> {
             MenuFragment.getCallbackNavigationFragments().navigateTo();
         });
-
     }
 
     @Override
@@ -236,8 +235,8 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
 
 
     public void animToolbar(boolean show) {
-        if (show) { Animations.Companion.animAppear(findViewById(R.id.btnAddFriend)); }
-        else { Animations.Companion.animVanish(findViewById(R.id.btnAddFriend)); }
+        if (show) { Animations.Companion.animAppear(binding.btnAddFriend); }
+        else { Animations.Companion.animVanish(binding.btnAddFriend); }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         float moveY = show ? 0 : toolbar.getHeight() * 2;

@@ -2,6 +2,8 @@ package com.example.floppy.ui.login;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.floppy.R;
+import com.example.floppy.databinding.ActivityMainBinding;
 import com.example.floppy.ui.mastercontrol.MasterControl;
 import com.example.floppy.utils.Animations;
 import com.example.floppy.utils.Extensions;
@@ -27,14 +30,11 @@ import java.io.IOException;
 import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
-    private LinearLayout        layoutEditText, layoutInfoApp;
     private LoginPresenterImpl  presenter;
-    private Button              btnLogin,btnRegister, btnStart;
-    private RelativeLayout      layout;
     private Bitmap              bitmapImageUser = null;
-    private EditText            edtName;
-    private EditText            edtState;
     private String              stickersReceived;
+    private ActivityMainBinding binding;
+
     enum Pages {
         INIT,
         EMAIL,
@@ -46,39 +46,34 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+
         presenter        = new LoginPresenterImpl(this, this, this);
         stickersReceived = getSticker();
         presenter.isLogged();
 
-        btnLogin        = findViewById(R.id.btnLogin);
-        btnRegister     = findViewById(R.id.btnRegister);
-        btnStart        = findViewById(R.id.btnComenzar);
-        layoutEditText  = findViewById(R.id.layoutEditLogin);
-        layoutInfoApp   = findViewById(R.id.layoutInfoApp);
-        layout          = findViewById(R.id.includeInput);
-
-        Animations.Companion.animAppear(layoutInfoApp);
+        Animations.Companion.animAppear(binding.layoutInfoApp);
 
         EditText txtEmail = findViewById(R.id.txtEmail);
         EditText txtPass  = findViewById(R.id.txtPass);
-        btnLogin.setOnClickListener(view -> {
+        binding.btnLogin.setOnClickListener(view -> {
             page = Pages.DATA;
             presenter.validateData(new String[]{
                     txtEmail.getText().toString(),
                     txtPass.getText().toString(),
             },true);
         });
-        btnRegister.setOnClickListener(view -> {
+        binding.btnRegister.setOnClickListener(view -> {
             page = Pages.DATA;
             presenter.validateData(new String[]{
                     txtEmail.getText().toString(),
                     txtPass.getText().toString(),
             },false);
         });
-        btnStart.setOnClickListener(view -> {
+        binding.btnComenzar.setOnClickListener(view -> {
             page = Pages.EMAIL;
-            Animations.Companion.animVanish(layoutInfoApp);
-            Animations.Companion.animAppear(layoutEditText);
+            Animations.Companion.animVanish(binding.layoutInfoApp);
+            Animations.Companion.animAppear(binding.layoutEditLogin);
         });
 
     }
@@ -93,22 +88,21 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 break;
             case EMAIL:
                 page = Pages.INIT;
-                Animations.Companion.animationCascadeFade((LinearLayout) findViewById(R.id.layoutInfoApp));
-                Animations.Companion.animVanish(findViewById(R.id.layoutEditLogin));
-                Animations.Companion.animAppear(findViewById(R.id.layoutInfoApp));
+                Animations.Companion.animationCascadeFade(binding.layoutInfoApp);
+                Animations.Companion.animVanish(binding.layoutEditLogin);
+                Animations.Companion.animAppear(binding.layoutInfoApp);
                 break;
             case DATA:
                 page = Pages.EMAIL;
                 clearEdittext();
-                ImageView imgUser = findViewById(R.id.imgUser);
-                imgUser.setImageDrawable(getDrawable(R.drawable.ic_user1));
+                binding.includeInput.imgUser.setImageDrawable(getDrawable(R.drawable.ic_user1));
                 bitmapImageUser = null;
                 handlingLogin(false);
 
-                Animations.Companion.animVanish(layout);
-                Animations.Companion.animVanish(findViewById(R.id.includeInput));
-                Animations.Companion.animAppear(findViewById(R.id.layoutEditLogin));
-                Animations.Companion.animAppear(findViewById(R.id.layoutBotonValidacion));
+                Animations.Companion.animVanish(binding.includeInput.getRoot());
+                Animations.Companion.animVanish(binding.includeInput.getRoot());
+                Animations.Companion.animAppear(binding.layoutEditLogin);
+                Animations.Companion.animAppear(binding.layoutBotonValidacion);
 
                 Animations.Companion.animationCascadeFade((RelativeLayout) findViewById(R.id.includeInput));
 
@@ -125,13 +119,12 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     public void handlingLogin(boolean show) {
         runOnUiThread(() -> {
-            ProgressBar progressBar = findViewById(R.id.progressLogin);
             if (show) {
-                Animations.Companion.animVanish(findViewById(R.id.layoutButtons));
-                Animations.Companion.animAppear(progressBar);
+                Animations.Companion.animVanish(binding.layoutButtons);
+                Animations.Companion.animAppear(binding.progressLogin);
             } else {
-                Animations.Companion.animVanish(progressBar);
-                Animations.Companion.animAppear(findViewById(R.id.layoutButtons));
+                Animations.Companion.animVanish(binding.progressLogin);
+                Animations.Companion.animAppear(binding.layoutButtons);
             }
         });
     }
@@ -142,7 +135,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODE_GALLERY && resultCode == RESULT_OK) {
-            RoundedImageView img = findViewById(R.id.imgUser);
             Uri uri = null;
             if (data != null) {
                 uri = data.getData();
@@ -152,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            img.setImageBitmap(bitmapImageUser);
+            binding.includeInput.imgUser.setImageBitmap(bitmapImageUser);
 
         }
     }
@@ -167,21 +159,15 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     public void showInputUser() {
         runOnUiThread(() -> {
-            RelativeLayout    layoutValidation  = findViewById(R.id.layoutBotonValidacion);
-            RelativeLayout    include           = findViewById(R.id.includeInput);
             RelativeLayout    cloud             = findViewById(R.id.nube);
             ImageView         floppy            = findViewById(R.id.floppy);
-            RoundedImageView  photo             = findViewById(R.id.imgUser);
             TextView          txtMessage        = findViewById(R.id.txtMensaje);
-            RelativeLayout    btnNext           = findViewById(R.id.btnNext);
-            edtName = findViewById(R.id.edtNombre);
-            edtState = findViewById(R.id.edtEstado);
 
-            include.setVisibility(View.VISIBLE);
+            binding.includeInput.getRoot().setVisibility(View.VISIBLE);
             clearEdittext();
 
-            Animations.Companion.animAppear(layout);
-            Animations.Companion.animVanish(layoutValidation);
+            Animations.Companion.animAppear(binding.includeInput.getRoot());
+            Animations.Companion.animVanish(binding.layoutBotonValidacion);
             Animations.Companion.animationCascadeFade((RelativeLayout) findViewById(R.id.includeInput));
             animAppearAndDisappear(cloud);
 
@@ -190,12 +176,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 txtMessage.setText(sentences[new Random().nextInt(sentences.length)]);
                 animAppearAndDisappear(cloud);
             });
-            photo.setOnClickListener(view -> showGallery());
+            binding.includeInput.imgUser.setOnClickListener(view -> showGallery());
 
-            btnNext.setOnClickListener(view -> {
-                presenter.insertInfoUser(
-                        new String[]{edtName.getText().toString().trim(),edtState.getText().toString().trim() }
-                        , bitmapImageUser); }
+            binding.includeInput.btnNext.setOnClickListener(view -> presenter.insertInfoUser(
+                    new String[]{binding.includeInput.edtNombre.getText().toString().trim(),binding.includeInput.edtEstado.getText().toString().trim() }
+                    , bitmapImageUser)
             );
 
         });
@@ -210,11 +195,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public void showHandlingInsertData(boolean show) {
         runOnUiThread(() -> {
             if (show) {
-                Animations.Companion.animVanish(findViewById(R.id.btnNext));
-                Animations.Companion.animAppear(findViewById(R.id.progress_insert));
+                Animations.Companion.animVanish(binding.includeInput.btnNext);
+                Animations.Companion.animAppear(binding.includeInput.progressInsert);
             } else {
-                Animations.Companion.animVanish(findViewById(R.id.progress_insert));
-                Animations.Companion.animAppear(findViewById(R.id.btnNext));
+                Animations.Companion.animVanish(binding.includeInput.progressInsert);
+                Animations.Companion.animAppear(binding.includeInput.btnNext);
             }
         });
     }
@@ -231,10 +216,10 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     /**Clean the EditText*/
     private void clearEdittext() {
-        Extensions.Companion.cleanEditText(findViewById(R.id.txtEmail));
-        Extensions.Companion.cleanEditText(findViewById(R.id.edtNombre));
-        Extensions.Companion.cleanEditText(findViewById(R.id.edtEstado));
-        Extensions.Companion.cleanEditText(findViewById(R.id.txtPass));
+        Extensions.Companion.cleanEditText(binding.txtEmail);
+        Extensions.Companion.cleanEditText(binding.includeInput.edtNombre);
+        Extensions.Companion.cleanEditText(binding.includeInput.edtEstado);
+        Extensions.Companion.cleanEditText(binding.txtPass);
     }
 
     private void animAppearAndDisappear(View view) {Animations.Companion.animAppearAndVanish(view);}
