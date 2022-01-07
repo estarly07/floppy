@@ -7,8 +7,7 @@
     <ImageView
         android:id="@+id/imgSticker"
         android:layout_width="@dimen/_150dp"
-        android:layout_height="@dimen/_150dp"
-        />
+        android:layout_height="@dimen/_150dp" />
 
     <RelativeLayout
         android:id="@+id/messageRight"
@@ -18,20 +17,39 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/chat_enviado">
 
-        <TextView
-            android:id="@+id/txtDateSticker"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginStart="@dimen/_10dp"
-            android:layout_marginEnd="@dimen/_10dp"
-            android:layout_marginBottom="3dp"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center"
-            android:padding="@dimen/_10dp"
-            android:textColor="@color/blanco2"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtDateSticker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_10dp"
+                android:layout_marginBottom="@dimen/_2dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:padding="@dimen/_2dp"
+                android:textColor="@color/blanco2"
+                android:textSize="@dimen/_15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imgCheck"
+                android:layout_width="@dimen/_15dp"
+                android:layout_height="@dimen/_15dp"
+                android:layout_gravity="center|end"
+                android:layout_marginStart="@dimen/_70dp"
+                android:layout_marginEnd="@dimen/_10dp"
+                android:layout_marginBottom="@dimen/_2dp"
+                android:src="@drawable/ic_double_check" />
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>

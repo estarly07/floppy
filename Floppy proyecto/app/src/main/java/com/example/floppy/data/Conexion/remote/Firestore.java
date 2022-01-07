@@ -7,6 +7,7 @@ import android.util.Log;
 import com.example.floppy.Callbacks.CallBackObjects;
 import com.example.floppy.Callbacks.CallbackList;
 import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.EstadosMensajes;
 import com.example.floppy.domain.remote.InteractorFirestoreImpl;
 import com.example.floppy.ui.login.LoginPresenter;
 import com.example.floppy.ui.menu.MenuPresenter;
