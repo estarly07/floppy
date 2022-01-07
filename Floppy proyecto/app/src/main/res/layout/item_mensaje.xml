@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:id="@+id/contenedor"
@@ -21,18 +21,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_50dp"
                 android:background="@drawable/chat_recibido"
-                android:visibility="gone"
-              >
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/txtMensaje"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
+                    android:layout_centerInParent="true"
                     android:layout_marginStart="@dimen/_10dp"
                     android:layout_marginTop="@dimen/_2dp"
                     android:layout_marginEnd="@dimen/_10dp"
-                    android:layout_centerInParent="true"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
                     android:padding="@dimen/_2dp"
@@ -82,8 +81,7 @@
                         android:layout_marginStart="@dimen/_70dp"
                         android:layout_marginEnd="@dimen/_10dp"
                         android:layout_marginBottom="@dimen/_2dp"
-                        android:src="@drawable/ic_double_check"
-                        app:tint="@color/naranja1" />
+                        android:src="@drawable/ic_double_check" />
                 </LinearLayout>
 
             </RelativeLayout>

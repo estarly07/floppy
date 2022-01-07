@@ -10,7 +10,9 @@ import android.os.Build;
 import androidx.core.content.FileProvider;
 
 import com.example.floppy.BuildConfig;
+import com.example.floppy.domain.entities.ChatEntity;
 import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.entities.MessageEntity;
 import com.example.floppy.domain.entities.UserEntity;
 import com.example.floppy.domain.local.InteractorLocal;
 import com.example.floppy.domain.local.InteractorSqlite;
@@ -71,7 +73,28 @@ public class MessagePresenterImpl implements MessagePresenter {
     }
 
     @Override
-    public void showMessages(ArrayList<Message> messages, String idChat) { messageView.showMessages(messages, User.getInstance().getIdUser(), idChat); }
+    public void showMessages(ArrayList<Message> messages, String idChat) {
+        messageView.showMessages(messages, User.getInstance().getIdUser(), idChat);
+        new Thread(() -> {
+            if(interactorLocal.getChat(idChat) !=null) {
+                for (Message message :
+                        messages) {
+                    System.out.println(" "+message.getIdMessage());
+                    MessageEntity messageEntity = new MessageEntity();
+                    messageEntity.idMessage = message.getIdMessage();
+                    messageEntity.message = message.getMessage();
+                    messageEntity.typeMessage = message.getTypeMessage();
+                    messageEntity.date = message.getDate();
+                    messageEntity.user = message.getUser();
+                    messageEntity.fk_idChat = idChat;
+                    messageEntity.hour = message.getHora();
+                    messageEntity.state = message.getState();
+
+                    interactorLocal.insertMessage(messageEntity);
+                }
+            }
+        }).start();
+    }
 
     public void getStickers() {
         new Thread(() -> {
@@ -111,6 +134,7 @@ public class MessagePresenterImpl implements MessagePresenter {
     public void insertFriendLocal(User friend, String idChat) {
         UserEntity   userEntity   = new UserEntity();
         FriendEntity friendEntity = new FriendEntity();
+        ChatEntity   chatEntity   = new ChatEntity();
 
         userEntity.idUser       = friend.getIdUser();
         userEntity.messageUser  = friend.getMessageUser();
@@ -124,7 +148,12 @@ public class MessagePresenterImpl implements MessagePresenter {
         friendEntity.idChat     = idChat;
         friendEntity.nick       = friend.getName();
 
+        chatEntity.idChat       = idChat;
+        chatEntity.idFriend     = friend.getIdUser();
+        chatEntity.idOwner      = User.getInstance().getIdUser();
+
         interactorLocal.insertFriend(friendEntity);
+        interactorLocal.insertChat  (chatEntity);
     }
 
     @Override

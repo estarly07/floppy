@@ -1,6 +1,8 @@
 package com.example.floppy.domain.local;
 
+import com.example.floppy.domain.entities.ChatEntity;
 import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.entities.MessageEntity;
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.entities.UserEntity;
 import com.example.floppy.ui.message.MessagePresenterImpl;
@@ -12,6 +14,12 @@ public interface InteractorLocal {
     void insertUser  (UserEntity userEntity);
 
     void insertFriend(FriendEntity friendEntity);
+
+    void insertChat(ChatEntity chatEntity);
+
+    ChatEntity getChat(String idChat);
+
+    void insertMessage(MessageEntity messageEntity);
 
     void insertSticker(StickersEntity stickersEntity);
 

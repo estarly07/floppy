@@ -2,11 +2,15 @@ package com.example.floppy.domain.local;
 
 import android.content.Context;
 
+import com.example.floppy.data.Conexion.BD.Dao.ChatDao;
 import com.example.floppy.data.Conexion.BD.Dao.FriendDao;
+import com.example.floppy.data.Conexion.BD.Dao.MessageDao;
 import com.example.floppy.data.Conexion.BD.Dao.StickerDao;
 import com.example.floppy.data.Conexion.BD.Dao.UserDao;
 import com.example.floppy.data.Conexion.BD.Database.SqliteDb;
+import com.example.floppy.domain.entities.ChatEntity;
 import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.entities.MessageEntity;
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.entities.UserEntity;
 import com.example.floppy.ui.message.MessagePresenterImpl;
@@ -19,12 +23,16 @@ public class InteractorSqlite implements InteractorLocal{
     private StickerDao stickerDao;
     private FriendDao  friendDao;
     private UserDao    userDao;
+    private ChatDao    chatDao;
+    private MessageDao messageDao;
 
     public InteractorSqlite(Context context) {
         this.context = context;
         stickerDao   = SqliteDb.getInstance(context).stickerDao();
         userDao      = SqliteDb.getInstance(context).userDao();
         friendDao    = SqliteDb.getInstance(context).friendDao();
+        chatDao      = SqliteDb.getInstance(context).chatDao();
+        messageDao   = SqliteDb.getInstance(context).messageDao();
     }
 
 
@@ -33,6 +41,14 @@ public class InteractorSqlite implements InteractorLocal{
 
     @Override
     public void insertFriend(FriendEntity friendEntity) { friendDao.insertFriend(friendEntity); }
+
+    public void insertChat(ChatEntity chatEntity) { chatDao.insertChat(chatEntity); }
+
+    @Override
+    public ChatEntity getChat(String idChat) { return chatDao.getChat(idChat);}
+
+    @Override
+    public void insertMessage(MessageEntity messageEntity) { messageDao.insertMessage(messageEntity); }
 
     @Override
     public void insertSticker(StickersEntity stickersEntity) { stickerDao.insertSticker(stickersEntity);}

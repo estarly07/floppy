@@ -10,7 +10,7 @@ public class Message {
     private String date;
     private String hora;
     private TypesMessages typeMessage;
-    private EstadosMensajes state;
+    private StateMessage state;
 
     public String getIdMessage() {
         return idMessage;
@@ -52,11 +52,11 @@ public class Message {
         this.hora = hora;
     }
 
-    public EstadosMensajes getState() {
+    public StateMessage getState() {
         return state;
     }
 
-    public void setState(EstadosMensajes state) {
+    public void setState(StateMessage state) {
         this.state = state;
     }
 

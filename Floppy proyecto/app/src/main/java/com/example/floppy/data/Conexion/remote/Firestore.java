@@ -7,7 +7,7 @@ import android.util.Log;
 import com.example.floppy.Callbacks.CallBackObjects;
 import com.example.floppy.Callbacks.CallbackList;
 import com.example.floppy.domain.entities.FriendEntity;
-import com.example.floppy.domain.models.EstadosMensajes;
+import com.example.floppy.domain.models.StateMessage;
 import com.example.floppy.domain.remote.InteractorFirestoreImpl;
 import com.example.floppy.ui.login.LoginPresenter;
 import com.example.floppy.ui.menu.MenuPresenter;
@@ -30,6 +30,11 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -308,11 +313,15 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                     for (int i = messages.size() - 1; i >= 0; i--) {
                         Message message = new Message();
                         message.setMessage(messages.get(i).get("mensage").toString());
+                        message.setIdMessage(messages.get(i).get("idMensage").toString());
                         message.setUser(messages.get(i).get("user").toString());
                         message.setDate(messages.get(i).get("hora").toString());
                         message.setTypeMessage(Message.TypesMessages.valueOf(messages.get(i).get("typeMessage").toString()));
+                        message.setState(StateMessage.valueOf(messages.get(i).get("stateMessage").toString()));
+
                         this.messages.add(message);
                     }
+
 
                     inputResult.setResponse(true);
                     callback.showList(this.messages);
@@ -332,6 +341,7 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
         map.put("mensage", message.getMessage());
         map.put("hora", message.getHora());
         map.put("typeMessage", String.valueOf(message.getTypeMessage()));
+        map.put("stateMessage", String.valueOf(StateMessage.DELIVERED));
 
         firebaseFirestore.collection(COLLECTIONS[2]).document(idChat).update("lastMessage", date);
         firebaseFirestore.collection(COLLECTIONS[2]).document(idChat).update("mensajes", FieldValue.arrayUnion(map));

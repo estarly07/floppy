@@ -21,6 +21,7 @@ import com.example.floppy.utils.Global.GlobalUtils;
 )
 public class FriendEntity {
     @NonNull
+    @PrimaryKey
     @ColumnInfo(name ="idFriend" )
     public String idFriend;
 
@@ -32,7 +33,6 @@ public class FriendEntity {
     @ColumnInfo(name ="nick" )
     public String nick;
 
-    @PrimaryKey
     @NonNull
     @ColumnInfo(name ="idChat" )
     public String idChat;

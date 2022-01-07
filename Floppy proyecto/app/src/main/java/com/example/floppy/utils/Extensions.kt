@@ -10,9 +10,11 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.core.widget.addTextChangedListener
+import com.example.floppy.R
 import com.example.floppy.utils.Extensions.Companion.showKeyboard
 import java.util.regex.Pattern
 
@@ -28,6 +30,13 @@ class Extensions {
                 override fun afterTextChanged(p0: Editable?) {}
             })
         }
+
+        /**Change double check color
+         * @param isCheck if was checked
+         * */
+        fun ImageView.changeDoubleCheckColor(isCheck: Boolean): Unit = this.setBackgroundColor(this.context.resources.getColor(
+            (if(isCheck) R.color.naranja1 else R.color.gris5)))
+
         /**
          * Validate URL
          * */

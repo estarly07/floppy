@@ -40,6 +40,8 @@ public class GlobalUtils {
     public static final String stickersTable = "Stickers" ;
     public static final String userTable     = "user"     ;
     public static final String friendTable   = "friend"   ;
+    public static final String chatTable     = "chat"     ;
+    public static final String messageTable  = "mesage"     ;
 
 
 
