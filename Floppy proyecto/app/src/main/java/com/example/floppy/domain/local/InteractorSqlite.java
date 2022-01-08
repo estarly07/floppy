@@ -48,6 +48,14 @@ public class InteractorSqlite implements InteractorLocal{
     public ChatEntity getChat(String idChat) { return chatDao.getChat(idChat);}
 
     @Override
+    public List<MessageEntity> getMessages(String idChat) { return messageDao.getMessages(idChat);}
+
+    @Override
+    public MessageEntity getMessage(String idMessage) {
+        return messageDao.getMessage(idMessage);
+    }
+
+    @Override
     public void insertMessage(MessageEntity messageEntity) { messageDao.insertMessage(messageEntity); }
 
     @Override

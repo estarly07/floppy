@@ -16,6 +16,7 @@ import com.example.floppy.domain.entities.MessageEntity;
 import com.example.floppy.domain.entities.UserEntity;
 import com.example.floppy.domain.local.InteractorLocal;
 import com.example.floppy.domain.local.InteractorSqlite;
+import com.example.floppy.domain.models.StateMessage;
 import com.example.floppy.domain.remote.Interactor;
 import com.example.floppy.domain.remote.InteractorFirestoreImpl;
 import com.example.floppy.domain.models.Chat;
@@ -29,13 +30,16 @@ import com.example.floppy.utils.Global.GlobalUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class MessagePresenterImpl implements MessagePresenter {
-    private Context         context;
-    private MessageView     messageView;
-    private Interactor      interactor;
-    private InteractorLocal interactorLocal;
-    private GlobalPresenter globalPresenter;
+    private Context            context;
+    private MessageView        messageView;
+    private Interactor         interactor;
+    private InteractorLocal    interactorLocal;
+    private GlobalPresenter    globalPresenter;
+    private ArrayList<Message> messages = new ArrayList<>();
 
     public MessagePresenterImpl(Context context, Activity activity, MessageView messageView, GlobalPresenter globalPresenter) {
         this.context         = context;
@@ -73,24 +77,87 @@ public class MessagePresenterImpl implements MessagePresenter {
     }
 
     @Override
+    public void getMessagesLocal(String idChat) {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        new Thread(() -> {
+            List<MessageEntity> messageEntities = interactorLocal.getMessages(idChat);
+            for (MessageEntity m : messageEntities) {
+                if(m.state == StateMessage.CHECK){
+                    System.out.println(" "+m.idMessage);
+                    Message message = new Message();
+                    message.setIdMessage  (m.idMessage);
+                    message.setMessage    (m.message);
+                    message.setTypeMessage(m.typeMessage);
+                    message.setDate       (m.date);
+                    message.setUser       (m.user);
+                    message.setHora       (m.hour);
+                    message.setState      (m.state);
+
+                    this.messages.add(message);
+                }
+            }
+            System.out.println("CANTIDAD DE MENSAJES "+this.messages.size());
+            countDownLatch.countDown();
+        }).start();
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    ArrayList<Message> allMessages = new ArrayList<>();
+
+    @Override
     public void showMessages(ArrayList<Message> messages, String idChat) {
-        messageView.showMessages(messages, User.getInstance().getIdUser(), idChat);
+        allMessages.clear();
+//        if (this.allMessages.isEmpty()){
+//            if(!this.messages.isEmpty()) {allMessages.addAll(this.messages);}
+//        }
+//        for (Message m:
+//                messages) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                this.allMessages.removeIf(message -> message.getIdMessage().equals(m.getIdMessage()));
+//            }
+//        }
+
+        allMessages.addAll(this.messages);
+        allMessages.addAll(messages);
+
+        messageView.showMessages(this.allMessages, User.getInstance().getIdUser(), idChat);
+
         new Thread(() -> {
             if(interactorLocal.getChat(idChat) !=null) {
-                for (Message message :
-                        messages) {
-                    System.out.println(" "+message.getIdMessage());
-                    MessageEntity messageEntity = new MessageEntity();
-                    messageEntity.idMessage = message.getIdMessage();
-                    messageEntity.message = message.getMessage();
-                    messageEntity.typeMessage = message.getTypeMessage();
-                    messageEntity.date = message.getDate();
-                    messageEntity.user = message.getUser();
-                    messageEntity.fk_idChat = idChat;
-                    messageEntity.hour = message.getHora();
-                    messageEntity.state = message.getState();
+                for (Message message : messages) {
+                    if(message.getState() == StateMessage.CHECK && interactorLocal.getMessages(message.getIdMessage()) == null){
+                        System.out.println(" "+message.getIdMessage());
+                        MessageEntity messageEntity = new MessageEntity();
+                        messageEntity.idMessage = message.getIdMessage();
+                        messageEntity.message = message.getMessage();
+                        messageEntity.typeMessage = message.getTypeMessage();
+                        messageEntity.date = message.getDate();
+                        messageEntity.user = message.getUser();
+                        messageEntity.fk_idChat = idChat;
+                        messageEntity.hour = message.getHora();
+                        messageEntity.state = message.getState();
 
-                    interactorLocal.insertMessage(messageEntity);
+                        interactorLocal.insertMessage(messageEntity);
+                    }
+//                    else if (!message.getUser().equals(User.getInstance().getIdUser())){
+//                        System.out.println(" "+message.getIdMessage());
+//                        MessageEntity messageEntity = new MessageEntity();
+//                        messageEntity.idMessage = message.getIdMessage();
+//                        messageEntity.message = message.getMessage();
+//                        messageEntity.typeMessage = message.getTypeMessage();
+//                        messageEntity.date = message.getDate();
+//                        messageEntity.user = message.getUser();
+//                        messageEntity.fk_idChat = idChat;
+//                        messageEntity.hour = message.getHora();
+//                        messageEntity.state = message.getState();
+//
+////                        interactorLocal.insertMessage(messageEntity);
+//                    }
                 }
             }
         }).start();
@@ -101,6 +168,27 @@ public class MessagePresenterImpl implements MessagePresenter {
             interactorLocal.getStickers(this, User.getInstance().getIdUser());
         }).start();
     }
+
+    @Override
+    public void getChatLocal(String idChat) {
+        new Thread(() -> {
+            for (MessageEntity message:
+            interactorLocal.getMessages(idChat)) {
+                Message newMessage = new Message();
+                newMessage.setIdMessage(message.idMessage);
+                newMessage.setMessage  (message.message);
+                newMessage.setDate     (message.date);
+                newMessage.setUser     (message.user);
+                newMessage.setHora     (message.hour);
+                newMessage.setState    (message.state);
+                newMessage.setTypeMessage(message.typeMessage);
+                messages.add(newMessage);
+            }
+
+            messageView.showMessages(messages,User.getInstance().getIdUser(),idChat);
+        }).start();
+    }
+
     public void showStickers(ArrayList<StickersEntity> list) { messageView.showStickers(list); }
 
     @Override

@@ -60,6 +60,10 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
                     holder.binding.messageLeft .setVisibility(View.GONE);
                     holder.binding.messageRight.setVisibility(View.VISIBLE);
                     holder.binding.txtMensajeEnviado.setText(messages.get(position).getMessage());
+
+                    Extensions.Companion.changeDoubleCheckColor(
+                            holder.binding.imgCheck,
+                            messages.get(position).getState() == StateMessage.CHECK);
                 }else{
                     holder.binding.messageRight.setVisibility(View.GONE);
                     holder.binding.messageLeft .setVisibility(View.VISIBLE);

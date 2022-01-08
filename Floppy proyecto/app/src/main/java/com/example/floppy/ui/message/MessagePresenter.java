@@ -12,6 +12,8 @@ public interface MessagePresenter {
 
     void getStickers();
 
+    void getChatLocal(String idChat);
+
     void showStateUser(String response);
 
     Boolean sendMessages(String idChat, Message message);
@@ -25,6 +27,8 @@ public interface MessagePresenter {
     void cancelListener();
 
     void getMessages(Chat chat);
+
+    void getMessagesLocal(String idChat);
 
     void showMessages(ArrayList<Message> messages,String idChat);
 

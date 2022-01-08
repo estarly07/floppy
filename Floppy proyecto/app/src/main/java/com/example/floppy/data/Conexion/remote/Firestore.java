@@ -322,6 +322,7 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                         this.messages.add(message);
                     }
 
+                    updateMessages(this.messages,User.getInstance().getIdUser(), value.getData().get("idChat").toString());
 
                     inputResult.setResponse(true);
                     callback.showList(this.messages);
@@ -331,6 +332,26 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
             }
         };
 
+    }
+
+    void updateMessages(ArrayList<Message> messages,String idOwner,String idChat){
+        Boolean update= false;
+        System.out.println("ID USER "+idOwner);
+        ArrayList<Map<String, String>> mapArrayMessages = new ArrayList<>();
+        for (int i=messages.size()-1 ;i >-1 ; i--) {
+            if(!messages.get(i).getUser().equals(idOwner) && messages.get(i).getState() == StateMessage.DELIVERED){
+                Map<String, String> map = new HashMap<>();
+                map.put("idMensage", messages.get(i).getIdMessage());
+                map.put("user", messages.get(i).getUser());
+                map.put("mensage", messages.get(i).getMessage());
+                map.put("hora", messages.get(i).getDate());
+                map.put("typeMessage", String.valueOf(messages.get(i).getTypeMessage()));
+                map.put("stateMessage", String.valueOf(StateMessage.CHECK));
+                mapArrayMessages.add(map);
+                update = true;
+            }
+        }
+        if(update){ firebaseFirestore.collection(COLLECTIONS[2]).document(idChat).update("mensajes", mapArrayMessages); }
     }
 
     @Override

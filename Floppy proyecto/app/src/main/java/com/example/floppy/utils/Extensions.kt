@@ -34,7 +34,7 @@ class Extensions {
         /**Change double check color
          * @param isCheck if was checked
          * */
-        fun ImageView.changeDoubleCheckColor(isCheck: Boolean): Unit = this.setBackgroundColor(this.context.resources.getColor(
+        fun ImageView.changeDoubleCheckColor(isCheck: Boolean): Unit = this.setColorFilter(this.context.resources.getColor(
             (if(isCheck) R.color.naranja1 else R.color.gris5)))
 
         /**

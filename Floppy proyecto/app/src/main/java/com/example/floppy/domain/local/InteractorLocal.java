@@ -19,6 +19,10 @@ public interface InteractorLocal {
 
     ChatEntity getChat(String idChat);
 
+    List<MessageEntity> getMessages(String idChat);
+
+    MessageEntity getMessage(String idMessage);
+
     void insertMessage(MessageEntity messageEntity);
 
     void insertSticker(StickersEntity stickersEntity);
