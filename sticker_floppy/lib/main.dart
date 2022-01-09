@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sticker_floppy/Collections/bloc/collections_bloc.dart';
 import 'package:sticker_floppy/Slider/bloc/slider_bloc.dart';
@@ -10,7 +11,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   preferences = Preferences();
   await preferences.initPreferences();
-  runApp(MyApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -24,6 +28,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Material App',
         routes: routes,
+        debugShowCheckedModeBanner: false,
         initialRoute: "splash",
         theme: ThemeData.light()
             .copyWith(scaffoldBackgroundColor: Colors.grey[100]),
