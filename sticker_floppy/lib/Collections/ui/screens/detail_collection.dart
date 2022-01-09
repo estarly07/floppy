@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -37,47 +38,52 @@ class DetailCollection extends StatelessWidget {
                       child: Icon(
                         Icons.arrow_back_ios_new_rounded,
                       )),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        collection.nameCollection,
-                        maxLines: 2,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: size.height * 0.04),
-                      ),
-                      Container(
-                        margin:
-                            EdgeInsets.only(left: 0.2, top: size.height * 0.03),
-                        child: GestureDetector(
-                          onTap: () {
-                            Share.share(collection.toMap().toString());
-                          },
-                          child: CustomButton(
-                              text: "Compartir",
-                              width: size.width * 0.35,
-                              texColor: Colors.black,
-                              background: Colors.white),
+                  FadeInDown(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          collection.nameCollection,
+                          maxLines: 2,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: size.height * 0.04),
                         ),
-                      )
-                    ],
+                        Container(
+                          margin: EdgeInsets.only(
+                              left: 0.2, top: size.height * 0.03),
+                          child: GestureDetector(
+                            onTap: () {
+                              Share.share(collection.toMap().toString());
+                            },
+                            child: CustomButton(
+                                text: "Compartir",
+                                width: size.width * 0.35,
+                                texColor: Colors.black,
+                                background: Colors.white),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                  Container(
-                      padding: EdgeInsets.all(size.width * 0.05),
-                      child: GridView(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          children: collection.stickers
-                              .map((e) => GestureDetector(
-                                  onTap: () {}, child: CardSticker(sticker: e)))
-                              .toList(),
-                          gridDelegate:
-                              SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: (size.width * 0.3),
-                                  mainAxisExtent: (size.height * 0.15),
-                                  crossAxisSpacing: 5,
-                                  mainAxisSpacing: 0)))
+                  ElasticInDown(
+                    child: Container(
+                        padding: EdgeInsets.all(size.width * 0.05),
+                        child: GridView(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            children: collection.stickers
+                                .map((e) => GestureDetector(
+                                    onTap: () {},
+                                    child: CardSticker(sticker: e)))
+                                .toList(),
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: (size.width * 0.3),
+                                    mainAxisExtent: (size.height * 0.15),
+                                    crossAxisSpacing: 5,
+                                    mainAxisSpacing: 0))),
+                  )
                 ],
               ),
             ),

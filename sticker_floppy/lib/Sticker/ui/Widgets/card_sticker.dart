@@ -14,13 +14,11 @@ class CardSticker extends StatelessWidget {
         Share.share('{stickers: ["${sticker.toMap()["picture"]}"]}');
       },
       child: Container(
-        padding: EdgeInsets.all(5),
-        width: size.width * 0.25,
+        width: size.width * 0.15,
+        margin: EdgeInsets.symmetric(horizontal: 5),
         child: FadeInImage(
-            height: size.height * 0.2,
-            width: size.height * 0.2,
             fit: BoxFit.contain,
-            placeholder: AssetImage('assets/no-image.jpg'),
+            placeholder: AssetImage('assets/no-image.png'),
             image: NetworkImage(sticker.picture)),
       ),
     );

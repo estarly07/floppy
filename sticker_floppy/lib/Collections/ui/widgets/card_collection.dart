@@ -104,7 +104,7 @@ class _Body extends StatelessWidget {
                   (showTitleAndButton) ? size.height * 0.2 : size.height * 0.3,
               width: size.height * 0.2,
               fit: BoxFit.contain,
-              placeholder: AssetImage('assets/no-image.jpg'),
+              placeholder: AssetImage('assets/floppy.png'),
               image: NetworkImage(collection.frontPage)),
           Container(
             height: 15,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sticker_floppy/Utils/services/shared_preferences.dart';
@@ -33,39 +34,43 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           Container(
             margin: EdgeInsets.only(bottom: size.height * 0.35),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: size.width * 0.2,
-                    height: size.width * 0.2,
-                    child: Image(image: AssetImage("assets/floppy.png")),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: size.height * 0.01),
-                    child: Text(
-                      "Floppy Sticker",
-                      style: TextStyle(
-                          letterSpacing: 1,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                          fontSize: size.height * 0.04),
+            child: FadeInDown(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: size.width * 0.2,
+                      height: size.width * 0.2,
+                      child: Image(image: AssetImage("assets/floppy.png")),
                     ),
-                  ),
-                ],
+                    Container(
+                      margin: EdgeInsets.only(top: size.height * 0.01),
+                      child: Text(
+                        "Floppy Sticker",
+                        style: TextStyle(
+                            letterSpacing: 1,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                            fontSize: size.height * 0.04),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
           Container(
             margin: EdgeInsets.only(
                 bottom: size.height * 0.04, top: size.height * 0.04),
-            child: Text(
-              "Estarly",
-              style: TextStyle(
-                  fontFamily: "Hanoman",
-                  fontWeight: FontWeight.bold,
-                  fontSize: size.height * 0.025),
+            child: FadeInUp(
+              child: Text(
+                "Estarly",
+                style: TextStyle(
+                    fontFamily: "Hanoman",
+                    fontWeight: FontWeight.bold,
+                    fontSize: size.height * 0.025),
+              ),
             ),
           ),
         ],

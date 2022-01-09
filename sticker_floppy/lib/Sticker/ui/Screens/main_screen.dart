@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -20,26 +21,29 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<CollectionsBloc, CollectionsState>(
         builder: (context, state) {
-          return SafeArea(
-            child: Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: size.height * 0.25,
-                  child: DecorationFondo(),
-                ),
-                (state.collections.isEmpty)
-                    ? Center(
-                        child: CircularProgressIndicator(
+          return Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                height: size.height * 0.25,
+                child: DecorationFondo(),
+              ),
+              (state.collections.isEmpty)
+                  ? FadeIn(
+                      child: Center(
+                          child: CircularProgressIndicator(
                         color: colors[1],
-                      ))
-                    : Container(
-                        margin: EdgeInsets.all(10),
-                        child: SingleChildScrollView(
+                      )),
+                    )
+                  : Container(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: size.width * 0.02),
+                      child: SingleChildScrollView(
+                        child: ElasticInDown(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const _Titles(),
+                              FadeIn(child: const _Titles()),
                               _Collections(collections: state.collections),
                               Column(
                                 children: state.collections
@@ -52,8 +56,8 @@ class MainScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-              ],
-            ),
+                    ),
+            ],
           );
         },
       ),
@@ -164,13 +168,13 @@ class _Stickers extends StatelessWidget {
             nameCollection,
             maxLines: 1,
             style: TextStyle(
-                fontSize: size.height * 0.025,
+                fontSize: size.height * 0.02,
                 fontWeight: FontWeight.bold,
                 color: Colors.grey[900]),
           ),
           Container(
             width: double.infinity,
-            height: size.height * 0.15,
+            height: size.height * 0.1,
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
