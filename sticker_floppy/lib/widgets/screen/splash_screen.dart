@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sticker_floppy/Utils/services/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -79,6 +80,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   nextScreen() {
     _timer.cancel();
-    Navigator.pushReplacementNamed(context, "/");
+    Navigator.pushReplacementNamed(
+        context, Preferences().ifFirstTime ? "slider" : "/");
   }
 }
