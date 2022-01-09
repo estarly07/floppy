@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   Container(
                     width: size.width * 0.2,
                     height: size.width * 0.2,
-                    child: Image(image: AssetImage("assets/logo.png")),
+                    child: Image(image: AssetImage("assets/floppy.png")),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: size.height * 0.01),
