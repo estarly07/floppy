@@ -4,5 +4,6 @@ import 'package:sticker_floppy/Sticker/ui/Screens/screens.dart';
 
 Map<String, WidgetBuilder> routes = {
   "/": (_) => MainScreen(),
-  "detail": (_) => DetailCollection()
+  "detail": (_) => DetailCollection(),
+  "splash": (_) => SplashScreen()
 };

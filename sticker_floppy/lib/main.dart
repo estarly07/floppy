@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Material App',
         routes: routes,
-        initialRoute: "/",
+        initialRoute: "splash",
         theme: ThemeData.light()
             .copyWith(scaffoldBackgroundColor: Colors.grey[100]),
       ),
