@@ -34,8 +34,13 @@ class DetailCollection extends StatelessWidget {
                 ),
                 Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
-                    child: Icon(
-                      Icons.arrow_back_ios_new_rounded,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                      ),
                     )),
                 FadeInDown(
                   child: Column(
