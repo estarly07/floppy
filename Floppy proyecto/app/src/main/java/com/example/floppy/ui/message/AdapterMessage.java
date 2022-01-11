@@ -76,7 +76,7 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
                 if (messages.get(position).getUser().equals(myId)){
                     holder.binding.stickerLeft .getRoot().setVisibility(View.GONE);
                     holder.binding.stickerRight.getRoot().setVisibility(View.VISIBLE);
-                    holder.binding.stickerRight.txtDateSticker.setText(messages.get(position).getDate());
+                    holder.binding.stickerRight.txtDateSticker.setText(messages.get(position).getHora());
 
                     Extensions.Companion.changeDoubleCheckColor(
                             holder.binding.stickerRight.imgCheck,
@@ -84,16 +84,18 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
 
                     Glide.with(holder.binding.getRoot().getContext())
                             .load(messages.get(position).getMessage())
+                            .placeholder(R.drawable.ic_wait_sticker)
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(holder.binding.stickerRight.imgSticker);
                 }else{
                     holder.binding.stickerRight. getRoot().setVisibility(View.GONE);
                     holder.binding.stickerLeft . getRoot().setVisibility(View.VISIBLE);
-                    holder.binding.stickerLeft . txtDateSticker.setText(messages.get(position).getDate());
+                    holder.binding.stickerLeft . txtDateSticker.setText(messages.get(position).getHora());
                     holder.binding.stickerLeft . imgCheck.setVisibility(View.GONE);
 
                     Glide.with(holder.binding.getRoot().getContext())
                             .load(messages.get(position).getMessage())
+                            .placeholder(R.drawable.ic_wait_sticker)
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(holder.binding.stickerLeft.imgSticker);
                 }

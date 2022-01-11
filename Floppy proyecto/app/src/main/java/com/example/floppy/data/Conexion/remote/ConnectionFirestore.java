@@ -24,11 +24,9 @@ public interface ConnectionFirestore {
 
     void updateUser(User user, CountDownLatch countDownLatch);
 
-    void getEstados(CountDownLatch countDownLatch, String id);
+    void getStates(CountDownLatch countDownLatch, String id);
 
     void getMyData(CountDownLatch countDownLatch, Interactor interactor, LoginPresenter presenter);
-
-    void getChat(String idChat, Interactor interactor);
 
     void searchChat(Chat chat, CountDownLatch countDownLatch);
 
@@ -36,16 +34,12 @@ public interface ConnectionFirestore {
 
     void getAllUsers(CountDownLatch countDownLatch);
 
-    void addFriend(User user, String myId, CountDownLatch countDownLatch);
-
     void getMessagesByIdChat(Chat chat, CallbackList<Message> callback, MessagePresenter presenter);
 
-    void sendMessages(String idChat, Message message,String date);
+    void sendMessages(String idChat, String conversation,String date);
 
     void cancelListener();
 
-    void getEstadoUser(String idUser, CallBackObjects<String> callBackObjects);
-
-    void updateEstado(String idUser, Estado_User estado_user);
+    void updateState(String idUser, Estado_User estado_user);
 
 }

@@ -21,9 +21,7 @@ public class Chat {
         this.users = users;
     }
 
-    public Message[] getMensajes() {
-        return messages;
-    }
+    public Message[] getMensajes() { return messages; }
 
     public void setMensajes(Message[] messages) {
         this.messages = messages;

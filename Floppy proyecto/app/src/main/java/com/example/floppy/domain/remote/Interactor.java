@@ -35,7 +35,7 @@ public interface Interactor {
 
     void getAllUsers(ContactsPresenter contactsPresenter);
 
-    void sendMessages(String idChat, Message message,String date);
+    void sendMessages(String idChat, String conversation,String date);
 
     void getEstadoUser(String idUser);
 

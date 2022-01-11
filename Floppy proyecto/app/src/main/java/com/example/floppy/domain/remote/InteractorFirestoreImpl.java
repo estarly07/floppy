@@ -88,7 +88,7 @@ public class InteractorFirestoreImpl implements Interactor{
     @Override
     public void getEstados(String id, MenuPresenter presenter, GlobalPresenter presenterMaster) {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        firestore.getEstados(countDownLatch, id);
+        firestore.getStates(countDownLatch, id);
         try {
             countDownLatch.await();
         } catch (InterruptedException e) {
@@ -144,8 +144,8 @@ public class InteractorFirestoreImpl implements Interactor{
         if (firestore.getInputResult().getResponse()){
             chat.setIdChat(firestore.getInputResult().getResult());
             messagePresenter.insertFriendLocal(friend, chat.getIdChat());
-            messagePresenter.getMessages(chat);
             messagePresenter.sendMessages(chat.getIdChat(),message);
+            messagePresenter.getMessages(chat);
         }else{
             System.out.println("NO CREADO");
 
@@ -176,8 +176,8 @@ public class InteractorFirestoreImpl implements Interactor{
     }
 
     @Override
-    public void sendMessages(String idChat, Message message, String date) {
-      firestore.sendMessages(idChat, message, date);
+    public void sendMessages(String idChat, String conversation, String date) {
+      firestore.sendMessages(idChat,conversation, date);
     }
 
     @Override
@@ -190,7 +190,7 @@ public class InteractorFirestoreImpl implements Interactor{
 
     @Override
     public void updateEstado(String idUser, Estado_User estado_user) {
-        firestore.updateEstado(idUser,estado_user);
+        firestore.updateState(idUser,estado_user);
     }
 
     @Override

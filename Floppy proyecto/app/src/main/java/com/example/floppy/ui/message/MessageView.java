@@ -25,4 +25,6 @@ public interface MessageView {
     /**ENVIAR UN MENSAJE Y INSERTAR EL AMIGO EN LA BD O NO
      * @param insertFriend*/
     void sendAndInsertFriend(Boolean insertFriend);
+
+    void cleanEdittext();
 }

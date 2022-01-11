@@ -158,12 +158,10 @@ public class MessageFragment extends Fragment implements MessageView {
         activity.runOnUiThread(() -> {
             this.idChat = idChat;
             AdapterMessage adapterMessage = new AdapterMessage(messages, myId);
-            adapterMessage.setClick((view, position, message) -> {
-               presenter.showDialogAddOrDeleteSticker(message);
-            });
+            adapterMessage.setClick((view, position, message) -> presenter.showDialogAddOrDeleteSticker(message));
 //            adapterMensage.setHasStableIds(true);
             binding.reciclerChat.setAdapter(adapterMessage);
-            binding.reciclerChat.scheduleLayoutAnimation();
+//            binding.reciclerChat.scheduleLayoutAnimation();
         });
 
     }
@@ -270,7 +268,12 @@ public class MessageFragment extends Fragment implements MessageView {
         if (insertFriend){
             presenter.insertFriendLocal(user,idChat);
         }
-        if(presenter.sendMessages(idChat, message)){ activity.runOnUiThread(() -> binding.edtMensaje.setText("")); }
+        presenter.sendMessages(idChat, message);
+    }
+
+    @Override
+    public void cleanEdittext() {
+        activity.runOnUiThread(() -> binding.edtMensaje.setText(""));
     }
 
 }

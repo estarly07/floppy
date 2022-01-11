@@ -16,7 +16,7 @@ public interface MessagePresenter {
 
     void showStateUser(String response);
 
-    Boolean sendMessages(String idChat, Message message);
+    void sendMessages(String idChat, Message message);
 
     void showDataFriend(String nick,String photo);
 

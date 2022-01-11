@@ -17,8 +17,10 @@ import com.example.floppy.R;
 import com.example.floppy.databinding.ItemChatBinding;
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.models.Message;
+import com.example.floppy.domain.models.StateMessage;
 import com.example.floppy.domain.models.User;
 import com.example.floppy.utils.Animations;
+import com.example.floppy.utils.Extensions;
 
 import java.util.ArrayList;
 
@@ -97,6 +99,8 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
         if(!messages.isEmpty() && messages.size() > position){
             Animations.Companion.animVanish(holder.binding.txtSticker);
             Animations.Companion.animVanish(holder.binding.txtMessage);
+            System.out.println("HOUR "+messages.get(position).getHora());
+            holder.binding.txtDate.setText(messages.get(position).getHora());
 
             if(messages.get(position).getTypeMessage() == Message.TypesMessages.STICKER){
                 Glide.with(holder.itemView.getContext())
@@ -105,10 +109,15 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
                         .into(holder.binding.txtSticker);
                 Animations.Companion.animAppear(holder.binding.txtSticker);
             }else{
+                holder.binding.imgCheck.setVisibility(View.GONE);
                 if(User.getInstance().getIdUser().equals(messages.get(position).getUser())){
-                    holder.binding.txtMessage.setText("tu: "+messages.get(position).getMessage());
-                    if(messages.get(position).getMessage().length() >23){
-                        holder.binding.txtMessage.setText("tu: "+messages.get(position).getMessage().substring(0,23)+"...");
+                    holder.binding.txtMessage.setText(messages.get(position).getMessage());
+                    Animations.Companion.animAppear(holder.binding.imgCheck);
+                    Extensions.Companion.changeDoubleCheckColor(
+                            holder.binding.imgCheck,
+                            messages.get(position).getState() == StateMessage.CHECK);
+                    if(messages.get(position).getMessage().length() >27){
+                        holder.binding.txtMessage.setText(messages.get(position).getMessage().substring(0,27)+"...");
                     }
                 }else{
                     holder.binding.txtMessage.setText(messages.get(position).getMessage());
@@ -118,7 +127,6 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
                 }
                 Animations.Companion.animAppear(  holder.binding.txtMessage);
             }
-            holder.binding.setDate(messages.get(position).getDate());
         }
     }
 

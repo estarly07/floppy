@@ -27,10 +27,12 @@ import com.example.floppy.data.Services.ServiceDownload;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.utils.Extensions;
 import com.example.floppy.utils.Global.GlobalUtils;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
 public class MessagePresenterImpl implements MessagePresenter {
@@ -53,12 +55,21 @@ public class MessagePresenterImpl implements MessagePresenter {
         messageView.showStateUser(response);
     }
 
-    public Boolean sendMessages(String idChat, Message message) {
-        if (message.getMessage().trim().isEmpty()) { return false; }
+    public void sendMessages(String idChat, Message message) {
+        if (message.getMessage().trim().isEmpty()) { return; }
         message.setUser(User.getInstance().getIdUser());
         message.setHora(GlobalUtils.getHour());
-        new Thread(() -> interactor.sendMessages(idChat, message, GlobalUtils.getDateNow())).start();
-        return true;
+        message.setIdMessage(UUID.randomUUID().toString());
+        message.setState(StateMessage.DELIVERED);
+        allMessages.add(0,message);
+
+        Gson gson = new Gson();
+        System.out.println("GSON "+gson.toJson(allMessages));
+
+        new Thread(() -> {
+            interactor.sendMessages(idChat,gson.toJson(allMessages), GlobalUtils.getDateNow());
+            messageView.cleanEdittext();
+        }).start();
     }
 
     public void showDataFriend(String nick, String photo) { messageView.showDataFriend(nick, photo); }
@@ -111,21 +122,9 @@ public class MessagePresenterImpl implements MessagePresenter {
 
     @Override
     public void showMessages(ArrayList<Message> messages, String idChat) {
-        allMessages.clear();
-//        if (this.allMessages.isEmpty()){
-//            if(!this.messages.isEmpty()) {allMessages.addAll(this.messages);}
-//        }
-//        for (Message m:
-//                messages) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                this.allMessages.removeIf(message -> message.getIdMessage().equals(m.getIdMessage()));
-//            }
-//        }
+        allMessages = messages;
 
-        allMessages.addAll(this.messages);
-        allMessages.addAll(messages);
-
-        messageView.showMessages(this.allMessages, User.getInstance().getIdUser(), idChat);
+        messageView.showMessages(messages, User.getInstance().getIdUser(), idChat);
 
         new Thread(() -> {
             if(interactorLocal.getChat(idChat) !=null) {
@@ -142,22 +141,8 @@ public class MessagePresenterImpl implements MessagePresenter {
                         messageEntity.hour = message.getHora();
                         messageEntity.state = message.getState();
 
-                        interactorLocal.insertMessage(messageEntity);
+//                        interactorLocal.insertMessage(messageEntity);
                     }
-//                    else if (!message.getUser().equals(User.getInstance().getIdUser())){
-//                        System.out.println(" "+message.getIdMessage());
-//                        MessageEntity messageEntity = new MessageEntity();
-//                        messageEntity.idMessage = message.getIdMessage();
-//                        messageEntity.message = message.getMessage();
-//                        messageEntity.typeMessage = message.getTypeMessage();
-//                        messageEntity.date = message.getDate();
-//                        messageEntity.user = message.getUser();
-//                        messageEntity.fk_idChat = idChat;
-//                        messageEntity.hour = message.getHora();
-//                        messageEntity.state = message.getState();
-//
-////                        interactorLocal.insertMessage(messageEntity);
-//                    }
                 }
             }
         }).start();
