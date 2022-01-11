@@ -95,7 +95,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
 
         holder.binding.imgUserItemChat.setOnClickListener(view -> click.clickPhoto(view, position, friends.get(position)));
         holder.binding.getRoot().setOnClickListener(view -> click.clickChat(view, position, friends.get(position), friendEntities.get(position)));
-
+        holder.binding.imgCheck.setVisibility(View.GONE);
         if(!messages.isEmpty() && messages.size() > position){
             Animations.Companion.animVanish(holder.binding.txtSticker);
             Animations.Companion.animVanish(holder.binding.txtMessage);
@@ -109,7 +109,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
                         .into(holder.binding.txtSticker);
                 Animations.Companion.animAppear(holder.binding.txtSticker);
             }else{
-                holder.binding.imgCheck.setVisibility(View.GONE);
+
                 if(User.getInstance().getIdUser().equals(messages.get(position).getUser())){
                     holder.binding.txtMessage.setText(messages.get(position).getMessage());
                     Animations.Companion.animAppear(holder.binding.imgCheck);

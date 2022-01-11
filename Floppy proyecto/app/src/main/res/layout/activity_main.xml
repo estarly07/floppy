@@ -241,5 +241,9 @@
             android:id="@+id/includeInput"
             layout="@layout/input_user"
             android:visibility="invisible" />
+
+        <include
+            android:id="@+id/splash"
+            layout="@layout/splash" />
     </RelativeLayout>
 </layout>

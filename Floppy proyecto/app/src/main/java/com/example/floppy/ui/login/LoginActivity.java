@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -50,7 +51,10 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
         presenter        = new LoginPresenterImpl(this, this, this);
         stickersReceived = getSticker();
-        presenter.isLogged();
+
+        new Handler().postDelayed(() -> {
+            if(!presenter.isLogged()) { Animations.Companion.animVanish(binding.splash); }
+        },3000);
 
         Animations.Companion.animAppear(binding.layoutInfoApp);
 
@@ -206,6 +210,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void nextActivity() {
+
         runOnUiThread(() -> {
             Intent intent = new Intent(LoginActivity.this, MasterControl.class);
             MasterControl.stickersReceiver = stickersReceived;

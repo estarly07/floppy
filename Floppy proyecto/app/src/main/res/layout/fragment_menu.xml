@@ -59,9 +59,10 @@
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:layout_width="@dimen/_50dp"
-                                android:layout_height="@dimen/_50dp"
-                                android:layout_marginTop="@dimen/_15dp"
+                                android:layout_width="@dimen/_55dp"
+                                android:layout_height="@dimen/_55dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="@dimen/_10dp"
                                 android:layout_marginBottom="@dimen/_15dp"
                                 android:src="@drawable/ic_floppy"
                                 app:tint="@color/naranja" />
@@ -71,16 +72,18 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
 
-                                android:layout_marginLeft="@dimen/_10dp">
+                                android:layout_marginLeft="@dimen/_2dp">
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
-                                    android:fontFamily="@font/roboto_bold"
+                                    android:fontFamily="@font/christmas_cat"
                                     android:text="@string/app_name"
+                                    android:gravity="center_vertical"
                                     android:textColor="@color/blanco1"
-                                    android:textSize="@dimen/_25sp"
+                                    android:textSize="@dimen/_30sp"
+                                    android:letterSpacing="0.1"
                                     android:textStyle="bold" />
 
                                 <RelativeLayout
@@ -103,8 +106,8 @@
                                         android:layout_marginEnd="@dimen/_10dp"
                                         android:layout_marginBottom="@dimen/_2dp"
                                         android:fontFamily="@font/roboto_medium"
-                                        android:gravity="center"
 
+                                        android:gravity="center"
                                         android:padding="5dp"
                                         android:text="👉👈"
                                         android:textColor="@color/blanco2"
