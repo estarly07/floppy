@@ -36,6 +36,7 @@ import com.example.floppy.ui.global_presenter.GlobalPresenterImpl;
 import com.example.floppy.R;
 import com.example.floppy.ui.GlobalView;
 import com.example.floppy.ui.menu.MenuFragment;
+import com.example.floppy.ui.message.MessagePresenter;
 import com.example.floppy.utils.Animations;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -257,6 +258,16 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
     @Override
     public void beginDownload(BroadcastReceiver broadcastReceiver) {
         registerReceiver(broadcastReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+
+    @Override
+    public void recordAudio(String name, String idChat, MessagePresenter messagePresenter) {
+
+    }
+
+    @Override
+    public void stopAudio() {
+
     }
 
     private void animDesaparecer(View view) {

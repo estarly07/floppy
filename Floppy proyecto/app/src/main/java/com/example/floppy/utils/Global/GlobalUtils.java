@@ -27,9 +27,12 @@ public class GlobalUtils {
     @SuppressLint("DefaultLocale")
     public static String getDateNow() {
         Calendar calendar = Calendar.getInstance();
-        return  calendar.get(Calendar.YEAR) +"/"+
-                calendar.get(Calendar.MONTH)+"/"+
-                calendar.get(Calendar.DAY_OF_MONTH);
+        return  calendar.get(Calendar.YEAR) +"-"+
+                calendar.get(Calendar.MONTH)+"-"+
+                calendar.get(Calendar.DAY_OF_MONTH)+""+
+                calendar.get(Calendar.HOUR_OF_DAY)+":"+
+                calendar.get(Calendar.MINUTE)+":"+
+                calendar.get(Calendar.MILLISECOND);
     }
     //Strings
     public static final String packageStickerApk = "com.example.sticker_floppy";

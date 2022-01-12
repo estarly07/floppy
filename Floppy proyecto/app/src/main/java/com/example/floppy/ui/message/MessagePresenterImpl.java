@@ -67,7 +67,7 @@ public class MessagePresenterImpl implements MessagePresenter {
         System.out.println("GSON "+gson.toJson(allMessages));
 
         new Thread(() -> {
-            interactor.sendMessages(idChat,gson.toJson(allMessages), GlobalUtils.getDateNow());
+            interactor.sendMessages(idChat,gson.toJson(allMessages));
             messageView.cleanEdittext();
         }).start();
     }
@@ -297,6 +297,11 @@ public class MessagePresenterImpl implements MessagePresenter {
         new Thread(() -> {
             messageView.sendAndInsertFriend(interactorLocal.getFriend(idUser) == null);
         }).start();
+    }
+
+    @Override
+    public void recordAudio(String idChat) {
+        globalPresenter.recordAudio(idChat,this);
     }
 
     @Override

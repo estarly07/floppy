@@ -99,7 +99,6 @@
                             android:textColor="@color/blanco2"
                             android:textColorHint="@color/blanco1"
                             android:textSize="15sp" />
-
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -112,9 +111,10 @@
                                 android:layout_width="25dp"
                                 android:layout_height="30dp"
                                 android:layout_centerInParent="true"
-                                android:src="@drawable/ic_send"
+                                android:src="@drawable/ic_recovery"
                                 app:tint="@color/naranja" />
                         </RelativeLayout>
+
 
                     </LinearLayout>
 

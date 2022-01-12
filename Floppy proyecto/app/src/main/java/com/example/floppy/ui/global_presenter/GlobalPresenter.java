@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import com.example.floppy.domain.models.Estado;
 import com.example.floppy.domain.models.Estado_User;
 import com.example.floppy.domain.models.User;
+import com.example.floppy.ui.message.MessagePresenter;
 
 import java.util.ArrayList;
 
@@ -31,4 +32,12 @@ public interface GlobalPresenter {
     void insertStickers(String stickersReceiver);
 
     void beginDownloadApp(BroadcastReceiver onDownloadComplete);
+
+    void recordAudio(String idChat, MessagePresenter messagePresenter);
+
+    /**
+     *@param  data data[0] => path
+     *             data[1] => name del archivo
+     * */
+    void stopRecord(String[] data, String idChat, MessagePresenter messagePresenter);
 }

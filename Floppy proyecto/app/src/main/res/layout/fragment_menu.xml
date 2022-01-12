@@ -3,21 +3,25 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<data>
-    <variable
-        name="adapterChats"
-        type="com.example.floppy.ui.menu.adapters.AdapterChat" />
-    <variable
-        name="adapterStates"
-        type="com.example.floppy.ui.menu.adapters.AdapterEstado" />
-    <variable
-        name="layoutChat"
-        type="androidx.recyclerview.widget.RecyclerView.LayoutManager" />
-    <variable
-        name="layoutState"
-        type="androidx.recyclerview.widget.RecyclerView.LayoutManager" />
 
-</data>
+    <data>
+        <variable
+            name="adapterChats"
+            type="com.example.floppy.ui.menu.adapters.AdapterChat" />
+
+        <variable
+            name="adapterStates"
+            type="com.example.floppy.ui.menu.adapters.AdapterEstado" />
+
+        <variable
+            name="layoutChat"
+            type="androidx.recyclerview.widget.RecyclerView.LayoutManager" />
+
+        <variable
+            name="layoutState"
+            type="androidx.recyclerview.widget.RecyclerView.LayoutManager" />
+    </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -75,15 +79,16 @@
                                 android:layout_marginLeft="@dimen/_2dp">
 
                                 <TextView
+                                    android:id="@+id/name"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
                                     android:fontFamily="@font/christmas_cat"
-                                    android:text="@string/app_name"
                                     android:gravity="center_vertical"
+                                    android:letterSpacing="0.1"
+                                    android:text="@string/app_name"
                                     android:textColor="@color/blanco1"
                                     android:textSize="@dimen/_30sp"
-                                    android:letterSpacing="0.1"
                                     android:textStyle="bold" />
 
                                 <RelativeLayout
@@ -198,9 +203,9 @@
                                     android:id="@+id/reciclerEstados"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    app:layoutManager="@{layoutState}"
                                     android:adapter="@{adapterStates}"
-                                    android:layoutAnimation="@anim/layoutanim_recycler_estado" />
+                                    android:layoutAnimation="@anim/layoutanim_recycler_estado"
+                                    app:layoutManager="@{layoutState}" />
                             </RelativeLayout>
 
                         </LinearLayout>
@@ -218,10 +223,10 @@
                     android:id="@+id/reciclerChats"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:adapter="@{adapterChats}"
-                    app:layoutManager="@{layoutChat}"
                     android:layout_marginTop="@dimen/_20dp"
-                    android:layoutAnimation="@anim/layoutanim_recycler_chats" />
+                    android:adapter="@{adapterChats}"
+                    android:layoutAnimation="@anim/layoutanim_recycler_chats"
+                    app:layoutManager="@{layoutChat}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

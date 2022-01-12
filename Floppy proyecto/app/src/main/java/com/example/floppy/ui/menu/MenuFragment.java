@@ -75,12 +75,10 @@ public class MenuFragment extends Fragment implements MenuView{
 
         presenterMaster.showHandlingGeneral(true);
         presenterMaster.showTollbar(true);
-
         binding.setLayoutState(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.reciclerEstados.setHasFixedSize(true);
         binding.setLayoutChat(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         binding.reciclerChats.setHasFixedSize(true);
-
 
         Extensions.Companion.listenerScroll(binding.scrollMenuFragment, up -> {
             presenterMaster.showTollbar(up);

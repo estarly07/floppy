@@ -1,6 +1,5 @@
 package com.example.floppy.data.Conexion.remote;
 
-import com.example.floppy.Callbacks.CallBackObjects;
 import com.example.floppy.Callbacks.CallbackList;
 import com.example.floppy.domain.remote.Interactor;
 import com.example.floppy.domain.models.Chat;
@@ -36,7 +35,7 @@ public interface ConnectionFirestore {
 
     void getMessagesByIdChat(Chat chat, CallbackList<Message> callback, MessagePresenter presenter);
 
-    void sendMessages(String idChat, String conversation,String date);
+    void sendMessages(String idChat, String conversation);
 
     void cancelListener();
 

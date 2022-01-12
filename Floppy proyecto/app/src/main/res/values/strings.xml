@@ -55,5 +55,6 @@
     <string name="addAllStickers">¿Quieres añadir los stickers?</string>
     <string name="update">Modificación</string>
     <string name="accept">Aceptar</string>
+    <string name="stopRecord">Toca cualquier parte\npara detener la grabación</string>
 
 </resources>

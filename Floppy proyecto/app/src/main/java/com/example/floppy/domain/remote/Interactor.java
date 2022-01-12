@@ -1,5 +1,7 @@
 package com.example.floppy.domain.remote;
 
+import android.net.Uri;
+
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.models.Chat;
 import com.example.floppy.domain.models.Estado_User;
@@ -35,7 +37,7 @@ public interface Interactor {
 
     void getAllUsers(ContactsPresenter contactsPresenter);
 
-    void sendMessages(String idChat, String conversation,String date);
+    void sendMessages(String idChat, String conversation);
 
     void getEstadoUser(String idUser);
 
@@ -52,4 +54,6 @@ public interface Interactor {
     void destroyAllListenersFriends();
 
     void friendIsWriting(FriendEntity friendEntity, MenuPresenter menuPresenter, Message message);
+
+    void savedAudio(Uri uri);
 }

@@ -1,16 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.Chat.ChatActivity">
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentoChat"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context=".ui.Chat.ChatActivity">
 
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_chat" />
-</RelativeLayout>
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentoChat"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_chat" />
+        <RelativeLayout
+            android:id="@+id/btnStop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:layoutAnimation="@anim/layout_scale_center"
+            android:background="@color/traslucidoNegro">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="@dimen/_200dp"
+                    app:lottie_autoPlay="true"
+                    android:layout_gravity="center"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/record"
+                    android:layout_height="@dimen/_200dp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stopRecord"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    style="@style/Title"
+                    android:textColor="@color/white"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

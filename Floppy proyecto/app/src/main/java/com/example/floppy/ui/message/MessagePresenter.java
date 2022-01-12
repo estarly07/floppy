@@ -61,4 +61,6 @@ public interface MessagePresenter {
     void deleteSticker(String message);
 
     void searchFriend(String idUser);
+
+    void recordAudio(String idChat);
 }

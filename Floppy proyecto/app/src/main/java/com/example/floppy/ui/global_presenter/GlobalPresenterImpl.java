@@ -4,18 +4,23 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.net.Uri;
 
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.local.InteractorLocal;
 import com.example.floppy.domain.local.InteractorSqlite;
+import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.remote.Interactor;
 import com.example.floppy.domain.remote.InteractorFirestoreImpl;
 import com.example.floppy.domain.models.Estado;
 import com.example.floppy.domain.models.Estado_User;
 import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.GlobalView;
+import com.example.floppy.ui.message.MessagePresenter;
+import com.example.floppy.utils.Global.GlobalUtils;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -100,5 +105,21 @@ public class GlobalPresenterImpl implements GlobalPresenter {
     @Override
     public void beginDownloadApp(BroadcastReceiver onDownloadComplete) {
         globalView.beginDownload(onDownloadComplete);
+    }
+
+    @Override
+    public void recordAudio(String idChat, MessagePresenter messagePresenter) {
+        globalView.recordAudio(GlobalUtils.getDateNow(), idChat, messagePresenter );
+    }
+
+    @Override
+    public void stopRecord(String[] data, String idChat, MessagePresenter messagePresenter) {
+        globalView.stopAudio();
+        interactor.savedAudio( Uri.fromFile(new File(data[0]+"/"+data[1]+".3gp")));
+        Message message = new Message();
+        message.setMessage(data[1]);
+        message.setTypeMessage(Message.TypesMessages.RECORD);
+        messagePresenter.sendMessages(idChat,message);
+
     }
 }

@@ -2,6 +2,7 @@ package com.example.floppy.domain.remote;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 
 import com.example.floppy.data.Conexion.remote.Firestore;
 import com.example.floppy.domain.entities.FriendEntity;
@@ -176,8 +177,8 @@ public class InteractorFirestoreImpl implements Interactor{
     }
 
     @Override
-    public void sendMessages(String idChat, String conversation, String date) {
-      firestore.sendMessages(idChat,conversation, date);
+    public void sendMessages(String idChat, String conversation) {
+      firestore.sendMessages(idChat,conversation);
     }
 
     @Override
@@ -229,6 +230,11 @@ public class InteractorFirestoreImpl implements Interactor{
     @Override
     public void friendIsWriting(FriendEntity friendEntity, MenuPresenter menuPresenter, Message message) {
         menuPresenter.friendIsWriting(friendEntity, message);
+    }
+
+    @Override
+    public void savedAudio(Uri uri) {
+        firestore.savedAudio(uri);
     }
 
 }

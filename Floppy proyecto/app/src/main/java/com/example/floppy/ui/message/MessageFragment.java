@@ -12,18 +12,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -34,6 +30,7 @@ import com.example.floppy.domain.models.Estado_User;
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.entities.StickersEntity;
+import com.example.floppy.ui.Chat.ChatActivity;
 import com.example.floppy.ui.aboutfriend.AboutFriendFragment;
 import com.example.floppy.ui.factory.DialogFactory;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
@@ -41,7 +38,6 @@ import com.example.floppy.R;
 import com.example.floppy.ui.mastercontrol.MasterControl;
 import com.example.floppy.utils.Animations;
 import com.example.floppy.utils.Extensions;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 
@@ -58,10 +54,9 @@ public class MessageFragment extends Fragment implements MessageView {
 
     private FragmentChatBinding binding;
 
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        presenterMaster = MasterControl.presenter;
+        presenterMaster = ChatActivity.presenter;
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_chat, container, false);
         return binding.getRoot();
     }
@@ -80,7 +75,6 @@ public class MessageFragment extends Fragment implements MessageView {
 
         binding.includeSticker.recyclerStickers . setHasFixedSize(true);
         binding.includeSticker.recyclerStickers . setLayoutManager(new GridLayoutManager(view.getContext(), 4));
-
         Extensions.Companion.listenerFocusChange(binding.edtMensaje, (view1,showStickers) -> {
             if(showStickers){
                 Extensions.Companion.hideKeyboard(view1);
@@ -105,14 +99,27 @@ public class MessageFragment extends Fragment implements MessageView {
         });
         presenter.getStateUser(user.getIdUser());
 
+
         binding.btnLogin.setOnClickListener(view1 -> {
-            message.setMessage(binding.edtMensaje.getText().toString().trim());
-            message.setTypeMessage(Message.TypesMessages.TEXT);
-            sendMessage();
+
+            if(binding.edtMensaje.getText().toString().trim().length() == 0){
+                presenter.recordAudio(idChat);
+            }else{
+                message.setMessage(binding.edtMensaje.getText().toString().trim());
+                message.setTypeMessage(Message.TypesMessages.TEXT);
+                sendMessage();
+            }
         });
 
         binding.includeSticker.btnShowDialogAddSticker.setOnClickListener(view13 -> { presenter.showDialogAddSticker(); });
-
+        Extensions.Companion.listenerEditText(binding.edtMensaje,s -> {
+            if(s.length() > 0){
+                binding.btnLogin.setImageResource(R.drawable.ic_send);
+            }else{
+                binding.btnLogin.setImageResource(R.drawable.ic_recovery);
+            }
+            return null;
+        });
 
         binding.reciclerChat . setHasFixedSize(false);
         binding.reciclerChat . setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, true));

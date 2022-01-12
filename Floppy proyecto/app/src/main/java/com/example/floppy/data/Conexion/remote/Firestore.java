@@ -2,9 +2,9 @@ package com.example.floppy.data.Conexion.remote;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
-import com.example.floppy.Callbacks.CallBackObjects;
 import com.example.floppy.Callbacks.CallbackList;
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.models.StateMessage;
@@ -22,13 +22,13 @@ import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.models.User;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
@@ -37,7 +37,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
 public class Firestore extends GlobalUtils implements ConnectionFirestore {
@@ -47,6 +46,7 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
     private Activity          activity;
     private InputResult       inputResult;
     private ArrayList<User>   users;
+    private StorageReference  storageReference = FirebaseStorage.getInstance().getReference();
 
     private ArrayList<ArrayList<Estado>> estados;
     final private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -321,8 +321,8 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
     }
 
     @Override
-    public void sendMessages(String idChat, String conversation, String date) {
-        firebaseFirestore.collection(COLLECTIONS[2]).document(idChat).update("lastMessage", date);
+    public void
+    sendMessages(String idChat, String conversation) {
         firebaseFirestore.collection(COLLECTIONS[2]).document(idChat).update("mensajes", conversation);
     }
 
@@ -428,5 +428,9 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                 listenerRegistration.remove();
             }
         }
+    }
+
+    public void savedAudio(Uri uri) {
+        storageReference.child("audios/"+uri.getLastPathSegment()).putFile(uri);
     }
 }

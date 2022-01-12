@@ -3,7 +3,10 @@ package com.example.floppy.ui;
 import android.content.BroadcastReceiver;
 
 import com.example.floppy.domain.models.Estado;
+import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.models.User;
+import com.example.floppy.ui.menu.MenuPresenter;
+import com.example.floppy.ui.message.MessagePresenter;
 
 import java.util.ArrayList;
 
@@ -42,4 +45,8 @@ public interface GlobalView {
     void nextActivity();
 
     void beginDownload(BroadcastReceiver broadcastReceiver);
+
+    void recordAudio(String name, String idChat, MessagePresenter messagePresenter);
+
+    void stopAudio();
 }

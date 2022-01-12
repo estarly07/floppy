@@ -87,6 +87,11 @@
             </RelativeLayout>
         </RelativeLayout>
 
+        <include
+            android:id="@+id/msgAudio"
+            layout="@layout/message_type_record"
+            android:visibility="gone" />
+
         <RelativeLayout
             android:id="@+id/messageTypeSticker"
             android:layout_width="match_parent"
