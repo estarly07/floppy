@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 
 import androidx.core.content.FileProvider;
 
 import com.example.floppy.BuildConfig;
+import com.example.floppy.databinding.ItemMensajeBinding;
 import com.example.floppy.domain.entities.ChatEntity;
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.entities.MessageEntity;
@@ -25,6 +29,7 @@ import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.models.User;
 import com.example.floppy.data.Services.ServiceDownload;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
+import com.example.floppy.utils.Animations;
 import com.example.floppy.utils.Extensions;
 import com.example.floppy.utils.Global.GlobalUtils;
 import com.google.gson.Gson;
@@ -42,8 +47,10 @@ public class MessagePresenterImpl implements MessagePresenter {
     private InteractorLocal    interactorLocal;
     private GlobalPresenter    globalPresenter;
     private ArrayList<Message> messages = new ArrayList<>();
+    private MediaPlayer        player;
 
     public MessagePresenterImpl(Context context, Activity activity, MessageView messageView, GlobalPresenter globalPresenter) {
+        player               = new MediaPlayer();
         this.context         = context;
         this.messageView     = messageView;
         this.interactor      = new InteractorFirestoreImpl(context, globalPresenter, activity);
@@ -327,5 +334,51 @@ public class MessagePresenterImpl implements MessagePresenter {
         chat.setUsers   (users);
         chat.setMensajes(new Message[]{});
         new Thread(() -> interactor.getMessages(this, chat)).start();
+    }
+    int position;
+    String path="";
+    AdapterMessage.ViewHolder oldViewHolder;
+    @Override
+    public void audio(Message message, AdapterMessage.ViewHolder viewHolder) {
+        if (this.path.equals(message.getMessage())&& player != null){
+            if (player.isPlaying()) {
+                position = player.getCurrentPosition();
+                player.pause();
+            } else {
+                player.seekTo(position);
+                player.start();
+            }
+           viewHolder.binding.msgAudio.setIsPlaying(player.isPlaying());
+            return;
+        }
+
+        if (!path.equals("")&&!path.equals(message.getMessage())&& player!=null && player.isPlaying()){
+            player.pause();
+            oldViewHolder.binding.msgAudio.setIsPlaying(player.isPlaying());
+        }
+        oldViewHolder = viewHolder;
+        path = message.getMessage();
+        player.reset();
+
+        player.setAudioAttributes(new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .setLegacyStreamType(AudioManager.STREAM_MUSIC)
+                .build());
+        try {
+            player.setOnPreparedListener(mediaPlayer -> {
+                mediaPlayer.start();
+                viewHolder.binding.msgAudio.setIsPlaying(player.isPlaying());
+            });
+            player.setDataSource(context.getExternalFilesDir(null)+"/audios/"+path+".mp3");
+            player.prepareAsync();
+            player.setOnCompletionListener(mp -> {
+                viewHolder.binding.msgAudio.setIsPlaying(player.isPlaying());
+                path="";
+            });
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

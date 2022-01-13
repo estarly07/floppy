@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.local.InteractorLocal;
@@ -115,11 +119,13 @@ public class GlobalPresenterImpl implements GlobalPresenter {
     @Override
     public void stopRecord(String[] data, String idChat, MessagePresenter messagePresenter) {
         globalView.stopAudio();
-        interactor.savedAudio( Uri.fromFile(new File(data[0]+"/"+data[1]+".3gp")));
+        interactor.savedAudio( Uri.fromFile(new File(data[0]+"/"+data[1]+".mp3")));
         Message message = new Message();
         message.setMessage(data[1]);
         message.setTypeMessage(Message.TypesMessages.RECORD);
         messagePresenter.sendMessages(idChat,message);
 
     }
+
+
 }

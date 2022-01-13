@@ -40,4 +40,5 @@ public interface GlobalPresenter {
      *             data[1] => name del archivo
      * */
     void stopRecord(String[] data, String idChat, MessagePresenter messagePresenter);
+
 }

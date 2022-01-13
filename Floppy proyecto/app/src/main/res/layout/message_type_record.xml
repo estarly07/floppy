@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="isPlaying"
+            type="Boolean" />
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/messageLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/_50dp"
-            android:visibility="gone"
-            android:background="@drawable/chat_recibido">
+            android:background="@drawable/chat_recibido"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/btnPlayAudio"
@@ -23,23 +27,41 @@
                 android:layout_marginTop="@dimen/_2dp"
                 android:layout_marginEnd="@dimen/_10dp"
                 android:layout_marginBottom="@dimen/_2dp"
-                android:src="@drawable/ic_baseline_play_arrow_24"
                 android:gravity="center"
                 android:padding="@dimen/_2dp"
+                android:src="@drawable/ic_baseline_play_arrow_24"
                 app:tint="@color/white" />
 
-        </RelativeLayout>
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="@dimen/_100dp"
+                android:layout_height="@dimen/_30dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_10dp"
+                android:visibility="gone"
+                app:lottie_autoPlay="true"
+                android:id="@+id/animLeft"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/play_song" />
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/barraRecibido"
+                android:layout_width="@dimen/_70dp"
+                android:layout_height="@dimen/_2dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_10dp"
+                app:cardBackgroundColor="@color/verde"
+                app:cardCornerRadius="@dimen/_10dp" />
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/messageRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:visibility="gone"
             android:layout_marginStart="@dimen/_50dp"
             android:background="@drawable/chat_enviado"
-            >
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -47,18 +69,46 @@
                 android:layout_centerInParent="true"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/btnPlayAudioEnviado"
-                    android:layout_width="@dimen/_25dp"
-                    android:layout_height="@dimen/_25dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10dp"
                     android:layout_marginTop="@dimen/_2dp"
                     android:layout_marginEnd="@dimen/_10dp"
+
                     android:layout_marginBottom="@dimen/_2dp"
-                    android:src="@drawable/ic_baseline_play_arrow_24"
-                    android:gravity="center"
-                    android:padding="@dimen/_2dp"
-                    app:tint="@color/white" />
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/btnPlayAudioEnviado"
+                        android:layout_width="@dimen/_25dp"
+                        android:layout_height="@dimen/_25dp"
+                        android:gravity="center"
+                        android:src="@drawable/ic_baseline_play_arrow_24"
+                        app:tint="@color/white" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/animRigth"
+                        android:layout_width="@dimen/_100dp"
+                        android:layout_height="@dimen/_30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/_10dp"
+                        android:visibility="@{isPlaying ? View.VISIBLE:View.GONE}"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/play_song" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/barraSound"
+                        android:layout_width="@dimen/_70dp"
+                        android:layout_height="@dimen/_2dp"
+                        android:layout_gravity="center"
+                        android:visibility="@{!isPlaying ? View.VISIBLE:View.GONE}"
+                        android:layout_marginStart="@dimen/_10dp"
+                        android:layout_marginEnd="@dimen/_10dp"
+                        app:cardBackgroundColor="@color/verde"
+                        app:cardCornerRadius="@dimen/_10dp" />
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/imgCheck"

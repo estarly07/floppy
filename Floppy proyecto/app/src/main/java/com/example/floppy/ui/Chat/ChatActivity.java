@@ -47,25 +47,6 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
 
         MessageFragment.friendEntity = friendEntity;
         binding = DataBindingUtil.setContentView(this,R.layout.activity_chat);
-        MediaPlayer player = new MediaPlayer();
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            player.setAudioAttributes(new AudioAttributes.Builder()
-//                    .setUsage(AudioAttributes.USAGE_MEDIA)
-//                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-//                    .setLegacyStreamType(AudioManager.STREAM_MUSIC)
-//                    .build());
-//        } else {
-//            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//        }
-        try {
-            player.setOnPreparedListener(mediaPlayer -> mediaPlayer.start());
-//            System.out.println(" "+context.getExternalFilesDir(null)+"/audios/"+message+".mp3");
-            player.setDataSource("/storage/emulated/0/Android/data/com.example.floppy/files/audios/2022-0-12 15:38:473.mp3");
-            player.prepareAsync();
-            player.start();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
         presenter = new GlobalPresenterImpl(this, this, this);
 
     }
@@ -146,7 +127,8 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     @Override
     public void recordAudio(String name, String idChat, MessagePresenter messagePresenter) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 3);
 
@@ -159,9 +141,8 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
             file = new File(getExternalFilesDir(null), "/audios");
             file.mkdirs();
 
-            recorder.setOutputFile(file.getAbsolutePath()+"/"+name+".3gp");
+            recorder.setOutputFile(file.getAbsolutePath()+"/"+name+".mp3");
 
-            System.out.println(".recordAudio");
             try {
                 recorder.prepare();
                 recorder.start();

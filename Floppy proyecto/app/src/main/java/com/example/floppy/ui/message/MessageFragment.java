@@ -165,7 +165,16 @@ public class MessageFragment extends Fragment implements MessageView {
         activity.runOnUiThread(() -> {
             this.idChat = idChat;
             AdapterMessage adapterMessage = new AdapterMessage(messages, myId);
-            adapterMessage.setClick((view, position, message) -> presenter.showDialogAddOrDeleteSticker(message));
+            adapterMessage.setClick((view, position, message,viewHolder)-> {
+                switch (message.getTypeMessage()){
+                    case STICKER:
+                        presenter.showDialogAddOrDeleteSticker(message);
+                        break;
+                    case RECORD:
+                        presenter.audio(message,viewHolder);
+                        break;
+                }
+                });
 //            adapterMensage.setHasStableIds(true);
             binding.reciclerChat.setAdapter(adapterMessage);
 //            binding.reciclerChat.scheduleLayoutAnimation();

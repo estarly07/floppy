@@ -13,9 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.floppy.databinding.ItemMensajeBinding;
@@ -46,7 +48,7 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
     }
 
     public interface Click {
-        void clickMessage(View view, int position, Message message);
+        void clickMessage(View view, int position, Message message,ViewHolder viewHolder);
     }
 
     private Click click;
@@ -55,8 +57,8 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
         this.click = click;
     }
 
-
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.bind();
         switch (messages.get(position).getTypeMessage()){
             case RECORD:
                 holder.binding.messageTypeText   .setVisibility(View.GONE);
@@ -64,18 +66,14 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
                 holder.binding.msgAudio.getRoot().setVisibility(View.VISIBLE);
 
                 if (messages.get(position).getUser().equals(myId)){
-                    holder.binding.msgAudio.getRoot().setOnClickListener(view -> playAudio(view.getContext(),messages.get(position).getMessage()));
                     holder.binding.msgAudio.messageLeft .setVisibility(View.GONE);
                     holder.binding.msgAudio.messageRight.setVisibility(View.VISIBLE);
-//                    holder.binding.txtMensajeEnviado.setText(messages.get(position).getMessage());
-
                     Extensions.Companion.changeDoubleCheckColor(
                             holder.binding.msgAudio.imgCheck,
                             messages.get(position).getState() == StateMessage.CHECK);
                 }else{
                     holder.binding.msgAudio.messageRight.setVisibility(View.GONE);
                     holder.binding.msgAudio.messageLeft .setVisibility(View.VISIBLE);
-//                    holder.binding.txtMensaje  .setText(messages.get(position).getMessage());
                 }
                 break;
 
@@ -130,34 +128,12 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
                 break;
         }
         holder.binding.getRoot().setOnClickListener(view -> {
-          if(click != null) { click.clickMessage(view,position,messages.get(position)); }
+          if(click != null) { click.clickMessage(view,position,messages.get(position),holder); }
         });
 
     }
 
-    private void playAudio(Context context,String message) {
 
-        MediaPlayer player = new MediaPlayer();
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            player.setAudioAttributes(new AudioAttributes.Builder()
-//                    .setUsage(AudioAttributes.USAGE_MEDIA)
-//                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-//                    .setLegacyStreamType(AudioManager.STREAM_MUSIC)
-//                    .build());
-//        } else {
-//            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//        }
-        try {
-            player.setOnPreparedListener(mediaPlayer -> mediaPlayer.start());
-            System.out.println(" "+context.getExternalFilesDir(null)+"/audios/"+message+".mp3");
-            player.setDataSource("/storage/emulated/0/Android/data/com.example.floppy/files/audios/2022-0-12 15:38:473.mp3");
-            player.prepareAsync();
-            player.start();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-    }
 
 
     public int getItemCount() {
@@ -172,5 +148,8 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
             this.binding = binding;
         }
 
+        public void bind() {
+            binding.msgAudio.setIsPlaying(false);
+        }
     }
 }

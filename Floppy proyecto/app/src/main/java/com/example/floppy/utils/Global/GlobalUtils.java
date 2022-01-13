@@ -27,11 +27,11 @@ public class GlobalUtils {
     @SuppressLint("DefaultLocale")
     public static String getDateNow() {
         Calendar calendar = Calendar.getInstance();
-        return  calendar.get(Calendar.YEAR) +"-"+
-                calendar.get(Calendar.MONTH)+"-"+
-                calendar.get(Calendar.DAY_OF_MONTH)+""+
-                calendar.get(Calendar.HOUR_OF_DAY)+":"+
-                calendar.get(Calendar.MINUTE)+":"+
+        return  calendar.get(Calendar.YEAR) +"_"+
+                calendar.get(Calendar.MONTH)+"_"+
+                calendar.get(Calendar.DAY_OF_MONTH)+"_"+
+                calendar.get(Calendar.HOUR_OF_DAY)+"_"+
+                calendar.get(Calendar.MINUTE)+"_"+
                 calendar.get(Calendar.MILLISECOND);
     }
     //Strings

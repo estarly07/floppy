@@ -63,4 +63,6 @@ public interface MessagePresenter {
     void searchFriend(String idUser);
 
     void recordAudio(String idChat);
+
+    void audio(Message message, AdapterMessage.ViewHolder viewHolder);
 }
