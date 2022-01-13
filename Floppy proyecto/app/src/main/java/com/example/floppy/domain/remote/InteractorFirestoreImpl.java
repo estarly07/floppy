@@ -233,8 +233,17 @@ public class InteractorFirestoreImpl implements Interactor{
     }
 
     @Override
-    public void savedAudio(Uri uri) {
-        firestore.savedAudio(uri);
+    public void savedAudio(String name, Uri uri, String idChat, MessagePresenter messagePresenter) {
+        countDownLatch = new CountDownLatch(1);
+        firestore.savedAudio(uri, countDownLatch);
+        try {
+            countDownLatch.await();
+            if(firestore.getInputResult().getResponse()){
+                presenterMaster.sendMessage(name,idChat,messagePresenter);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

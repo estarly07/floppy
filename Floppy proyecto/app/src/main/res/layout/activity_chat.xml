@@ -2,7 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <data>
+        <import type="android.view.View"/>
+        <import type="android.R.raw"/>
+        <variable
+            name="isStop"
+            type="Boolean" />
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,16 +39,36 @@
                     app:lottie_autoPlay="true"
                     android:layout_gravity="center"
                     app:lottie_loop="true"
+                    android:visibility="@{!isStop? View.VISIBLE:View.GONE}"
                     app:lottie_rawRes="@raw/record"
+                    android:layout_height="@dimen/_200dp"
+                    />
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="@dimen/_200dp"
+                    app:lottie_autoPlay="true"
+                    android:layout_gravity="center"
+                    android:visibility="@{isStop? View.VISIBLE:View.GONE}"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/wait_audio"
                     android:layout_height="@dimen/_200dp"
                     />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/stopRecord"
+                    android:text="@{!isStop? @string/stopRecord: @string/wait_audio}"
                     android:gravity="center"
                     android:layout_gravity="center"
                     style="@style/Title"
+                    android:textColor="@color/white"
+                    />
+                <TextView
+                    android:id="@+id/txtTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="30s"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    style="@style/subtitle"
                     android:textColor="@color/white"
                     />
             </LinearLayout>

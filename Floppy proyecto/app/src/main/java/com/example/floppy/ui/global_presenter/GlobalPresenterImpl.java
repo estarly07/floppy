@@ -4,11 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.local.InteractorLocal;
@@ -113,18 +109,23 @@ public class GlobalPresenterImpl implements GlobalPresenter {
 
     @Override
     public void recordAudio(String idChat, MessagePresenter messagePresenter) {
-        globalView.recordAudio(GlobalUtils.getDateNow(), idChat, messagePresenter );
+        globalView.recordAudio(GlobalUtils.getDateNow()+idChat, idChat, messagePresenter );
     }
 
     @Override
     public void stopRecord(String[] data, String idChat, MessagePresenter messagePresenter) {
         globalView.stopAudio();
-        interactor.savedAudio( Uri.fromFile(new File(data[0]+"/"+data[1]+".mp3")));
+        globalView.showHandlingGeneral(true);
+        new Thread(() -> interactor.savedAudio(data[1], Uri.fromFile(new File(data[0]+"/"+data[1]+".mp3")),idChat,messagePresenter)).start();
+    }
+
+    @Override
+    public void sendMessage(String name, String idChat, MessagePresenter messagePresenter) {
         Message message = new Message();
-        message.setMessage(data[1]);
+        message.setMessage(name);
         message.setTypeMessage(Message.TypesMessages.RECORD);
         messagePresenter.sendMessages(idChat,message);
-
+        globalView.showHandlingGeneral(false);
     }
 
 

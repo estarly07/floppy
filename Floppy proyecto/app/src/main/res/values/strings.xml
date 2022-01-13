@@ -56,5 +56,6 @@
     <string name="update">Modificación</string>
     <string name="accept">Aceptar</string>
     <string name="stopRecord">Toca cualquier parte\npara detener la grabación</string>
+    <string name="wait_audio">Espera a que se envie el audio</string>
 
 </resources>

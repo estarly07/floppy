@@ -55,5 +55,5 @@ public interface Interactor {
 
     void friendIsWriting(FriendEntity friendEntity, MenuPresenter menuPresenter, Message message);
 
-    void savedAudio(Uri uri);
+    void savedAudio(String name, Uri uri, String idChat, MessagePresenter messagePresenter);
 }

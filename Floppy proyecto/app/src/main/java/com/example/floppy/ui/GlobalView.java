@@ -3,9 +3,7 @@ package com.example.floppy.ui;
 import android.content.BroadcastReceiver;
 
 import com.example.floppy.domain.models.Estado;
-import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.models.User;
-import com.example.floppy.ui.menu.MenuPresenter;
 import com.example.floppy.ui.message.MessagePresenter;
 
 import java.util.ArrayList;
@@ -16,7 +14,7 @@ public interface GlobalView {
     void showToast(String msg);
 
     /**
-     * VISTA DEUN PROGRESS EL CUAL ESTA EN LA MITADD DE LA VISTA
+     * VISTA DEUN PROGRESS EL CUAL ESTA EN LA MITAD DE LA VISTA
      */
     void showHandlingGeneral(boolean show);
 
@@ -36,7 +34,7 @@ public interface GlobalView {
 
     /**
      * QUITAR TOOLBAR AL HACER SCROLL
-     * @show
+     * @param show
      */
     void animToolbar(boolean show);
 

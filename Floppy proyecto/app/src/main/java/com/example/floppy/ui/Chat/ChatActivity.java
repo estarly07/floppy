@@ -9,9 +9,9 @@ import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 
 import com.example.floppy.R;
 import com.example.floppy.databinding.ActivityChatBinding;
@@ -91,7 +91,12 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
 
     @Override
     public void showHandlingGeneral(boolean show) {
-
+        runOnUiThread(() ->{
+            if (show)
+                binding.setIsStop(true);
+            else
+                Animations.Companion.animVanish(binding.btnStop);
+        });
     }
 
     @Override
@@ -133,7 +138,9 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 3);
 
         } else {
+            binding.setIsStop(false);
             Animations.Companion.animAppear(binding.btnStop);
+            binding.setIsStop(false);
             recorder = new MediaRecorder();
             recorder.setAudioSource (MediaRecorder.AudioSource.MIC);
             recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -146,6 +153,8 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
             try {
                 recorder.prepare();
                 recorder.start();
+                initTimerRecord(new String[]{file.getAbsolutePath(),name}, idChat,messagePresenter);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -153,17 +162,36 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
         }
 
         binding.btnStop.setOnClickListener(v -> {
-            presenter.stopRecord(new String[]{file.getAbsolutePath(),name}, idChat,messagePresenter);
+            if(!binding.getIsStop()){
+                presenter.stopRecord(new String[]{file.getAbsolutePath(),name}, idChat,messagePresenter);
+            }
         });
 
+    }
+    CountDownTimer countDownTimer;
+
+    private void initTimerRecord(String[] data, String idChat, MessagePresenter messagePresenter) {
+        countDownTimer = new CountDownTimer(30000,1000) {
+            @Override
+            public void onTick(long l) {
+                binding.txtTime.setText((int) (l/1000)+"s");
+            }
+
+            @Override
+            public void onFinish() {
+                presenter.stopRecord(data, idChat,messagePresenter);
+            }
+        }.start();
     }
 
     @Override
     public void stopAudio() {
-        if(recorder != null){
+        if(recorder != null ){
+            if(countDownTimer!=null && !binding.txtTime.getText().equals("0s")){
+                countDownTimer.cancel();
+            }
             recorder.stop();
             recorder.release();
-            Animations.Companion.animVanish(binding.btnStop);
         }
     }
 }

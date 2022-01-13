@@ -41,4 +41,6 @@ public interface GlobalPresenter {
      * */
     void stopRecord(String[] data, String idChat, MessagePresenter messagePresenter);
 
+    void sendMessage(String name,String idChat, MessagePresenter messagePresenter);
+
 }

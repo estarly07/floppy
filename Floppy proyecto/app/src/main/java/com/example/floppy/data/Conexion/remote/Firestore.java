@@ -5,6 +5,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.floppy.Callbacks.CallbackList;
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.models.StateMessage;
@@ -20,6 +22,8 @@ import com.example.floppy.domain.models.Estado_User;
 import com.example.floppy.domain.models.InputResult;
 import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,8 +33,10 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -315,6 +321,9 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
             if(!messages.get(i).getUser().equals(idOwner) && messages.get(i).getState() == StateMessage.DELIVERED){
                 messages.get(i).setState(StateMessage.CHECK);
                 update = true;
+                if(messages.get(i).getTypeMessage()== Message.TypesMessages.RECORD){
+                    downloadFile(messages.get(i).getMessage(),Message.TypesMessages.RECORD);
+                }
             }
         }
         if(update){ firebaseFirestore.collection(COLLECTIONS[2]).document(idChat).update("mensajes",new Gson().toJson(messages) ); }
@@ -421,6 +430,31 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
         }));
     }
 
+    /**DESCARGAR ARCHIVOS DE STORAGE DE FIREBASE
+     *@param nameFile    nombre del archivo
+     *@param typeMessage tipo de archivo
+     * */
+    void downloadFile(String nameFile, Message.TypesMessages typeMessage){
+//        new Thread(() -> {
+            File localFile;
+            switch (typeMessage){
+                case RECORD:
+                File file= new File(context.getExternalFilesDir(null), "/audios/");
+                if(!file.exists()){ file.mkdirs(); }
+
+                localFile = new File(context.getExternalFilesDir(null), "/audios/"+nameFile+".mp3");
+                storageReference.child("audios/"+nameFile+".mp3").getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+                    System.out.println("LIUSTOOOO");
+                }).addOnFailureListener(exception -> {
+                    System.out.println("ERROR "+exception.getMessage());
+                });
+                break;
+            }
+//        }).start();
+
+
+    }
+
     public void destroyAllListenersFriends(){
         if(!listenersfriends.isEmpty()){
             for (ListenerRegistration listenerRegistration:
@@ -430,7 +464,14 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
         }
     }
 
-    public void savedAudio(Uri uri) {
-        storageReference.child("audios/"+uri.getLastPathSegment()).putFile(uri);
+    public void savedAudio(Uri uri,CountDownLatch countDownLatch) {
+        storageReference.child("audios/"+uri.getLastPathSegment()).putFile(uri).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                inputResult.setResponse(true);
+            }else{
+                inputResult.setResponse(false);
+            }
+            countDownLatch.countDown();
+        });
     }
 }

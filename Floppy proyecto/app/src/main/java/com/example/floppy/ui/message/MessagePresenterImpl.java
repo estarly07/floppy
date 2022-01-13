@@ -71,7 +71,6 @@ public class MessagePresenterImpl implements MessagePresenter {
         allMessages.add(0,message);
 
         Gson gson = new Gson();
-        System.out.println("GSON "+gson.toJson(allMessages));
 
         new Thread(() -> {
             interactor.sendMessages(idChat,gson.toJson(allMessages));

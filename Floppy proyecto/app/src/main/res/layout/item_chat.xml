@@ -93,7 +93,6 @@
                                 android:id="@+id/txtSticker"
                                 android:layout_width="@dimen/_30dp"
                                 android:layout_height="@dimen/_30dp"
-                                android:src="@drawable/ejemplo"
                                 android:visibility="invisible" />
 
                             <TextView

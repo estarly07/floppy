@@ -15,7 +15,7 @@
             android:id="@+id/messageLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/_50dp"
+            android:layout_marginEnd="@dimen/_50dp"
             android:background="@drawable/chat_recibido"
             android:visibility="gone">
 
@@ -33,11 +33,11 @@
                 app:tint="@color/white" />
 
             <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="@dimen/_100dp"
+                android:layout_width="@dimen/_70dp"
                 android:layout_height="@dimen/_30dp"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/_10dp"
-                android:visibility="gone"
+                android:visibility="@{isPlaying ? View.VISIBLE:View.GONE}"
                 app:lottie_autoPlay="true"
                 android:id="@+id/animLeft"
                 app:lottie_loop="true"
@@ -45,9 +45,10 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/barraRecibido"
-                android:layout_width="@dimen/_70dp"
+                android:layout_width="@dimen/_55dp"
                 android:layout_height="@dimen/_2dp"
                 android:layout_gravity="center"
+                android:visibility="@{!isPlaying ? View.VISIBLE:View.GONE}"
                 android:layout_marginStart="@dimen/_10dp"
                 android:layout_marginEnd="@dimen/_10dp"
                 app:cardBackgroundColor="@color/verde"

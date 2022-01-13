@@ -101,32 +101,39 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
             Animations.Companion.animVanish(holder.binding.txtMessage);
             System.out.println("HOUR "+messages.get(position).getHora());
             holder.binding.txtDate.setText(messages.get(position).getHora());
-
-            if(messages.get(position).getTypeMessage() == Message.TypesMessages.STICKER){
-                Glide.with(holder.itemView.getContext())
-                        .load(messages.get(position).getMessage())
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(holder.binding.txtSticker);
-                Animations.Companion.animAppear(holder.binding.txtSticker);
-            }else{
-
-                if(User.getInstance().getIdUser().equals(messages.get(position).getUser())){
-                    holder.binding.txtMessage.setText(messages.get(position).getMessage());
-                    Animations.Companion.animAppear(holder.binding.imgCheck);
-                    Extensions.Companion.changeDoubleCheckColor(
-                            holder.binding.imgCheck,
-                            messages.get(position).getState() == StateMessage.CHECK);
-                    if(messages.get(position).getMessage().length() >27){
-                        holder.binding.txtMessage.setText(messages.get(position).getMessage().substring(0,27)+"...");
+            switch (messages.get(position).getTypeMessage()){
+                case RECORD:{
+                    holder.binding.txtSticker.setImageResource(R.drawable.ic_bmic);
+                    Animations.Companion.animAppear(holder.binding.txtSticker);}
+                    break;
+                case STICKER:{
+                    Glide.with(holder.itemView.getContext())
+                            .load(messages.get(position).getMessage())
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(holder.binding.txtSticker);
+                    Animations.Companion.animAppear(holder.binding.txtSticker);}
+                    break;
+                case TEXT: {
+                    if(User.getInstance().getIdUser().equals(messages.get(position).getUser())){
+                        holder.binding.txtMessage.setText(messages.get(position).getMessage());
+                        Animations.Companion.animAppear(holder.binding.imgCheck);
+                        Extensions.Companion.changeDoubleCheckColor(
+                                holder.binding.imgCheck,
+                                messages.get(position).getState() == StateMessage.CHECK);
+                        if(messages.get(position).getMessage().length() >27){
+                            holder.binding.txtMessage.setText(messages.get(position).getMessage().substring(0,27)+"...");
+                        }
+                    }else{
+                        holder.binding.txtMessage.setText(messages.get(position).getMessage());
+                        if(messages.get(position).getMessage().length() >27){
+                            holder.binding.txtMessage.setText(messages.get(position).getMessage().substring(0,27)+"...");
+                        }
                     }
-                }else{
-                    holder.binding.txtMessage.setText(messages.get(position).getMessage());
-                    if(messages.get(position).getMessage().length() >27){
-                        holder.binding.txtMessage.setText(messages.get(position).getMessage().substring(0,27)+"...");
-                    }
+                    Animations.Companion.animAppear(  holder.binding.txtMessage);
                 }
-                Animations.Companion.animAppear(  holder.binding.txtMessage);
+                break;
             }
+
         }
     }
 
