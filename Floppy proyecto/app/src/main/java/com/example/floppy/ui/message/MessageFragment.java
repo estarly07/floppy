@@ -85,7 +85,7 @@ public class MessageFragment extends Fragment implements MessageView {
 
         binding.layoutInfoFriend.setOnClickListener(v->{
             AboutFriendFragment.friend = user;
-            if(friendEntity!=null){ AboutFriendFragment.friendEntity = friendEntity; }
+            AboutFriendFragment.friendEntity = friendEntity;
             NavHostFragment.findNavController(this).navigate(R.id.action_messageFragment_to_aboutFriendFragment);
 
         });

@@ -44,7 +44,7 @@ public class AboutFriendFragment extends Fragment implements AboutFriendView{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         aboutFriendPresenter = new AboutFriendPresenterImpl(getContext(),this);
-        binding.btnUpdateFriend.setOnClickListener(v->{ aboutFriendPresenter.updateFriend(friendEntity.idFriend); });
+        binding.btnUpdateFriend.setOnClickListener(v-> aboutFriendPresenter.updateFriend(friendEntity.idFriend));
 
         setInfo(view.getContext());
         Triangle triangle = new Triangle(view.getContext());

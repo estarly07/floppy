@@ -16,7 +16,7 @@ import com.example.floppy.R;
 import java.util.ArrayList;
 
 public class AdapterSticker extends RecyclerView.Adapter<AdapterSticker.ViewHolder> {
-    private ArrayList<StickersEntity> listStickers;
+    private final ArrayList<StickersEntity> listStickers;
 
     public interface Click{
         void click(View view,StickersEntity stickersEntity);

@@ -80,14 +80,11 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.binding.fontoItemChat.setBackgroundColor(holder.binding.getRoot().getContext().getResources().getColor((color)? R.color.fondoItem1:R.color.fondoItem2));
         color = !color;
-        holder.binding.imgUserItemChat.setImageResource(R.drawable.ic_sinuser);
-        if (!friends.get(position).getPhoto().equals("")) {
-            Glide.with(holder.itemView.getContext())
-                    .load(friends.get(position).getPhoto())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.binding.imgUserItemChat);
-        }
-
+        Glide.with(holder.itemView.getContext())
+                .load(friends.get(position).getPhoto())
+                .placeholder(R.drawable.ic_sinuser)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.binding.imgUserItemChat);
 
         holder.binding.txtNombreUser.setText(
                 (friendEntities.get(position).nick.equals(""))?
@@ -99,8 +96,8 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
         if(!messages.isEmpty() && messages.size() > position){
             Animations.Companion.animVanish(holder.binding.txtSticker);
             Animations.Companion.animVanish(holder.binding.txtMessage);
-            System.out.println("HOUR "+messages.get(position).getHora());
             holder.binding.txtDate.setText(messages.get(position).getHora());
+
             switch (messages.get(position).getTypeMessage()){
                 case RECORD:{
                     holder.binding.txtSticker.setImageResource(R.drawable.ic_bmic);
