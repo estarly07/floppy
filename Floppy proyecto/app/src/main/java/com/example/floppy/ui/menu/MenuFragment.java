@@ -6,12 +6,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.core.widget.NestedScrollView;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -23,9 +21,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.floppy.Callbacks.CallbackNavigationFragments;
-import com.example.floppy.data.Entitys.FriendEntity;
-import com.example.floppy.data.Models.Estado;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.databinding.FragmentMenuBinding;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.Estado;
+import com.example.floppy.domain.models.Message;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.Chat.ChatActivity;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.R;
@@ -38,13 +38,16 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MenuFragment extends Fragment implements MenuView{
-    GlobalPresenter presenterMaster;
-    MenuPresenter   presenter;
-    RecyclerView    recyclerState, recyclerChat;
-    Activity        activity;
-    RelativeLayout  message;
-    TextView        txtMessage;
-    CountDownTimer  countDownTimer;
+    private GlobalPresenter presenterMaster;
+    private MenuPresenter   presenter;
+    private Activity        activity;
+    private RelativeLayout  message;
+    private TextView        txtMessage;
+    private CountDownTimer  countDownTimer;
+    private FragmentMenuBinding binding;
+
+    ArrayList<FriendEntity> friendEntities;
+    ArrayList<User>         friends;
 
     private static CallbackNavigationFragments callbackNavigationFragments;
     public  static CallbackNavigationFragments getCallbackNavigationFragments(){ return callbackNavigationFragments;}
@@ -52,7 +55,9 @@ public class MenuFragment extends Fragment implements MenuView{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_menu, container, false);
+        binding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_menu, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -67,24 +72,20 @@ public class MenuFragment extends Fragment implements MenuView{
         presenterMaster = MasterControl.presenter;
         activity        = MasterControl.activity;
         presenter       = new MenuPresenterImpl(this, view.getContext(), activity,presenterMaster);
-        recyclerState   = view.findViewById(R.id.reciclerEstados);
-        recyclerChat    = view.findViewById(R.id.reciclerChats);
 
         presenterMaster.showHandlingGeneral(true);
         presenterMaster.showTollbar(true);
-        recyclerState  .setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerState  .setHasFixedSize(true);
-        recyclerChat   .setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerChat   .setHasFixedSize(true);
+        binding.setLayoutState(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.reciclerEstados.setHasFixedSize(true);
+        binding.setLayoutChat(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
+        binding.reciclerChats.setHasFixedSize(true);
 
-        NestedScrollView nestedScrollView = view.findViewById(R.id.scrollMenuFragment);
-        Extensions.Companion.listenerScroll(nestedScrollView, up -> {
+        Extensions.Companion.listenerScroll(binding.scrollMenuFragment, up -> {
             presenterMaster.showTollbar(up);
             return  null;
         });
 
-        CardView btnAddUser=view.findViewById(R.id.btnAddUser);
-        btnAddUser.setOnClickListener(view1 -> {
+        binding.btnAddUser.setOnClickListener(view1 -> {
 
         });
 
@@ -104,7 +105,25 @@ public class MenuFragment extends Fragment implements MenuView{
     @Override
     public void onResume() {
         super.onResume();
-        //timer(1500);
+        if(friendEntities != null){
+            System.out.println("RESUME");
+            for (FriendEntity friend:
+                 friendEntities) {
+                presenter.listenerChatFriend(friend);
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.destroyAllListenersFriends();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.destroyAllListenersFriends();
     }
 
     /**
@@ -158,16 +177,19 @@ public class MenuFragment extends Fragment implements MenuView{
             AdapterEstado adapterState = new AdapterEstado(listEstados);
             adapterState .notifyDataSetChanged();
             adapterState .setClick((vista, position, states) -> presenterMaster.showEstadoDialogo(states));
-            recyclerState.setAdapter(adapterState);
+            binding.setAdapterStates(adapterState);
         });
     }
 
+    AdapterChat adapterChat;
     @Override
-    public void showChats(User friend, FriendEntity friendEntity) {
+    public void showChats(ArrayList<User> friends, ArrayList<FriendEntity> friendEntities) {
         activity.runOnUiThread(() -> {
-            AdapterChat adapterChat = new AdapterChat(friend,friendEntity);
-            adapterChat.setHasStableIds(true);
-            adapterChat.setClick(new AdapterChat.Clic() {
+            this.friendEntities = friendEntities;
+            this.friends = friends;
+            adapterChat  = new AdapterChat(friends,friendEntities);
+//            adapterChat.setHasStableIds(true);
+            adapterChat.setClick(new AdapterChat.Click() {
                 @Override
                 public void clickPhoto(View view, int position, User friend) {
                     if (!friend.getPhoto().equals("")) presenterMaster.showUserImageDialog(friend);
@@ -181,7 +203,14 @@ public class MenuFragment extends Fragment implements MenuView{
                 }
             });
 
-            recyclerChat.setAdapter(adapterChat);
+            binding.setAdapterChats(adapterChat);
         });
+    }
+
+    @Override
+    public void friendIsWriting(FriendEntity friendEntity, Message message) {
+        if(adapterChat!=null){
+            activity.runOnUiThread(() -> adapterChat.setFriendEntities(friendEntity, message));
+        }
     }
 }

@@ -4,10 +4,9 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.floppy.data.Entitys.FriendEntity;
+import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.utils.Global.GlobalUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -21,4 +20,6 @@ public interface FriendDao {
     @Query("SELECT * FROM "+GlobalUtils.friendTable+" WHERE idFriend =:idFriend")
     FriendEntity getFriend(String idFriend);
 
+    @Query("UPDATE "+GlobalUtils.friendTable+" SET nick = :nick WHERE idFriend = :idFriend")
+    void updateFriendNick(String nick, String idFriend);
 }

@@ -1,12 +1,22 @@
 <resources>
     <string name="app_name">Floppy</string>
 
+    <string name="installApk">Instalar</string>
+    <string name="openApk">Abrir</string>
+
     <string name="comenzar">Comenzar</string>
     <string name="login">Iniciar Sesión</string>
     <string name="register">Registrar</string>
     <string name="online">Conectado</string>
     <string name="offline">Desconectado</string>
-    <string name="nick">Sin Apodo</string>
+    <string name="nick">Apodo</string>
+
+    <string name="addSticker">Añade un sticker</string>
+    <string name="howAddSticker">Ingresa la url de una imagen</string>
+    <string name="downloadFloppySticker">Descargar app</string>
+    <string name="poor">(No puedes subir imagenes porque no tenemos servidor para guardarlas somos pobres 🙄 )
+    \nSi quieres descarga nuestra aplicacion de stickers
+    </string>
 
     <string name="stickers">Tus stickers</string>
     <string name="registro">Registro</string>
@@ -24,6 +34,7 @@
     <string name="input_data">Ingresa tus datos para iniciar</string>
     <string name="mensage">Mensaje</string>
     <string name="agregar">Agregar</string>
+    <string name="delete">Eliminar sticker</string>
     <string name="about">Floppy es un proyecto que desea obtener un parecido a aplicaciones de chat tipo whatsapp y telegram 🤑\n\nQue la disfrutes :)</string>
 
     <string-array name="frases">
@@ -38,7 +49,13 @@
         <item>👉👈</item>
         <item>💩</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="url">Url</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="addAllStickers">¿Quieres añadir los stickers?</string>
+    <string name="update">Modificación</string>
+    <string name="accept">Aceptar</string>
+    <string name="stopRecord">Toca cualquier parte\npara detener la grabación</string>
+    <string name="wait_audio">Espera a que se envie el audio</string>
 
 </resources>

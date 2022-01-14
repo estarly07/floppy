@@ -1,8 +1,9 @@
 package com.example.floppy.ui.menu;
 
-import com.example.floppy.data.Models.Estado;
-import com.example.floppy.data.Entitys.FriendEntity;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.domain.models.Estado;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.Message;
+import com.example.floppy.domain.models.User;
 
 import java.util.ArrayList;
 
@@ -18,10 +19,15 @@ public interface MenuPresenter {
     void getMyFriends();
 
     /**
-     * MOSTRAR LOS CONTACTOS QUE TIENE EL USUARIO DE AMIGO
+     * AÑADIR LOS CONTACTOS QUE TIENE EL USUARIO DE AMIGOS EN UN ARRAY
      *
      * @param friend usuario que se va agregar a la lista que tiene el adapter
      */
-    void showChats(User friend);
+    void addChats(User friend);
 
+    void friendIsWriting(FriendEntity friendEntity, Message message);
+
+    void listenerChatFriend(FriendEntity friendEntity);
+
+    void destroyAllListenersFriends();
 }

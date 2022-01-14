@@ -1,15 +1,13 @@
 package com.example.floppy.data.Conexion.remote;
 
-import com.example.floppy.Callbacks.CallBackObjects;
 import com.example.floppy.Callbacks.CallbackList;
-import com.example.floppy.data.Interactor.remote.Interactor;
-import com.example.floppy.data.Models.Chat;
-import com.example.floppy.data.Models.Estado_User;
-import com.example.floppy.data.Models.Message;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.domain.remote.Interactor;
+import com.example.floppy.domain.models.Chat;
+import com.example.floppy.domain.models.Estado_User;
+import com.example.floppy.domain.models.Message;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.login.LoginPresenter;
 import com.example.floppy.ui.message.MessagePresenter;
-import com.example.floppy.ui.menu.MenuPresenter;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -25,11 +23,9 @@ public interface ConnectionFirestore {
 
     void updateUser(User user, CountDownLatch countDownLatch);
 
-    void getEstados(CountDownLatch countDownLatch, String id);
+    void getStates(CountDownLatch countDownLatch, String id);
 
     void getMyData(CountDownLatch countDownLatch, Interactor interactor, LoginPresenter presenter);
-
-    void getChat(String idChat, Interactor interactor);
 
     void searchChat(Chat chat, CountDownLatch countDownLatch);
 
@@ -37,16 +33,12 @@ public interface ConnectionFirestore {
 
     void getAllUsers(CountDownLatch countDownLatch);
 
-    void addFriend(User user, String myId, CountDownLatch countDownLatch);
-
     void getMessagesByIdChat(Chat chat, CallbackList<Message> callback, MessagePresenter presenter);
 
-    void sendMessages(String idChat, Message message);
+    void sendMessages(String idChat, String conversation);
 
     void cancelListener();
 
-    void getEstadoUser(String idUser, CallBackObjects<String> callBackObjects);
-
-    void updateEstado(String idUser, Estado_User estado_user);
+    void updateState(String idUser, Estado_User estado_user);
 
 }

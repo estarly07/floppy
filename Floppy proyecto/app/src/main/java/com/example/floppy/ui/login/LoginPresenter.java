@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 public interface LoginPresenter {
 
-    void isLogged();
+    Boolean isLogged();
 
     void validateData(String[] data,Boolean isLogin);
 

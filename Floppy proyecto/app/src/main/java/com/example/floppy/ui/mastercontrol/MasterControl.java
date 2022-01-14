@@ -2,11 +2,16 @@ package com.example.floppy.ui.mastercontrol;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 
 import com.airbnb.lottie.LottieAnimationView;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -15,21 +20,23 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.floppy.data.Models.Estado;
-import com.example.floppy.data.Models.Estado_User;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.databinding.ActivityMasterControlBinding;
+import com.example.floppy.domain.models.Estado;
+import com.example.floppy.domain.models.Estado_User;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.Chat.ChatActivity;
+import com.example.floppy.ui.factory.DialogFactory;
 import com.example.floppy.ui.message.MessageFragment;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.ui.global_presenter.GlobalPresenterImpl;
 import com.example.floppy.R;
 import com.example.floppy.ui.GlobalView;
 import com.example.floppy.ui.menu.MenuFragment;
+import com.example.floppy.ui.message.MessagePresenter;
 import com.example.floppy.utils.Animations;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -38,22 +45,42 @@ import java.util.ArrayList;
 public class MasterControl extends AppCompatActivity implements GlobalView {
 
     public static GlobalPresenter presenter;
-    public GlobalView globalView = this;
-    public static Activity activity;
-    public static User user;
+    public GlobalView             globalView = this;
+    public static Activity        activity;
+    public static User            user;
+    public static String          stickersReceiver;
+    public BroadcastReceiver      broadcastReceiver = null;
+    private ActivityMasterControlBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new GlobalPresenterImpl(this, this, this);
         activity  = this;
-        setContentView(R.layout.activity_master_control);
-        Button btnChats = findViewById(R.id.btnChats);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_master_control);
+
+        if(!stickersReceiver.equals("")){
+            presenter.insertStickers(stickersReceiver);
+        }
         presenter.updateState(Estado_User.ONLINE);
-        findViewById(R.id.btnAddFriend).setOnClickListener(view -> {
+        binding.btnAddFriend.setOnClickListener(view -> {
             MenuFragment.getCallbackNavigationFragments().navigateTo();
         });
+    }
 
+    @Override
+    public void showAlertDialog() {
+        Dialog dialog = DialogFactory.getInstance().getDialog(this, DialogFactory.TypeDialog.ADD_ALL_STICKER);
+        dialog.setCancelable(false);
+        Button btnInsertStickers = dialog.findViewById(R.id.btnAccept);
+        Button btnCancel         = dialog.findViewById(R.id.btnCancel);
+        btnInsertStickers.setOnClickListener(view -> {
+            Animations.Companion.animVanish(dialog.findViewById(R.id.btnAccept));
+            Animations.Companion.animAppear(dialog.findViewById(R.id.progress));
+            presenter.addAllStickers(stickersReceiver,dialog );
+        });
+        btnCancel.setOnClickListener(view -> dialog.dismiss());
+        dialog.show();
     }
 
     @Override
@@ -65,77 +92,84 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
      * ACCION PARA PASAR O DEVOLVER LOS ESTADOS
      */
     public interface CallBack {
-        void pasarImagen();
+        void nextImage();
 
-        void volverImagen();
+        void backImage();
     }
 
     CallBack callBack;
     private int contador = 0;
 
     @Override
-    public void showStateDialog(ArrayList<Estado> estados) {
-        RelativeLayout dialogoEstado = findViewById(R.id.include_estado);
-        ImageView imagenEstado = findViewById(R.id.imgEstado);
-        TextView txtMensage = findViewById(R.id.txtMensajeEstado);
-        LottieAnimationView animLike = findViewById(R.id.animLike);
-
-        Button btnIzq = findViewById(R.id.btnEstadoIzq);
-        Button btnCenter = findViewById(R.id.btnEstadoCenter);
-        Button btnDer = findViewById(R.id.btnEstadoRight);
-
-        ProgressBar progressEstado = findViewById(R.id.progressEstado);
+    public void showStateDialog(ArrayList<Estado> states) {
         contador = 0;
-        animAparecer(dialogoEstado);
-        progressEstado.setProgress(0);
-        View[] botones = new View[]{btnIzq, btnCenter, btnDer};
+
+        animAparecer(binding.includeEstado.getRoot());
+        binding.includeEstado.progressEstado.setProgress(0);
+        View[] buttons = new View[]{
+                binding.includeEstado.btnEstadoIzq,
+                binding.includeEstado.btnEstadoCenter,
+                binding.includeEstado.btnEstadoRight};
 
         callBack = new CallBack() {
             @Override
-            public void pasarImagen() {
+            public void nextImage() {
                 contador++;
-                mostrarEstados(estados.get(contador), txtMensage, progressEstado, botones, dialogoEstado, imagenEstado, estados.get(estados.size() - 1) == estados.get(contador), callBack, animLike);
+                showStates(states.get(contador),
+                        binding.includeEstado.txtMensajeEstado,
+                        binding.includeEstado.progressEstado,
+                        buttons,
+                        binding.includeEstado.getRoot(),
+                        binding.includeEstado.imgEstado,
+                        states.get(states.size() - 1) == states.get(contador), callBack,
+                        binding.includeEstado.animLike);
             }
 
             @Override
-            public void volverImagen() {
+            public void backImage() {
                 contador--;
-                mostrarEstados(estados.get(contador), txtMensage, progressEstado, botones, dialogoEstado, imagenEstado, estados.get(estados.size() - 1) == estados.get(contador), callBack, animLike);
+                showStates(states.get(contador),
+                        binding.includeEstado.txtMensajeEstado,
+                        binding.includeEstado.progressEstado,
+                        buttons,
+                        binding.includeEstado.getRoot(),
+                        binding.includeEstado.imgEstado,
+                        states.get(states.size() - 1) == states.get(contador), callBack,
+                        binding.includeEstado.animLike);
             }
         };
-        mostrarEstados(estados.get(contador), txtMensage, progressEstado, botones, dialogoEstado, imagenEstado, estados.get(estados.size() - 1) == estados.get(contador), callBack, animLike);
+        showStates(states.get(contador),
+                binding.includeEstado.txtMensajeEstado,
+                binding.includeEstado.progressEstado,
+                buttons,
+                binding.includeEstado.getRoot(),
+                binding.includeEstado.imgEstado,
+                states.get(states.size() - 1) == states.get(contador), callBack,
+                binding.includeEstado.animLike);
     }
 
     @Override
     public void showUsesDialog(User friend) {
-        RelativeLayout dialog = findViewById(R.id.include_fotoUser);
-        RoundedImageView imgFriend = findViewById(R.id.imgDialogoUser);
-
+        Dialog dialog = DialogFactory.getInstance().getDialog(this, DialogFactory.TypeDialog.SHOW_PHOTO_USER);
+        RoundedImageView imgFriend = dialog.findViewById(R.id.imgDialogoUser);
         Glide.with(this)
                 .load(friend.getPhoto())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imgFriend);
-
-        animAparecer(dialog);
-        dialog.setOnClickListener(view -> {
-            animDesaparecer(dialog);
-        });
+                .into( imgFriend);
+        dialog.show();
     }
 
 
 
     @Override
     public void showHandlingGeneral(boolean show) {
-        ProgressBar progressBar = findViewById(R.id.progressGeneral);
-        if (show)
-            animAparecer(progressBar);
-        else
-            animDesaparecer(progressBar);
+        if (show) animAparecer(binding.progressGeneral);
+        else animDesaparecer(binding.progressGeneral);
     }
 
 
-    private void mostrarEstados(Estado estado, TextView txtMensaje, ProgressBar progressEstado, View[] botones, View dialogoEstado,
-                                ImageView imagenEstado, boolean finish, CallBack callBack, LottieAnimationView like) {
+    private void showStates(Estado estado, TextView txtMensaje, ProgressBar progressEstado, View[] botones, View dialogoEstado,
+                            ImageView imagenEstado, boolean finish, CallBack callBack, LottieAnimationView like) {
         like.setVisibility(View.GONE);
 
         progressEstado.setProgress(0);
@@ -157,7 +191,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
                 if (finish) {
                     animDesaparecer(dialogoEstado);
                 } else {
-                    callBack.pasarImagen();
+                    callBack.nextImage();
                 }
                 cancelar(this);
 
@@ -168,7 +202,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
 
             if (contador > 0) {
 
-                callBack.volverImagen();
+                callBack.backImage();
                 cancelar(countDownTimer);
             }
         });
@@ -182,7 +216,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
             if (finish) {
                 animDesaparecer(dialogoEstado);
             } else {
-                callBack.pasarImagen();
+                callBack.nextImage();
             }
             cancelar(countDownTimer);
         });
@@ -202,8 +236,8 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
 
 
     public void animToolbar(boolean show) {
-        if (show) { Animations.Companion.animAppear(findViewById(R.id.btnAddFriend)); }
-        else { Animations.Companion.animVanish(findViewById(R.id.btnAddFriend)); }
+        if (show) { Animations.Companion.animAppear(binding.btnAddFriend); }
+        else { Animations.Companion.animVanish(binding.btnAddFriend); }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         float moveY = show ? 0 : toolbar.getHeight() * 2;
@@ -219,6 +253,21 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
     public void nextActivity() {
         Intent intent = new Intent(MasterControl.this, ChatActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void beginDownload(BroadcastReceiver broadcastReceiver) {
+        registerReceiver(broadcastReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+
+    @Override
+    public void recordAudio(String name, String idChat, MessagePresenter messagePresenter) {
+
+    }
+
+    @Override
+    public void stopAudio() {
+
     }
 
     private void animDesaparecer(View view) {
@@ -241,6 +290,9 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(broadcastReceiver != null){
+            unregisterReceiver(broadcastReceiver);
+        }
         presenter.updateState(Estado_User.OFFLINE);
     }
 

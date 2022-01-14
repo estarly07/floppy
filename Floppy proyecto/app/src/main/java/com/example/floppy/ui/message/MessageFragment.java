@@ -1,41 +1,43 @@
 package com.example.floppy.ui.message;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.databinding.FragmentChatBinding;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.Adapters.AdapterSticker;
-import com.example.floppy.data.Models.Estado_User;
-import com.example.floppy.data.Entitys.FriendEntity;
-import com.example.floppy.data.Models.Message;
-import com.example.floppy.data.Entitys.StickersEntity;
+import com.example.floppy.domain.models.Estado_User;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.Message;
+import com.example.floppy.domain.entities.StickersEntity;
+import com.example.floppy.ui.Chat.ChatActivity;
 import com.example.floppy.ui.aboutfriend.AboutFriendFragment;
+import com.example.floppy.ui.factory.DialogFactory;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.R;
 import com.example.floppy.ui.mastercontrol.MasterControl;
 import com.example.floppy.utils.Animations;
 import com.example.floppy.utils.Extensions;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 
@@ -47,24 +49,16 @@ public class MessageFragment extends Fragment implements MessageView {
 
     private String           idChat="";
     private GlobalPresenter  presenterMaster;
-    private RoundedImageView imgUser;
-    private TextView         txtUser, txtOnline,txtOffline;
-    private ImageView        btnSend;
-    private ImageView        btnOptions;
     private Activity         activity;
-    private RecyclerView     recyclerMessages, recyclerStickers;
-    private RelativeLayout   keyboardSticker, btnSalir;
-    private LinearLayout     layoutInfoFriend;
-    private ImageView        btnSticker;
-    private EditText         edtMessage;
-    private ImageButton      btnAddSticker;
     private Message          message = new Message();//Create just one message and change it its properties
-    private View             options;
-    private LinearLayout     layoutAnimationOptions;
+
+    private FragmentChatBinding binding;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        presenterMaster = MasterControl.presenter;
-        return inflater.inflate(R.layout.fragment_chat, container, false);
+        presenterMaster = ChatActivity.presenter;
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_chat, container, false);
+        return binding.getRoot();
     }
 
     public  interface CloseListeners { void closeListeners();}
@@ -74,79 +68,78 @@ public class MessageFragment extends Fragment implements MessageView {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenterMaster.showTollbar(false);
         activity  = MasterControl.activity;
         presenter = new MessagePresenterImpl(view.getContext(), activity, this, presenterMaster);
 
         closeListeners = () -> presenter.cancelListener();
 
-        keyboardSticker  = view.findViewById(R.id.includeSticker);
-        layoutInfoFriend = view.findViewById(R.id.layoutInfoFriend);
-
-        imgUser       = view.findViewById(R.id.imgUserChat);
-        txtUser       = view.findViewById(R.id.txtNombreUser);
-        txtOnline     = view.findViewById(R.id.txtStateOnline);
-        txtOffline    = view.findViewById(R.id.txtStateOffline);
-        btnSend       = view.findViewById(R.id.btnLogin);
-        btnOptions    = view.findViewById(R.id.btnOptions);
-        btnSticker    = view.findViewById(R.id.btnSticker);
-        edtMessage    = view.findViewById(R.id.edtMensaje);
-        btnAddSticker = view.findViewById(R.id.btnAddSticker);
-        options       = view.findViewById(R.id.containerOptions);
-
-        recyclerStickers       = view.findViewById(R.id.recyclerStickers);
-        layoutAnimationOptions = options.findViewById(R.id.layoutOptions);
-        recyclerStickers . setHasFixedSize(true);
-        recyclerStickers . setLayoutManager(new GridLayoutManager(view.getContext(), 4));
-
-        Extensions.Companion.listenerFocusChange(edtMessage, (view1,showStickers) -> {
+        binding.includeSticker.recyclerStickers . setHasFixedSize(true);
+        binding.includeSticker.recyclerStickers . setLayoutManager(new GridLayoutManager(view.getContext(), 4));
+        Extensions.Companion.listenerFocusChange(binding.edtMensaje, (view1,showStickers) -> {
             if(showStickers){
                 Extensions.Companion.hideKeyboard(view1);
-                keyboardSticker.setVisibility(View.VISIBLE);
-            }else{ keyboardSticker.setVisibility(View.GONE); }
+                binding.includeSticker.getRoot().setVisibility(View.VISIBLE);
+            }else{ binding.includeSticker.getRoot().setVisibility(View.GONE); }
             return null;
         });
 
-        layoutInfoFriend.setOnClickListener(v->{
+        binding.layoutInfoFriend.setOnClickListener(v->{
             AboutFriendFragment.friend = user;
             if(friendEntity!=null){ AboutFriendFragment.friendEntity = friendEntity; }
             NavHostFragment.findNavController(this).navigate(R.id.action_messageFragment_to_aboutFriendFragment);
 
         });
-        btnOptions.setOnClickListener(v-> showOptions(options,layoutAnimationOptions));
+        binding.btnOptions.setOnClickListener(v-> showOptions(binding.containerOptions.getRoot(),binding.containerOptions.layoutOptions));
 
-        btnSticker.setOnClickListener(view12 -> {
-            if( keyboardSticker.getVisibility() == (View.GONE)){
-                edtMessage.clearFocus();
+        binding.btnSticker.setOnClickListener(view12 -> {
+            if( binding.includeSticker.getRoot().getVisibility() == (View.GONE)){
+                binding.edtMensaje.clearFocus();
                 presenter .getStickers();
-            }else{ keyboardSticker.setVisibility(View.GONE); }
+            }else{ binding.includeSticker.getRoot().setVisibility(View.GONE); }
         });
         presenter.getStateUser(user.getIdUser());
 
-        btnSend.setOnClickListener(view1 -> {
-            message.setMessage(edtMessage.getText().toString().trim());
-            message.setTypeMessage(Message.TypesMessages.TEXT);
-            if(!idChat.equals("")){
-                if(presenter.sendMessages(idChat, message)){ edtMessage.setText(""); }
-            }else{ presenter.createChat(user, message); }
+
+        binding.btnLogin.setOnClickListener(view1 -> {
+
+            if(binding.edtMensaje.getText().toString().trim().length() == 0){
+                presenter.recordAudio(idChat);
+            }else{
+                message.setMessage(binding.edtMensaje.getText().toString().trim());
+                message.setTypeMessage(Message.TypesMessages.TEXT);
+                sendMessage();
+            }
         });
 
-        btnAddSticker.setOnClickListener(view13 -> {
-            presenter.addSticker("https://static-s.aa-cdn.net/img/gp/20600010880491/6B_E3fpIWVGj2XTDxuWNfWmZRHiQS1tcC61mxeb2uZ7zc9lIBUYH0TAzr-e4Oex01g=s300?v=1");
+        binding.includeSticker.btnShowDialogAddSticker.setOnClickListener(view13 -> { presenter.showDialogAddSticker(); });
+        Extensions.Companion.listenerEditText(binding.edtMensaje,s -> {
+            if(s.length() > 0){
+                binding.btnLogin.setImageResource(R.drawable.ic_send);
+            }else{
+                binding.btnLogin.setImageResource(R.drawable.ic_recovery);
+            }
+            return null;
         });
 
-
-        recyclerMessages = view.findViewById(R.id.reciclerChat);
-        recyclerMessages . setHasFixedSize(false);
-        recyclerMessages . setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, true));
+        binding.reciclerChat . setHasFixedSize(false);
+        binding.reciclerChat . setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, true));
 
         if (friendEntity != null){
             idChat = friendEntity.idChat;
+            presenter.getMessagesLocal(idChat);
             presenter.showMessagesChat(friendEntity);
+            presenter.showDataFriend(friendEntity.nick, user.getPhoto());
         }else{
             presenter.searchChat(user);
+            presenter.showDataFriend(user.getName(), user.getPhoto());
         }
-        presenter.showDataFriend(user.getName(), user.getPhoto());
+    }
+
+    private void sendMessage(){
+        if(!idChat.equals("")){
+            //BUSCARLO EN LA BD Y SI NO CREARLO
+            presenter.searchFriend(user.getIdUser());
+        }else{ presenter.createChat(user, message); }
     }
 
     Boolean translate = true;
@@ -163,31 +156,66 @@ public class MessageFragment extends Fragment implements MessageView {
             Glide.with(activity.getApplicationContext())
                     .load(photo)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(imgUser);
-        txtUser.setText(nick);
+                    .into(binding.imgUserChat);
+        binding.txtNombreUser.setText(nick);
     }
 
 
     public void showMessages(ArrayList<Message> messages, String myId, String idChat) {
         activity.runOnUiThread(() -> {
             this.idChat = idChat;
-            AdapterMessage adapterMensage = new AdapterMessage(messages, myId);
+            AdapterMessage adapterMessage = new AdapterMessage(messages, myId);
+            adapterMessage.setClick((view, position, message,viewHolder)-> {
+                switch (message.getTypeMessage()){
+                    case STICKER:
+                        presenter.showDialogAddOrDeleteSticker(message);
+                        break;
+                    case RECORD:
+                        presenter.audio(message,viewHolder);
+                        break;
+                }
+                });
 //            adapterMensage.setHasStableIds(true);
-            recyclerMessages.setAdapter(adapterMensage);
-            recyclerMessages.scheduleLayoutAnimation();
+            binding.reciclerChat.setAdapter(adapterMessage);
+//            binding.reciclerChat.scheduleLayoutAnimation();
         });
 
+    }
+    @Override
+    public void showDialogAddOrDeleteSticker(Context context, Message message,Boolean delete) {
+        if(message.getTypeMessage() == Message.TypesMessages.STICKER) {
+            DialogFactory.TypeDialog typeDialog = DialogFactory.TypeDialog.valueOf(message.getTypeMessage().toString());
+            Dialog dialog = DialogFactory.getInstance().getDialog(context, typeDialog);
+            ImageView imgSticker = dialog.findViewById(R.id.imgStickerDeleteOrADd);
+            Button btnAddOrDelete = dialog.findViewById(R.id.btnAddOrDelete);
+
+            if(delete){ btnAddOrDelete.setText(context.getResources().getString(R.string.delete)); }
+
+            btnAddOrDelete.setOnClickListener(v->{
+                if(delete){
+                    presenter.deleteSticker(message.getMessage());
+                }else{
+                    presenter.addSticker   (message.getMessage());
+                }
+            });
+
+            Glide.with(context)
+                    .load(message.getMessage())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgSticker);
+            dialog.show();
+        }
     }
 
 
     public void showStateUser(String response) {
         activity.runOnUiThread(() -> {
             if (response.equals(Estado_User.ONLINE.toString())) {
-                Animations.Companion.animVanish(txtOffline);
-                Animations.Companion.animAppear(txtOnline);
+                Animations.Companion.animVanish(binding.txtStateOffline);
+                Animations.Companion.animAppear(binding.txtStateOnline);
             }else{
-                Animations.Companion.animAppear(txtOffline);
-                Animations.Companion.animVanish(txtOnline);
+                Animations.Companion.animAppear(binding.txtStateOffline);
+                Animations.Companion.animVanish(binding.txtStateOnline);
             }
         });
     }
@@ -195,17 +223,73 @@ public class MessageFragment extends Fragment implements MessageView {
 
     public void showStickers(ArrayList<StickersEntity> stickers) {
         activity.runOnUiThread(() -> {
-            recyclerStickers.scheduleLayoutAnimation();
-            Animations.Companion.animAppear(keyboardSticker);
+            binding.includeSticker.recyclerStickers.scheduleLayoutAnimation();
+            Animations.Companion.animAppear(binding.includeSticker.getRoot());
 
             AdapterSticker adapterSticker = new AdapterSticker(stickers);
             adapterSticker.setClick((view, stickersEntity) -> {
                message.setTypeMessage(Message.TypesMessages.STICKER);
                message.setMessage(stickersEntity.urlImage);
-               presenter.sendMessages(idChat, message);
+               sendMessage();
             });
-            recyclerStickers.setAdapter(adapterSticker);
+            binding.includeSticker.recyclerStickers.setAdapter(adapterSticker);
         });
+    }
+
+    @Override
+    public void showDialogAddSticker() {
+        Dialog dialog       = DialogFactory.getInstance().getDialog(getContext(), DialogFactory.TypeDialog.ADD_STICKER);
+        Button btnAdd       = dialog.findViewById(R.id.btnAddSticker);
+        Button btnDownload  = dialog.findViewById(R.id.btnDownload);
+        EditText edtUrl     = dialog.findViewById(R.id.txtUrlSticker);
+        ImageView imgSticker= dialog.findViewById(R.id.imgStickerAdd);
+
+        Extensions.Companion.listenerEditText(edtUrl,url ->{
+            if(Extensions.Companion.validateUrl(url)){ imgSticker.setImageResource(R.drawable.no_image); }else{
+            Glide.with(getContext())
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgSticker);
+            }
+            return null;
+        });
+        String openApk    = getContext().getResources().getString(R.string.openApk);
+        String installApk = getContext().getResources().getString(R.string.installApk);
+
+        if(presenter.validateInstalledApk()){ btnDownload.setText(openApk); }
+        else{
+            if(presenter.validateDownloadedApk()){ btnDownload.setText(installApk); }
+        }
+
+        btnAdd     .setOnClickListener(view -> presenter.addSticker(edtUrl.getText().toString().trim()));
+        btnDownload.setOnClickListener(view -> {
+            switch (btnDownload.getText().toString()){
+                case "Abrir":
+                    presenter.openApk();
+                    break;
+                case "Instalar":
+                    presenter.installApk();
+                    break;
+                default:
+                    presenter.downloadApp();
+                    break;
+            }
+
+        });
+        dialog.show();
+    }
+
+    @Override
+    public void sendAndInsertFriend(Boolean insertFriend) {
+        if (insertFriend){
+            presenter.insertFriendLocal(user,idChat);
+        }
+        presenter.sendMessages(idChat, message);
+    }
+
+    @Override
+    public void cleanEdittext() {
+        activity.runOnUiThread(() -> binding.edtMensaje.setText(""));
     }
 
 }

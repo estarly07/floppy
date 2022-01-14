@@ -2,49 +2,59 @@ package com.example.floppy.data.Conexion.remote;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
-import com.example.floppy.Callbacks.CallBackObjects;
+import androidx.annotation.NonNull;
+
 import com.example.floppy.Callbacks.CallbackList;
-import com.example.floppy.data.Entitys.FriendEntity;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.StateMessage;
+import com.example.floppy.domain.remote.InteractorFirestoreImpl;
 import com.example.floppy.ui.login.LoginPresenter;
+import com.example.floppy.ui.menu.MenuPresenter;
 import com.example.floppy.ui.message.MessagePresenter;
 import com.example.floppy.utils.Global.GlobalUtils;
-import com.example.floppy.data.Interactor.remote.Interactor;
-import com.example.floppy.data.Models.Chat;
-import com.example.floppy.data.Models.Estado;
-import com.example.floppy.data.Models.Estado_User;
-import com.example.floppy.data.Models.InputResult;
-import com.example.floppy.data.Models.Message;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.domain.remote.Interactor;
+import com.example.floppy.domain.models.Chat;
+import com.example.floppy.domain.models.Estado;
+import com.example.floppy.domain.models.Estado_User;
+import com.example.floppy.domain.models.InputResult;
+import com.example.floppy.domain.models.Message;
+import com.example.floppy.domain.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
 public class Firestore extends GlobalUtils implements ConnectionFirestore {
     private FirebaseFirestore firebaseFirestore;
-    private String idVerificacion;
-    private Context context;
-    private FirebaseAuth firebaseAuth;
-    private Activity activity;
-    private InputResult inputResult;
-    private PhoneAuthCredential phoneAuthCredential;
+    private Context           context;
+    private FirebaseAuth      firebaseAuth;
+    private Activity          activity;
+    private InputResult       inputResult;
+    private ArrayList<User>   users;
+    private StorageReference  storageReference = FirebaseStorage.getInstance().getReference();
+
     private ArrayList<ArrayList<Estado>> estados;
-    private ArrayList<User> users;
     final private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     public ArrayList<Message> getMensajes() {
@@ -125,7 +135,7 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
     }
 
     @Override
-    public void getEstados(CountDownLatch countDownLatch, String id) {
+    public void getStates(CountDownLatch countDownLatch, String id) {
         firebaseFirestore.collection(COLLECTIONS[1]).document(id).get().addOnCompleteListener(task -> {
             estados = new ArrayList<>();
             if (task.isSuccessful()) {
@@ -149,13 +159,11 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                 estados.add(listEstados);
                 inputResult.setResponse(true);
 
-                countDownLatch.countDown();
-
             } else {
                 inputResult.setResponse(false);
                 inputResult.setResult("Hubo un error \nal obtener los estados");
-                countDownLatch.countDown();
             }
+            countDownLatch.countDown();
         });
     }
 
@@ -171,19 +179,10 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                 user.setEmail(snapshot.get("email").toString());
                 user.setPhoto(snapshot.get("photo").toString());
 
-//                if (getFriends) {
-//                    getFriends(countDownLatch, user.getIdUser(), interactor, presenter);
-//                } else {
                 inputResult.setResponse(true);
                 countDownLatch.countDown();
-//                }
             }
         });
-
-    }
-
-    @Override
-    public void getChat(String idChat, Interactor interactor) {
 
     }
 
@@ -217,7 +216,7 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
         String id = firebaseFirestore.collection(COLLECTIONS[2]).document().getId();
         Map<String, Object> map = new HashMap<>();
         map.put("idChat",id);
-        map.put("mensajes", Arrays.asList(chat.getMensajes()) );
+        map.put("mensajes", "[]" );
         map.put("users", Arrays.asList(chat.getUsers()));
         firebaseFirestore.collection(COLLECTIONS[2]).document(id).set(map).addOnCompleteListener(task ->
         {
@@ -244,10 +243,10 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                             if (!user.getIdUser().equals(document.get("idUser"))) {/**PARA SOLO OBTENER CONTACTOS DISTINTOS A MI*/
                             User newUser = new User(
                                 document.getData().get("idUser").toString(),
-                                document.getData().get("name").toString(),
-                                document.getData().get("pass").toString(),
-                                document.getData().get("email").toString(),
-                                document.getData().get("photo").toString(),
+                                document.getData().get("name")  .toString(),
+                                document.getData().get("pass")  .toString(),
+                                document.getData().get("email") .toString(),
+                                document.getData().get("photo") .toString(),
                                 document.getData().get("messageUser").toString(),
                                 Estado_User.valueOf(document.getData().get("estado_user").toString())
                             );
@@ -261,11 +260,6 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                     inputResult.setResponse(true);
                     countDownLatch.countDown();
                 });
-
-    }
-
-    @Override
-    public void addFriend(User user, String myId, CountDownLatch countDownLatch) {
 
     }
 
@@ -297,20 +291,19 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
             if (value != null && value.exists()) {
                 messages = new ArrayList<>();
                 if (value.exists()) {
-                    System.out.println("DATQA " + value.getData());
-                    ArrayList<Map<String, Object>> mensajes = (ArrayList<Map<String, Object>>) value.getData().get("mensajes");
-                    if (mensajes == null || mensajes.isEmpty()) {
+                    String json = value.getData().get("mensajes").toString();
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<List<Message>>(){}.getType();
+                    if (json.equals("[]")) {
                         callback.showList(this.messages);
                         return;
                     }
-                    for (int i = mensajes.size() - 1; i >= 0; i--) {
-                        Message message = new Message();
-                        message.setMessage(mensajes.get(i).get("mensage").toString());
-                        message.setUser(mensajes.get(i).get("user").toString());
-                        message.setDate(mensajes.get(i).get("hora").toString());
-                        message.setTypeMessage(Message.TypesMessages.valueOf(mensajes.get(i).get("typeMessage").toString()));
-                        this.messages.add(message);
-                    }
+                   List<Message> messagesList = gson.fromJson(json,type);
+
+
+                    this.messages = (ArrayList<Message>) messagesList;
+
+                    updateMessages(this.messages,User.getInstance().getIdUser(), value.getData().get("idChat").toString());
 
                     inputResult.setResponse(true);
                     callback.showList(this.messages);
@@ -322,16 +315,24 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
 
     }
 
-    @Override
-    public void sendMessages(String idChat, Message message) {
-        Map<String, String> map = new HashMap<>();
-        map.put("idMensage", UUID.randomUUID().toString());
-        map.put("user", message.getUser());
-        map.put("mensage", message.getMessage());
-        map.put("hora", message.getHora());
-        map.put("typeMessage", String.valueOf(message.getTypeMessage()));
+    void updateMessages(ArrayList<Message> messages,String idOwner,String idChat){
+        Boolean update= false;
+        for (int i=0 ;i < messages.size() ; i++) {
+            if(!messages.get(i).getUser().equals(idOwner) && messages.get(i).getState() == StateMessage.DELIVERED){
+                messages.get(i).setState(StateMessage.CHECK);
+                update = true;
+                if(messages.get(i).getTypeMessage()== Message.TypesMessages.RECORD){
+                    downloadFile(messages.get(i).getMessage(),Message.TypesMessages.RECORD);
+                }
+            }
+        }
+        if(update){ firebaseFirestore.collection(COLLECTIONS[2]).document(idChat).update("mensajes",new Gson().toJson(messages) ); }
+    }
 
-        firebaseFirestore.collection("Conversations").document(idChat).update("mensajes", FieldValue.arrayUnion(map));
+    @Override
+    public void
+    sendMessages(String idChat, String conversation) {
+        firebaseFirestore.collection(COLLECTIONS[2]).document(idChat).update("mensajes", conversation);
     }
 
     @Override
@@ -342,12 +343,7 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
     }
 
     @Override
-    public void getEstadoUser(String idUser, CallBackObjects<String> callBackObjects) {
-
-    }
-
-    @Override
-    public void updateEstado(String idUser, Estado_User estado_user) {
+    public void updateState(String idUser, Estado_User estado_user) {
         firebaseFirestore.collection(COLLECTIONS[0]).document(idUser).update("estado_user", estado_user.toString());
     }
 
@@ -361,10 +357,10 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                 DocumentSnapshot snapshot = task.getResult();
                  friend = new User(
                     snapshot.get("idUser").toString(),
-                    snapshot.get("name").toString(),
-                    snapshot.get("pass").toString(),
-                    snapshot.get("email").toString(),
-                    snapshot.get("photo").toString(),
+                    snapshot.get("name")  .toString(),
+                    snapshot.get("pass")  .toString(),
+                    snapshot.get("email") .toString(),
+                    snapshot.get("photo") .toString(),
                     snapshot.get("messageUser").toString(),
                     Estado_User.valueOf(snapshot.get("estado_user").toString())
                 );
@@ -403,5 +399,79 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
 
     public User getUser() {
         return user;
+    }
+
+    ArrayList<ListenerRegistration> listenersfriends = new ArrayList<>();
+    /**escuchar los chats para mostrar el último mensaje en el menu*/
+    public void listenerChatFriend(FriendEntity friendEntity, InteractorFirestoreImpl interactorFirestore, MenuPresenter menuPresenter) {
+        listenersfriends.add(firebaseFirestore.collection(COLLECTIONS[2]).document(friendEntity.idChat).addSnapshotListener((value, error) -> {
+            if (error != null) {
+                Log.w("TAG", "Listen failed.", error);
+                return;
+            }
+
+            if (value != null && value.exists()) {
+                String json = value.getData().get("mensajes").toString();
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<Message>>(){}.getType();
+
+                List<Message> messagesList = gson.fromJson(json,type);
+
+                Message message = new Message();
+                message.setMessage(messagesList.get(0).getMessage());
+                message.setUser(messagesList.get(0).getUser());
+                message.setHora(messagesList.get(0).getHora());
+                message.setTypeMessage(messagesList.get(0).getTypeMessage());
+                message.setState(messagesList.get(0).getState());
+                interactorFirestore.friendIsWriting(friendEntity, menuPresenter, message);
+            } else {
+                Log.d("TAG", "Current data: null");
+            }
+        }));
+    }
+
+    /**DESCARGAR ARCHIVOS DE STORAGE DE FIREBASE
+     *@param nameFile    nombre del archivo
+     *@param typeMessage tipo de archivo
+     * */
+    void downloadFile(String nameFile, Message.TypesMessages typeMessage){
+//        new Thread(() -> {
+            File localFile;
+            switch (typeMessage){
+                case RECORD:
+                File file= new File(context.getExternalFilesDir(null), "/audios/");
+                if(!file.exists()){ file.mkdirs(); }
+
+                localFile = new File(context.getExternalFilesDir(null), "/audios/"+nameFile+".mp3");
+                storageReference.child("audios/"+nameFile+".mp3").getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+                    System.out.println("LIUSTOOOO");
+                }).addOnFailureListener(exception -> {
+                    System.out.println("ERROR "+exception.getMessage());
+                });
+                break;
+            }
+//        }).start();
+
+
+    }
+
+    public void destroyAllListenersFriends(){
+        if(!listenersfriends.isEmpty()){
+            for (ListenerRegistration listenerRegistration:
+                 listenersfriends) {
+                listenerRegistration.remove();
+            }
+        }
+    }
+
+    public void savedAudio(Uri uri,CountDownLatch countDownLatch) {
+        storageReference.child("audios/"+uri.getLastPathSegment()).putFile(uri).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                inputResult.setResponse(true);
+            }else{
+                inputResult.setResponse(false);
+            }
+            countDownLatch.countDown();
+        });
     }
 }
