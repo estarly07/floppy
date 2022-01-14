@@ -132,26 +132,26 @@ public class MessagePresenterImpl implements MessagePresenter {
 
         messageView.showMessages(messages, User.getInstance().getIdUser(), idChat);
 
-        new Thread(() -> {
-            if(interactorLocal.getChat(idChat) !=null) {
-                for (Message message : messages) {
-                    if(message.getState() == StateMessage.CHECK && interactorLocal.getMessages(message.getIdMessage()) == null){
-                        System.out.println(" "+message.getIdMessage());
-                        MessageEntity messageEntity = new MessageEntity();
-                        messageEntity.idMessage = message.getIdMessage();
-                        messageEntity.message = message.getMessage();
-                        messageEntity.typeMessage = message.getTypeMessage();
-                        messageEntity.date = message.getDate();
-                        messageEntity.user = message.getUser();
-                        messageEntity.fk_idChat = idChat;
-                        messageEntity.hour = message.getHora();
-                        messageEntity.state = message.getState();
-
-//                        interactorLocal.insertMessage(messageEntity);
-                    }
-                }
-            }
-        }).start();
+//        new Thread(() -> {
+//            if(interactorLocal.getChat(idChat) !=null) {
+//                for (Message message : messages) {
+//                    if(message.getState() == StateMessage.CHECK && interactorLocal.getMessages(message.getIdMessage()) == null){
+//                        System.out.println(" "+message.getIdMessage());
+//                        MessageEntity messageEntity = new MessageEntity();
+//                        messageEntity.idMessage = message.getIdMessage();
+//                        messageEntity.message = message.getMessage();
+//                        messageEntity.typeMessage = message.getTypeMessage();
+//                        messageEntity.date = message.getDate();
+//                        messageEntity.user = message.getUser();
+//                        messageEntity.fk_idChat = idChat;
+//                        messageEntity.hour = message.getHora();
+//                        messageEntity.state = message.getState();
+//
+////                        interactorLocal.insertMessage(messageEntity);
+//                    }
+//                }
+//            }
+//        }).start();
     }
 
     public void getStickers() {

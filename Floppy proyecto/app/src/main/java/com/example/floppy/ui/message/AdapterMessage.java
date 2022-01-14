@@ -20,8 +20,8 @@ import java.util.ArrayList;
 
 public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHolder> {
 
-    private ArrayList<Message> messages;
-    private String myId;
+    private final ArrayList<Message> messages;
+    private final String myId;
 
     public AdapterMessage(ArrayList<Message> messages, String myId) {
         this.messages = messages;
@@ -33,7 +33,7 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
 
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return new ViewHolder(DataBindingUtil.inflate(inflater,R.layout.item_mensaje, parent, false));
+        return new ViewHolder(DataBindingUtil.inflate(inflater, R.layout.item_mensaje, parent, false));
     }
 
     public interface Click {
@@ -48,12 +48,9 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind();
+        holder.binding.setTypeMessage(messages.get(position).getTypeMessage());
         switch (messages.get(position).getTypeMessage()){
             case RECORD:
-                holder.binding.messageTypeText   .setVisibility(View.GONE);
-                holder.binding.messageTypeSticker.setVisibility(View.GONE);
-                holder.binding.msgAudio.getRoot().setVisibility(View.VISIBLE);
-
                 if (messages.get(position).getUser().equals(myId)){
                     holder.binding.msgAudio.messageLeft .setVisibility(View.GONE);
                     holder.binding.msgAudio.messageRight.setVisibility(View.VISIBLE);
@@ -67,26 +64,21 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
                 break;
 
             case TEXT:
-
-                holder.binding.messageTypeText   .setVisibility(View.VISIBLE);
-                holder.binding.messageTypeSticker.setVisibility(View.GONE);
                 if (messages.get(position).getUser().equals(myId)){
-                    holder.binding.messageLeft .setVisibility(View.GONE);
-                    holder.binding.messageRight.setVisibility(View.VISIBLE);
-                    holder.binding.txtMensajeEnviado.setText(messages.get(position).getMessage());
+                    holder.binding.messageTypeText.messageLeft .setVisibility(View.GONE);
+                    holder.binding.messageTypeText.messageRight.setVisibility(View.VISIBLE);
+                    holder.binding.messageTypeText.txtMensajeEnviado.setText(messages.get(position).getMessage());
 
                     Extensions.Companion.changeDoubleCheckColor(
-                            holder.binding.imgCheck,
+                            holder.binding.messageTypeText.imgCheck,
                             messages.get(position).getState() == StateMessage.CHECK);
                 }else{
-                    holder.binding.messageRight.setVisibility(View.GONE);
-                    holder.binding.messageLeft .setVisibility(View.VISIBLE);
-                    holder.binding.txtMensaje  .setText(messages.get(position).getMessage());
+                    holder.binding.messageTypeText.messageRight.setVisibility(View.GONE);
+                    holder.binding.messageTypeText.messageLeft .setVisibility(View.VISIBLE);
+                    holder.binding.messageTypeText.txtMensaje  .setText(messages.get(position).getMessage());
                 }
                 break;
             case STICKER:
-                holder.binding.messageTypeText   .setVisibility(View.GONE);
-                holder.binding.messageTypeSticker.setVisibility(View.VISIBLE);
                 if (messages.get(position).getUser().equals(myId)){
                     holder.binding.stickerLeft .getRoot().setVisibility(View.GONE);
                     holder.binding.stickerRight.getRoot().setVisibility(View.VISIBLE);
@@ -121,9 +113,6 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
         });
 
     }
-
-
-
 
     public int getItemCount() {
         return messages.size();
