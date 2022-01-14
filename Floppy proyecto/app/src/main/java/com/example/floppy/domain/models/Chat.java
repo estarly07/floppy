@@ -1,4 +1,4 @@
-package com.example.floppy.data.Models;
+package com.example.floppy.domain.models;
 
 public class Chat {
     private String idChat;
@@ -21,9 +21,7 @@ public class Chat {
         this.users = users;
     }
 
-    public Message[] getMensajes() {
-        return messages;
-    }
+    public Message[] getMensajes() { return messages; }
 
     public void setMensajes(Message[] messages) {
         this.messages = messages;

@@ -11,7 +11,9 @@ public class DialogFactory {
     public enum TypeDialog {
         ADD_STICKER,
         SHOW_PHOTO_USER,
-        SHOW_STATE_USER
+        SET_NICK,
+        ADD_ALL_STICKER,
+        STICKER,//mostrar un sialog para añadir o eliminar un sticker
     }
 
     private static DialogFactory dialogFactory;
@@ -30,13 +32,21 @@ public class DialogFactory {
 
         switch (typeDialog) {
             case ADD_STICKER:
-                {
                 view = LayoutInflater.from(context).inflate(R.layout.dialog_add_sticker, null, false);
-                }
                 break;
             case SHOW_PHOTO_USER:
                 view = LayoutInflater.from(context).inflate(R.layout.dialogo_user, null, false);
                 break;
+            case ADD_ALL_STICKER:
+                view = LayoutInflater.from(context).inflate(R.layout.alertdialog_add_stickers, null, false);
+                break;
+            case STICKER:
+                view = LayoutInflater.from(context).inflate(R.layout.alertdialog_delete_or_add_sticker, null, false);
+                break;
+            case SET_NICK:
+                view = LayoutInflater.from(context).inflate(R.layout.dialog_update_nick, null, false);
+                break;
+
         }
         dialog.setContentView(view);
         return dialog;

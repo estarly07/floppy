@@ -3,13 +3,14 @@ package com.example.floppy.ui.menu;
 import android.app.Activity;
 import android.content.Context;
 
-import com.example.floppy.data.Interactor.local.InteractorLocal;
-import com.example.floppy.data.Interactor.local.InteractorSqlite;
-import com.example.floppy.data.Interactor.remote.Interactor;
-import com.example.floppy.data.Interactor.remote.InteractorFirestoreImpl;
-import com.example.floppy.data.Models.Estado;
-import com.example.floppy.data.Entitys.FriendEntity;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.domain.local.InteractorLocal;
+import com.example.floppy.domain.local.InteractorSqlite;
+import com.example.floppy.domain.remote.Interactor;
+import com.example.floppy.domain.remote.InteractorFirestoreImpl;
+import com.example.floppy.domain.models.Estado;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.Message;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 
 import java.util.ArrayList;
@@ -19,7 +20,9 @@ public class MenuPresenterImpl implements MenuPresenter {
     final private Interactor      interactor;
     final private GlobalPresenter presenterMaster;
     final private InteractorLocal interactorLocal;
-    ArrayList<FriendEntity> friends = new ArrayList<>();
+
+    ArrayList<FriendEntity> friendEntities = new ArrayList<>();
+    ArrayList<User>         friends        = new ArrayList<>();
 
 
     public MenuPresenterImpl(MenuView view, Context context, Activity activity, GlobalPresenter presenterMaster) {
@@ -43,6 +46,7 @@ public class MenuPresenterImpl implements MenuPresenter {
     public void getMyFriends() {
         new Thread(() -> {
             ArrayList<FriendEntity> friends = (ArrayList<FriendEntity>) interactorLocal.getFriends(User.getInstance().getIdUser());
+            view.showChats(this.friends,friendEntities);
             for (FriendEntity friendEntity :friends) {
                 interactor.getFriends(friendEntity.idFriend,this );
             }
@@ -50,12 +54,23 @@ public class MenuPresenterImpl implements MenuPresenter {
     }
 
     @Override
-    public void showChats(User friend) {
+    public void addChats(User friend) {
         new Thread(() -> {
             FriendEntity friendEntity = interactorLocal.getFriend(friend.getIdUser());
-            view.showChats(friend, friendEntity);
+            this.friends.add(friend);
+            this.friendEntities.add(friendEntity);
+            listenerChatFriend(friendEntity);
         }).start();
-
     }
 
+    @Override
+    public void friendIsWriting(FriendEntity friendEntity, Message message) {
+        view.friendIsWriting(friendEntity, message);
+    }
+
+    @Override
+    public void listenerChatFriend(FriendEntity friendEntity) { interactor.listenerChatFriend(friendEntity,this); }
+
+    @Override
+    public void destroyAllListenersFriends() { interactor.destroyAllListenersFriends(); }
 }

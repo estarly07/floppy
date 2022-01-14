@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginBottom="@dimen/_100dp"
+    android:layoutAnimation="@anim/layout_scale_center"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/christmas_cat"
+        android:letterSpacing="0.9"
+        android:text="F"
+        android:textColor="@color/blanco1"
+        android:textSize="@dimen/_40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/christmas_cat"
+        android:letterSpacing="0.3"
+        android:text="l"
+        android:textColor="@color/blanco1"
+        android:textSize="@dimen/_40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/christmas_cat"
+        android:letterSpacing="0.3"
+        android:text="o"
+        android:textColor="@color/blanco1"
+        android:textSize="@dimen/_40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_2dp"
+        android:fontFamily="@font/christmas_cat"
+        android:letterSpacing="0.3"
+        android:text="p"
+        android:textColor="@color/blanco1"
+        android:textSize="@dimen/_40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/christmas_cat"
+        android:letterSpacing="0.3"
+        android:text="p"
+        android:textColor="@color/blanco1"
+        android:textSize="@dimen/_40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/christmas_cat"
+        android:letterSpacing="0.3"
+        android:text="y"
+        android:textColor="@color/blanco1"
+        android:textSize="@dimen/_40sp"
+        android:textStyle="bold" />
+</LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.floppy.data.Entitys;
+package com.example.floppy.domain.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -6,7 +6,6 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-import com.example.floppy.data.Models.User;
 import com.example.floppy.utils.Global.GlobalUtils;
 
 @Entity(
@@ -22,6 +21,7 @@ import com.example.floppy.utils.Global.GlobalUtils;
 )
 public class FriendEntity {
     @NonNull
+    @PrimaryKey
     @ColumnInfo(name ="idFriend" )
     public String idFriend;
 
@@ -33,7 +33,6 @@ public class FriendEntity {
     @ColumnInfo(name ="nick" )
     public String nick;
 
-    @PrimaryKey
     @NonNull
     @ColumnInfo(name ="idChat" )
     public String idChat;

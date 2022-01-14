@@ -1,4 +1,4 @@
-package com.example.floppy.data.Entitys;
+package com.example.floppy.domain.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -6,8 +6,6 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.example.floppy.utils.Global.GlobalUtils;
-
-import java.util.ArrayList;
 
 @Entity(tableName = GlobalUtils.userTable)
 public class UserEntity {

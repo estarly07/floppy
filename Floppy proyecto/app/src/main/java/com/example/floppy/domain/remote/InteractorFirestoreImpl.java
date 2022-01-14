@@ -1,14 +1,16 @@
-package com.example.floppy.data.Interactor.remote;
+package com.example.floppy.domain.remote;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 
 import com.example.floppy.data.Conexion.remote.Firestore;
-import com.example.floppy.data.Models.Chat;
-import com.example.floppy.data.Models.Estado_User;
-import com.example.floppy.data.Models.Message;
-import com.example.floppy.data.Entitys.StickersEntity;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.Chat;
+import com.example.floppy.domain.models.Estado_User;
+import com.example.floppy.domain.models.Message;
+import com.example.floppy.domain.entities.StickersEntity;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.message.MessagePresenter;
 import com.example.floppy.ui.contacts.ContactsPresenter;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
@@ -87,7 +89,7 @@ public class InteractorFirestoreImpl implements Interactor{
     @Override
     public void getEstados(String id, MenuPresenter presenter, GlobalPresenter presenterMaster) {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        firestore.getEstados(countDownLatch, id);
+        firestore.getStates(countDownLatch, id);
         try {
             countDownLatch.await();
         } catch (InterruptedException e) {
@@ -143,8 +145,8 @@ public class InteractorFirestoreImpl implements Interactor{
         if (firestore.getInputResult().getResponse()){
             chat.setIdChat(firestore.getInputResult().getResult());
             messagePresenter.insertFriendLocal(friend, chat.getIdChat());
-            messagePresenter.getMessages(chat);
             messagePresenter.sendMessages(chat.getIdChat(),message);
+            messagePresenter.getMessages(chat);
         }else{
             System.out.println("NO CREADO");
 
@@ -175,8 +177,8 @@ public class InteractorFirestoreImpl implements Interactor{
     }
 
     @Override
-    public void sendMessages(String idChat, Message message) {
-      firestore.sendMessages(idChat, message);
+    public void sendMessages(String idChat, String conversation) {
+      firestore.sendMessages(idChat,conversation);
     }
 
     @Override
@@ -189,7 +191,7 @@ public class InteractorFirestoreImpl implements Interactor{
 
     @Override
     public void updateEstado(String idUser, Estado_User estado_user) {
-        firestore.updateEstado(idUser,estado_user);
+        firestore.updateState(idUser,estado_user);
     }
 
     @Override
@@ -208,10 +210,40 @@ public class InteractorFirestoreImpl implements Interactor{
         }
         if (firestore.getInputResult().getResponse()) {
             User friend = new Gson().fromJson(firestore.getInputResult().getResult(),User.class) ;
-            presenter.showChats(friend);
+            presenter.addChats(friend);
         } else {
 
         }
 
     }
+
+    @Override
+    public void listenerChatFriend(FriendEntity friendEntity, MenuPresenter menuPresenter) {
+        firestore.listenerChatFriend(friendEntity,this,menuPresenter);
+    }
+
+    @Override
+    public void destroyAllListenersFriends() {
+        firestore.destroyAllListenersFriends();
+    }
+
+    @Override
+    public void friendIsWriting(FriendEntity friendEntity, MenuPresenter menuPresenter, Message message) {
+        menuPresenter.friendIsWriting(friendEntity, message);
+    }
+
+    @Override
+    public void savedAudio(String name, Uri uri, String idChat, MessagePresenter messagePresenter) {
+        countDownLatch = new CountDownLatch(1);
+        firestore.savedAudio(uri, countDownLatch);
+        try {
+            countDownLatch.await();
+            if(firestore.getInputResult().getResponse()){
+                presenterMaster.sendMessage(name,idChat,messagePresenter);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

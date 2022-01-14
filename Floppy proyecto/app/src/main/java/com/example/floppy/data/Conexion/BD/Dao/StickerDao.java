@@ -4,11 +4,9 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.floppy.data.Entitys.StickersEntity;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.utils.Global.GlobalUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -18,5 +16,8 @@ public interface StickerDao {
 
     @Query("SELECT * FROM " + GlobalUtils.stickersTable + " WHERE fk_idUser = :fk_idUser")
     List<StickersEntity> getStickers(String fk_idUser);
+
+    @Query("DELETE FROM "+ GlobalUtils.stickersTable + " WHERE urlImage = :sticker")
+    void deleteSticker(String sticker);
 
 }

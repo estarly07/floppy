@@ -1,8 +1,9 @@
 package com.example.floppy.ui.menu;
 
-import com.example.floppy.data.Entitys.FriendEntity;
-import com.example.floppy.data.Models.Estado;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.Estado;
+import com.example.floppy.domain.models.Message;
+import com.example.floppy.domain.models.User;
 
 import java.util.ArrayList;
 
@@ -13,8 +14,10 @@ public interface MenuView  {
     void showState(ArrayList<ArrayList<Estado>> estados);
     /**
      * MOSTRAR UN RECYCLER CON LOS CHATS DEL AMIGO DEL USUARIO
-     *  @param friend array de los amigos
-     * @param friendEntity data local
+     * @param friends array de los amigos
+     * @param friendEntities amigos guardados en local
      */
-    void showChats(User friend, FriendEntity friendEntity);
+    void showChats(ArrayList<User> friends, ArrayList<FriendEntity> friendEntities);
+
+    void friendIsWriting(FriendEntity friendEntity, Message message);
 }

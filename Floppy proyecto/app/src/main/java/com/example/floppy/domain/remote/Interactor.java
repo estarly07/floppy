@@ -1,10 +1,13 @@
-package com.example.floppy.data.Interactor.remote;
+package com.example.floppy.domain.remote;
 
-import com.example.floppy.data.Models.Chat;
-import com.example.floppy.data.Models.Estado_User;
-import com.example.floppy.data.Models.Message;
-import com.example.floppy.data.Entitys.StickersEntity;
-import com.example.floppy.data.Models.User;
+import android.net.Uri;
+
+import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.Chat;
+import com.example.floppy.domain.models.Estado_User;
+import com.example.floppy.domain.models.Message;
+import com.example.floppy.domain.entities.StickersEntity;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.message.MessagePresenter;
 import com.example.floppy.ui.contacts.ContactsPresenter;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
@@ -34,7 +37,7 @@ public interface Interactor {
 
     void getAllUsers(ContactsPresenter contactsPresenter);
 
-    void sendMessages(String idChat, Message message);
+    void sendMessages(String idChat, String conversation);
 
     void getEstadoUser(String idUser);
 
@@ -45,4 +48,12 @@ public interface Interactor {
     void showStickers(MessagePresenter presenter, ArrayList<StickersEntity> list);
 
     void getFriends(String idFriend,MenuPresenter presenter);
+
+    void listenerChatFriend(FriendEntity friendEntity,MenuPresenter menuPresenter);
+
+    void destroyAllListenersFriends();
+
+    void friendIsWriting(FriendEntity friendEntity, MenuPresenter menuPresenter, Message message);
+
+    void savedAudio(String name, Uri uri, String idChat, MessagePresenter messagePresenter);
 }

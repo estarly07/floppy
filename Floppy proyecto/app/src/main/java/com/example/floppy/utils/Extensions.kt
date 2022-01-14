@@ -1,6 +1,7 @@
 package com.example.floppy.utils
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
@@ -9,9 +10,11 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.core.widget.addTextChangedListener
+import com.example.floppy.R
 import com.example.floppy.utils.Extensions.Companion.showKeyboard
 import java.util.regex.Pattern
 
@@ -27,6 +30,13 @@ class Extensions {
                 override fun afterTextChanged(p0: Editable?) {}
             })
         }
+
+        /**Change double check color
+         * @param isCheck if was checked
+         * */
+        fun ImageView.changeDoubleCheckColor(isCheck: Boolean): Unit = this.setColorFilter(this.context.resources.getColor(
+            (if(isCheck) R.color.naranja1 else R.color.gris5)))
+
         /**
          * Validate URL
          * */
@@ -89,6 +99,19 @@ class Extensions {
             )
             val matcher = pattern.matcher(this)
             return matcher.find()
+        }
+
+        /**Validate if the Sticker Floppy application is installed
+         *@return true =>Installed false => No installed
+         * */
+        fun String.validateInstallApk(context: Context) :Boolean{
+            val packageManager = context.packageManager
+            return try{
+                packageManager.getPackageInfo(this,PackageManager.GET_ACTIVITIES)
+                true
+            } catch (e : PackageManager.NameNotFoundException ) {
+                false
+            }
         }
 
     }

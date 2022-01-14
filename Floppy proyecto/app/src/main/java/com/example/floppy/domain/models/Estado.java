@@ -1,4 +1,4 @@
-package com.example.floppy.data.Models;
+package com.example.floppy.domain.models;
 
 public class Estado {
     String imagen;

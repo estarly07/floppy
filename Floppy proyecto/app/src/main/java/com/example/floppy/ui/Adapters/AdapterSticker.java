@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.floppy.data.Entitys.StickersEntity;
+import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.R;
 
 import java.util.ArrayList;
@@ -43,6 +43,7 @@ public class AdapterSticker extends RecyclerView.Adapter<AdapterSticker.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Glide.with(holder.itemView.getContext())
                 .load(listStickers.get(position).urlImage)
+                .placeholder(R.drawable.ic_wait_sticker)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into( holder.sticker);
 

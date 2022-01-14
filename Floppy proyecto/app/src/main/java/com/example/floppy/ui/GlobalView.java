@@ -1,15 +1,20 @@
 package com.example.floppy.ui;
 
-import com.example.floppy.data.Models.Estado;
-import com.example.floppy.data.Models.User;
+import android.content.BroadcastReceiver;
+
+import com.example.floppy.domain.models.Estado;
+import com.example.floppy.domain.models.User;
+import com.example.floppy.ui.message.MessagePresenter;
 
 import java.util.ArrayList;
 
 public interface GlobalView {
+    void showAlertDialog();
+
     void showToast(String msg);
 
     /**
-     * VISTA DEUN PROGRESS EL CUAL ESTA EN LA MITADD DE LA VISTA
+     * VISTA DEUN PROGRESS EL CUAL ESTA EN LA MITAD DE LA VISTA
      */
     void showHandlingGeneral(boolean show);
 
@@ -29,11 +34,17 @@ public interface GlobalView {
 
     /**
      * QUITAR TOOLBAR AL HACER SCROLL
-     * @show
+     * @param show
      */
     void animToolbar(boolean show);
 
     void showContacts(ArrayList<User> users);
 
     void nextActivity();
+
+    void beginDownload(BroadcastReceiver broadcastReceiver);
+
+    void recordAudio(String name, String idChat, MessagePresenter messagePresenter);
+
+    void stopAudio();
 }

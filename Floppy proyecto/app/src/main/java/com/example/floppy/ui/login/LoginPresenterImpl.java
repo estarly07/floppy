@@ -5,13 +5,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.example.floppy.data.Conexion.preferences.Preferences;
-import com.example.floppy.data.Entitys.UserEntity;
-import com.example.floppy.data.Interactor.local.InteractorLocal;
-import com.example.floppy.data.Interactor.local.InteractorSqlite;
-import com.example.floppy.data.Interactor.remote.Interactor;
-import com.example.floppy.data.Interactor.remote.InteractorFirestoreImpl;
-import com.example.floppy.data.Models.Estado_User;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.domain.entities.UserEntity;
+import com.example.floppy.domain.local.InteractorLocal;
+import com.example.floppy.domain.local.InteractorSqlite;
+import com.example.floppy.domain.remote.Interactor;
+import com.example.floppy.domain.remote.InteractorFirestoreImpl;
+import com.example.floppy.domain.models.Estado_User;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.utils.Extensions;
 
 import java.io.ByteArrayOutputStream;
@@ -31,7 +31,7 @@ public class LoginPresenterImpl implements LoginPresenter {
     }
 
     @Override
-    public void isLogged() {
+    public Boolean isLogged() {
         String idOwner = preferences.getIdOwner();
         if(!idOwner.equals("")){
             new Thread(() -> {
@@ -45,7 +45,9 @@ public class LoginPresenterImpl implements LoginPresenter {
 
                 nextActivity();
             }).start();
+            return true;
         }
+        return false;
     }
 
     /**

@@ -9,11 +9,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.floppy.data.Models.User;
+import com.example.floppy.databinding.ItemContactBinding;
+import com.example.floppy.domain.models.User;
 import com.example.floppy.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -30,8 +32,9 @@ public class AdapterContacts extends RecyclerView.Adapter<AdapterContacts.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_contact, parent, false);
-        return new ViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ItemContactBinding binding = DataBindingUtil.inflate(inflater,R.layout.item_contact, parent, false);
+        return new ViewHolder(binding);
     }
 
     public interface Click { void click(View view, int position, User user);}
@@ -42,26 +45,17 @@ public class AdapterContacts extends RecyclerView.Adapter<AdapterContacts.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (color) {
-            holder.background.setBackgroundColor(holder.background.getContext().getResources().getColor(R.color.fondoItem1));
-            color = false;
-        } else {
-            holder.background.setBackgroundColor(holder.background.getContext().getResources().getColor(R.color.fondoItem2));
-            color = true;
+        holder.binding.fontoItemChat.setBackgroundColor(holder.binding.getRoot().getContext().getResources().getColor((color)?R.color.fondoItem1:R.color.fondoItem2));
+        color = !color;
 
-        }
         if (!users.get(position).getPhoto().equals(""))
-            Glide.with(holder.itemView.getContext())
+            Glide.with(holder.binding.getRoot().getContext())
                     .load(users.get(position).getPhoto())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.imgUser);
+                    .into(holder.binding.imgUserItemChat);
 
-        Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.anim_recicler_chats);
-
-        holder.txtName.setText(users.get(position).getName());
-        holder.itemView.setAnimation(animation);
-        holder.itemView.setOnClickListener(view -> click.click(view, position, users.get(position)));
-
+        holder.bind(users.get(position));
+        holder.binding.getRoot().setOnClickListener(view -> click.click(view, position, users.get(position)));
     }
 
     @Override
@@ -70,15 +64,12 @@ public class AdapterContacts extends RecyclerView.Adapter<AdapterContacts.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout   background;
-        RoundedImageView imgUser;
-        TextView         txtName;
+        ItemContactBinding binding;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            background = itemView.findViewById(R.id.fontoItemChat);
-            imgUser    = itemView.findViewById(R.id.imgUserItemChat);
-            txtName    = itemView.findViewById(R.id.txtNombreUser);
+        public ViewHolder(ItemContactBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
+        public void bind(User user){ binding.setUser(user); }
     }
 }
