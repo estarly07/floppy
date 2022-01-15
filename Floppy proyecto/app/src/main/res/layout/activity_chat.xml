@@ -73,5 +73,10 @@
                     />
             </LinearLayout>
         </RelativeLayout>
+        <include layout="@layout/message_custom"
+            android:id="@+id/messageCustom"
+            android:visibility="gone"
+            />
     </RelativeLayout>
+
 </layout>

@@ -37,6 +37,7 @@ public class GlobalUtils {
     //Strings
     public static final String packageStickerApk = "com.example.sticker_floppy";
     public static final String nameStickerApk    = "StickerFloppy.apk";
+    public static final String urlApk            = "https://github.com/estarly07/floppy/releases/download/v1.0.0/Sticker.apk";
 
     //DATABASE
     public static final String nameDatabase  = "floppy.db";

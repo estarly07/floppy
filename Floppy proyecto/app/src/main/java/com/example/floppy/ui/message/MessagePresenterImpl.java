@@ -306,9 +306,7 @@ public class MessagePresenterImpl implements MessagePresenter {
     }
 
     @Override
-    public void recordAudio(String idChat) {
-        globalPresenter.recordAudio(idChat,this);
-    }
+    public void recordAudio(String idChat) { globalPresenter.recordAudio(idChat,this); }
 
     @Override
     public void showDialogAddOrDeleteSticker(Message message) {

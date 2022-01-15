@@ -57,5 +57,10 @@
     <string name="accept">Aceptar</string>
     <string name="stopRecord">Toca cualquier parte\npara detener la grabación</string>
     <string name="wait_audio">Espera a que se envie el audio</string>
+    <string name="permission">Debes habilitar los permisos\npara utilizar esta función</string>
+    <string name="noExistUser">Usuario no existe</string>
+    <string name="existEmail">No se pudo registrar\n(Puede que ya exista ese Email)</string>
+    <string name="noRegisterData">No se pudo registrar los datos</string>
+    <string name="errorGetData">Hubo un error \nal obtener los estados</string>
 
 </resources>

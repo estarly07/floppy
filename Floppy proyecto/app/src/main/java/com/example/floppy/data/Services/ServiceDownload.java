@@ -13,6 +13,7 @@ import androidx.core.content.FileProvider;
 
 import com.example.floppy.BuildConfig;
 import com.example.floppy.ui.message.MessagePresenter;
+import com.example.floppy.utils.Global.GlobalUtils;
 
 import java.io.File;
 
@@ -25,10 +26,10 @@ public class ServiceDownload {
     }
 
     public void beginDownload(Context context) {
-        File file = new File(context.getExternalFilesDir(null), "StickerFloppy.apk");
+        File file = new File(context.getExternalFilesDir(null), GlobalUtils.nameStickerApk);
         DownloadManager.Request request;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            request = new DownloadManager.Request(Uri.parse("https://github.com/estarly07/floppy/releases/download/v1.0.0/Sticker.apk"))
+            request = new DownloadManager.Request(Uri.parse(GlobalUtils.urlApk))
                     .setTitle("Sticker Floppy")
                     .setDescription("Descargando Sticker Floppy")
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
@@ -38,7 +39,7 @@ public class ServiceDownload {
                     .setAllowedOverMetered(true)
                     .setAllowedOverRoaming(true);
         } else {
-            request = new DownloadManager.Request(Uri.parse("https://github.com/estarly07/floppy/releases/download/v1.0.0/Sticker.apk"))
+            request = new DownloadManager.Request(Uri.parse(GlobalUtils.urlApk))
                     .setTitle("Sticker Floppy")
                     .setDescription("Descargando Sticker Floppy")
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)

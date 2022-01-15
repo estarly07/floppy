@@ -5,6 +5,9 @@ import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import com.example.floppy.R
+import com.example.floppy.utils.Animations.Companion.animAppearAndVanish
+import kotlinx.coroutines.Delay
+import kotlinx.coroutines.delay
 
 class Animations {
     companion object {

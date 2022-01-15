@@ -15,9 +15,11 @@ import com.example.floppy.domain.remote.InteractorFirestoreImpl;
 import com.example.floppy.domain.models.Estado;
 import com.example.floppy.domain.models.Estado_User;
 import com.example.floppy.domain.models.User;
+import com.example.floppy.ui.Chat.ChatActivity;
 import com.example.floppy.ui.GlobalView;
 import com.example.floppy.ui.message.MessagePresenter;
 import com.example.floppy.utils.Global.GlobalUtils;
+import com.example.floppy.utils.Permission;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -30,10 +32,12 @@ public class GlobalPresenterImpl implements GlobalPresenter {
     private Context         context;
     private Interactor      interactor;
     private InteractorLocal interactorLocal;
+    private Activity        activity;
 
     public GlobalPresenterImpl(GlobalView globalView, Context context, Activity activity) {
         this.globalView      = globalView;
         this.context         = context;
+        this.activity        = activity;
         this.interactorLocal = new InteractorSqlite(context);
         this.interactor      = new InteractorFirestoreImpl(context,this,  activity);/**INTERACTOR QUE LLAMA A FIRESTORE*/
     }
@@ -109,7 +113,10 @@ public class GlobalPresenterImpl implements GlobalPresenter {
 
     @Override
     public void recordAudio(String idChat, MessagePresenter messagePresenter) {
-        globalView.recordAudio(GlobalUtils.getDateNow()+idChat, idChat, messagePresenter );
+        if(!Permission.Companion.validatePermissionToRecord(activity)){
+            Permission.Companion.initValidatePermissionToRecord(activity);
+        }else
+            globalView.recordAudio(GlobalUtils.getDateNow()+idChat, idChat, messagePresenter );
     }
 
     @Override

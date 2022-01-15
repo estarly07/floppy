@@ -85,7 +85,8 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
 
     @Override
     public void showToast(String msg) {
-
+        binding.messageCustom.setMsg(msg);
+        Animations.Companion.animAppearAndVanish(binding.messageCustom.getRoot());
     }
 
     /**

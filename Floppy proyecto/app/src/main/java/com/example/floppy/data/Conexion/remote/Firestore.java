@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.floppy.Callbacks.CallbackList;
+import com.example.floppy.R;
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.models.StateMessage;
 import com.example.floppy.domain.remote.InteractorFirestoreImpl;
@@ -69,7 +70,6 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
         this.context = context;
         inputResult = new InputResult();
         firebaseFirestore = FirebaseFirestore.getInstance();
-
     }
 
 
@@ -81,7 +81,7 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                 inputResult.setResponse(true);
             } else {
                 inputResult.setResponse(false);
-                inputResult.setResult("Usuario no existe");
+                inputResult.setResult(context.getResources().getString(R.string.noExistUser));
             }
             countDownLatch.countDown();
         });
@@ -95,7 +95,7 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                 inputResult.setResponse(true);
             } else {
                 inputResult.setResponse(false);
-                inputResult.setResult("No se pudo registrar\n(Puede que ya exista ese Email)");
+                inputResult.setResult(context.getResources().getString(R.string.existEmail));
             }
             countDownLatch.countDown();
         });
@@ -118,7 +118,7 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                 inputResult.setResponse(true);
             } else {
                 inputResult.setResponse(false);
-                inputResult.setResult("No se pudo registrar los datos");
+                inputResult.setResult(context.getResources().getString(R.string.noRegisterData));
             }
             countDownLatch.countDown();
         });
@@ -147,13 +147,14 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                     for (Map<String, String> map :
                             arrayList) {
                         Estado estado = new Estado();
-                        estado.setNameUser("Estarly");
-                        estado.setFecha_final(map.get("fecha_final"));
+                        estado.setNameUser     ("Estarly");
+                        estado.setFecha_final  (map.get("fecha_final"));
                         estado.setFecha_inicial(map.get("fecha_inicial"));
-                        estado.setId(map.get("id"));
-                        estado.setImagen(map.get("imagen"));
-                        estado.setLike((Integer.parseInt(map.get("like"))));
-                        estado.setMensaje(map.get("mensaje"));
+                        estado.setId           (map.get("id"));
+                        estado.setImagen       (map.get("imagen"));
+                        estado.setLike         ((Integer.parseInt(map.get("like"))));
+                        estado.setMensaje      (map.get("mensaje"));
+
                         listEstados.add(estado);
                     }
                 estados.add(listEstados);
@@ -161,7 +162,7 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
 
             } else {
                 inputResult.setResponse(false);
-                inputResult.setResult("Hubo un error \nal obtener los estados");
+                inputResult.setResult(context.getResources().getString(R.string.errorGetData));
             }
             countDownLatch.countDown();
         });

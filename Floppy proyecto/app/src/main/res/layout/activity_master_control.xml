@@ -120,5 +120,9 @@
             android:indeterminate="true"
             android:indeterminateTint="@color/naranja"
             android:visibility="gone" />
+        <include layout="@layout/message_custom"
+            android:id="@+id/messageCustom"
+            android:visibility="gone"
+            />
     </RelativeLayout>
 </layout>

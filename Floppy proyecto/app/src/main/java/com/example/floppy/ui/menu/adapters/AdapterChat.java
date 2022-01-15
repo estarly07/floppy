@@ -80,11 +80,12 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.binding.fontoItemChat.setBackgroundColor(holder.binding.getRoot().getContext().getResources().getColor((color)? R.color.fondoItem1:R.color.fondoItem2));
         color = !color;
-        Glide.with(holder.itemView.getContext())
-                .load(friends.get(position).getPhoto())
-                .placeholder(R.drawable.ic_sinuser)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.binding.imgUserItemChat);
+
+        if (!friends.get(position).getPhoto().equals(""))
+            Glide.with(holder.itemView.getContext())
+                    .load(friends.get(position).getPhoto())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.binding.imgUserItemChat);
 
         holder.binding.txtNombreUser.setText(
                 (friendEntities.get(position).nick.equals(""))?
