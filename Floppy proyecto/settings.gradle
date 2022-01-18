@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Floppy"
 include ':app'
+include ':data'
