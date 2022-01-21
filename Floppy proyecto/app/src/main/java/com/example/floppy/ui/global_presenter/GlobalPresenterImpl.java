@@ -15,7 +15,6 @@ import com.example.floppy.domain.remote.InteractorFirestoreImpl;
 import com.example.floppy.domain.models.Estado;
 import com.example.floppy.domain.models.Estado_User;
 import com.example.floppy.domain.models.User;
-import com.example.floppy.ui.Chat.ChatActivity;
 import com.example.floppy.ui.GlobalView;
 import com.example.floppy.ui.message.MessagePresenter;
 import com.example.floppy.utils.Global.GlobalUtils;
@@ -39,7 +38,7 @@ public class GlobalPresenterImpl implements GlobalPresenter {
         this.context         = context;
         this.activity        = activity;
         this.interactorLocal = new InteractorSqlite(context);
-        this.interactor      = new InteractorFirestoreImpl(context,this,  activity);/**INTERACTOR QUE LLAMA A FIRESTORE*/
+        this.interactor      = new InteractorFirestoreImpl(context,this);/**INTERACTOR QUE LLAMA A FIRESTORE*/
     }
 
     @Override
@@ -76,7 +75,7 @@ public class GlobalPresenterImpl implements GlobalPresenter {
 
     @Override
     public void updateState(Estado_User estado_user) {
-        interactor.updateEstado(User.getInstance().getIdUser(), estado_user);
+        interactor.updateState(User.getInstance().getIdUser(), estado_user.toString());
     }
 
     @Override

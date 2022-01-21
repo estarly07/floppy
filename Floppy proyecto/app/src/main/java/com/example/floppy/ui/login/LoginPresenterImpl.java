@@ -13,6 +13,7 @@ import com.example.floppy.domain.remote.InteractorFirestoreImpl;
 import com.example.floppy.domain.models.Estado_User;
 import com.example.floppy.domain.models.User;
 import com.example.floppy.utils.Extensions;
+import com.example.floppy.utils.Global.FactoryJson;
 
 import java.io.ByteArrayOutputStream;
 
@@ -25,7 +26,7 @@ public class LoginPresenterImpl implements LoginPresenter {
 
     public LoginPresenterImpl(LoginView loginView, Context context, Activity activity) {
         this.loginView       = loginView;
-        this.interactor      = new InteractorFirestoreImpl(context,null,activity);
+        this.interactor      = new InteractorFirestoreImpl(context,null);
         this.interactorLocal = new InteractorSqlite(context);
         this.preferences     = new Preferences(context);
     }
@@ -114,32 +115,28 @@ public class LoginPresenterImpl implements LoginPresenter {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 0, byteArrayOutputStream);
             img = byteArrayOutputStream.toByteArray();
         }
-        new Thread(() -> interactor.insertUserRemote(user, LoginPresenterImpl.this)).start();
+        new Thread(() -> interactor.insertUserRemote(user.toMap(user), LoginPresenterImpl.this)).start();
     }
 
     @Override
-    public void insertUserOwner() {
-        UserEntity userEntity = new UserEntity();
-        User user = User.getInstance();
-
-        userEntity.idUser       = user.getIdUser();
-        userEntity.messageUser  = user.getMessageUser();
-        userEntity.name         = user.getName();
-        userEntity.photo        = user.getPhoto();
-
+    public void insertUserOwner(String data) {
+        UserEntity userEntity = (UserEntity) new FactoryJson().fromJson(data, FactoryJson.TypeObject.USERENTITY);
+        User user         = User.getInstance();
+        userEntity.idUser = user.getIdUser();
         interactorLocal.insertUser(userEntity);
     }
 
     @Override
     public void getMyDataRemote() {
         preferences.saveIdOwner(User.getInstance().getIdUser());
-        interactor .getMyData(this);
+        interactor .getMyData(this, User.getInstance().getIdUser());
     }
 
     @Override
-    public void insertUserLocal() {
+    public void insertUserLocal(String idUser) {
         UserEntity userEntity = new UserEntity();
         User user = User.getInstance();
+        user.setIdUser(idUser);
         preferences.saveIdOwner(user.getIdUser());
 
         userEntity.idUser       = user.getIdUser();

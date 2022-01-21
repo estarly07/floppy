@@ -13,7 +13,6 @@ import android.os.Build;
 import androidx.core.content.FileProvider;
 
 import com.example.floppy.BuildConfig;
-import com.example.floppy.databinding.ItemMensajeBinding;
 import com.example.floppy.domain.entities.ChatEntity;
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.entities.MessageEntity;
@@ -23,20 +22,22 @@ import com.example.floppy.domain.local.InteractorSqlite;
 import com.example.floppy.domain.models.StateMessage;
 import com.example.floppy.domain.remote.Interactor;
 import com.example.floppy.domain.remote.InteractorFirestoreImpl;
-import com.example.floppy.domain.models.Chat;
 import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.models.User;
 import com.example.floppy.data.Services.ServiceDownload;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
-import com.example.floppy.utils.Animations;
 import com.example.floppy.utils.Extensions;
+import com.example.floppy.utils.Global.FactoryJson;
 import com.example.floppy.utils.Global.GlobalUtils;
 import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
@@ -53,7 +54,7 @@ public class MessagePresenterImpl implements MessagePresenter {
         player               = new MediaPlayer();
         this.context         = context;
         this.messageView     = messageView;
-        this.interactor      = new InteractorFirestoreImpl(context, globalPresenter, activity);
+        this.interactor      = new InteractorFirestoreImpl(context, globalPresenter);
         this.interactorLocal = new InteractorSqlite(context);
         this.globalPresenter = globalPresenter;
     }
@@ -89,7 +90,7 @@ public class MessagePresenterImpl implements MessagePresenter {
     public void cancelListener() { interactor.cancelListener(); }
 
     @Override
-    public void getMessages(Chat chat) {
+    public void getMessages(Map<String, Object> chat) {
         interactor.getMessages(this, chat);
     }
 
@@ -127,10 +128,11 @@ public class MessagePresenterImpl implements MessagePresenter {
     ArrayList<Message> allMessages = new ArrayList<>();
 
     @Override
-    public void showMessages(ArrayList<Message> messages, String idChat) {
-        allMessages = messages;
+    public void showMessages(String messages, String idChat) {
+        allMessages = (ArrayList<Message>) new FactoryJson().fromJson(messages, FactoryJson.TypeObject.MESSAGES);
+        updateMessages(idChat);
 
-        messageView.showMessages(messages, User.getInstance().getIdUser(), idChat);
+        messageView.showMessages(allMessages, User.getInstance().getIdUser(), idChat);
 
 //        new Thread(() -> {
 //            if(interactorLocal.getChat(idChat) !=null) {
@@ -152,6 +154,20 @@ public class MessagePresenterImpl implements MessagePresenter {
 //                }
 //            }
 //        }).start();
+    }
+
+    private void updateMessages(String idChat) {
+        Boolean update= false;
+        for (int i=0 ;i < allMessages.size() ; i++) {
+            if(!allMessages.get(i).getUser().equals(User.getInstance().getIdUser()) && allMessages.get(i).getState() == StateMessage.DELIVERED){
+                allMessages.get(i).setState(StateMessage.CHECK);
+                update = true;
+                if(allMessages.get(i).getTypeMessage()== Message.TypesMessages.RECORD){
+                    interactor.downloadFile(allMessages.get(i).getMessage(),Message.TypesMessages.RECORD);
+                }
+            }
+        }
+        if(update){ interactor.sendMessages(idChat,new Gson().toJson(allMessages) ); }
     }
 
     public void getStickers() {
@@ -187,13 +203,14 @@ public class MessagePresenterImpl implements MessagePresenter {
         String[] users = new String[2];
         users [0]      = User.getInstance().getIdUser();
         users [1]      = userSelect.getIdUser();
-        Chat chat      = new Chat();
 
-        chat.setIdChat  ("");
-        chat.setUsers   (users);
-        chat.setMensajes(new Message[]{});
-
-        new Thread(() -> interactor.searchChat(chat,this)).start();
+        new Thread(() -> interactor.searchChat(new HashMap<String,Object>(){
+            {
+                put("id","");
+                put("mensajes", "[]" );
+                put("users", users);
+            }
+        },this)).start();
     }
 
     @Override
@@ -201,12 +218,13 @@ public class MessagePresenterImpl implements MessagePresenter {
         String[] users = new String[2];
         users [0]      = User.getInstance().getIdUser();
         users [1]      = userSelect.getIdUser();
-        Chat chat      = new Chat();
 
-        chat.setUsers   (users);
-        chat.setMensajes(new Message[]{});
-
-        new Thread(() -> interactor.createChat(chat, userSelect, message, this)).start();
+        new Thread(() -> interactor.createChat(new HashMap<String,Object>(){
+            {
+                put("mensajes", "[]" );
+                put("users", Arrays.asList(users));
+            }
+        }, userSelect, message, this)).start();
     }
 
     @Override
@@ -325,12 +343,14 @@ public class MessagePresenterImpl implements MessagePresenter {
         String[] users = new String[2];
         users [0]      = User.getInstance().getIdUser();
         users [1]      = friendEntity.idFriend;
-        Chat chat      = new Chat();
-        System.out.println("ID CHAT "+friendEntity.idChat);
-        chat.setIdChat  (friendEntity.idChat);
-        chat.setUsers   (users);
-        chat.setMensajes(new Message[]{});
-        new Thread(() -> interactor.getMessages(this, chat)).start();
+
+        new Thread(() -> interactor.getMessages(this, new HashMap<String,Object>(){
+            {
+                put("mensajes", "[]" );
+                put("id", (friendEntity.idChat) );
+                put("users", users);
+            }
+        })).start();
     }
     int position;
     String path="";

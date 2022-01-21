@@ -186,7 +186,6 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
         });
 
     }
-
     @Override
     public void searchChat(Chat chat, CountDownLatch countDownLatch) {
         firebaseFirestore.collection(COLLECTIONS[2]).whereArrayContains("users",chat.getUsers()[0]).get().addOnCompleteListener(task -> {
@@ -424,7 +423,7 @@ public class Firestore extends GlobalUtils implements ConnectionFirestore {
                 message.setHora(messagesList.get(0).getHora());
                 message.setTypeMessage(messagesList.get(0).getTypeMessage());
                 message.setState(messagesList.get(0).getState());
-                interactorFirestore.friendIsWriting(friendEntity, menuPresenter, message);
+//                interactorFirestore.friendIsWriting(friendEntity, menuPresenter, message);
             } else {
                 Log.d("TAG", "Current data: null");
             }

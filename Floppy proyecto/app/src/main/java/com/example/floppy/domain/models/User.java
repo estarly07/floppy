@@ -3,6 +3,8 @@ package com.example.floppy.domain.models;
 import com.example.floppy.domain.entities.FriendEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class User {
     private String      idUser;
@@ -18,10 +20,10 @@ public class User {
 
     public User(String idUser, String name, String pass, String email, String photo, String messageUser, Estado_User estado_user) {
         this.idUser = idUser;
-        this.name = name;
-        this.pass = pass;
-        this.email = email;
-        this.photo = photo;
+        this.name   = name;
+        this.pass   = pass;
+        this.email  = email;
+        this.photo  = photo;
         this.messageUser = messageUser;
         this.estado_user = estado_user;
     }
@@ -32,6 +34,18 @@ public class User {
         if(instance!=null){ return instance; }
         instance = new User();
         return instance;
+    }
+
+    public Map<String,Object> toMap(User user){
+        return new HashMap<String,Object>(){{
+            put("idUser"     ,user.getIdUser());
+            put("name"       ,user.getName());
+            put("pass"       ,user.getPass());
+            put("email"      ,user.getEmail());
+            put("photo"      ,user.getPhoto());
+            put("messageUser",user.getMessageUser());
+            put("estado_user",user.getEstado_user()); }
+        };
     }
 
     public String getPass() { return pass; }

@@ -14,11 +14,11 @@ public interface LoginPresenter {
 
     void insertInfoUser(String[] data, Bitmap bitmap);
 
-    void insertUserOwner();
+    void insertUserOwner(String data);
 
     void getMyDataRemote();
 
-    void insertUserLocal();
+    void insertUserLocal(String idUser);
 
     void nextActivity();
 

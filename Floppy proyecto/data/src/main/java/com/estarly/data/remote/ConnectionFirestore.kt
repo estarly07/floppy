@@ -43,8 +43,8 @@ interface ConnectionFirestore {
     fun listenerStatusUser(idFriend: String?, callback: (String) -> Unit)
 
     fun listenerChatFriend(
-        friendEntity: Map<String,Any>,
-        callback: (Map<String,Any>,String)->Unit
+        idChat: String,
+        callback: (String)->Unit
     )
 
     fun downloadFile(nameFile: String, typeMessage: String)

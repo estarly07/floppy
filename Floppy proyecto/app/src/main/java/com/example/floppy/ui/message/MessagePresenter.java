@@ -1,12 +1,12 @@
 package com.example.floppy.ui.message;
 
 import com.example.floppy.domain.entities.FriendEntity;
-import com.example.floppy.domain.models.Chat;
 import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.models.User;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface MessagePresenter {
 
@@ -26,11 +26,11 @@ public interface MessagePresenter {
 
     void cancelListener();
 
-    void getMessages(Chat chat);
+    void getMessages(Map<String, Object> chat);
 
     void getMessagesLocal(String idChat);
 
-    void showMessages(ArrayList<Message> messages,String idChat);
+    void showMessages(String messages,String idChat);
 
     void showStickers(ArrayList<StickersEntity> list);
 

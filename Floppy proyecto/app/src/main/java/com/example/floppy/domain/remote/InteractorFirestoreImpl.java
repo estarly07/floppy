@@ -1,13 +1,10 @@
 package com.example.floppy.domain.remote;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 
-import com.example.floppy.data.Conexion.remote.Firestore;
+import com.estarly.data.remote.Firestore;
 import com.example.floppy.domain.entities.FriendEntity;
-import com.example.floppy.domain.models.Chat;
-import com.example.floppy.domain.models.Estado_User;
 import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.models.User;
@@ -16,19 +13,18 @@ import com.example.floppy.ui.contacts.ContactsPresenter;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.ui.login.LoginPresenter;
 import com.example.floppy.ui.menu.MenuPresenter;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 public class InteractorFirestoreImpl implements Interactor{
-    final private GlobalPresenter     presenterMaster;
-    final private Firestore           firestore;
-          private CountDownLatch      countDownLatch;
+    final private GlobalPresenter   presenterMaster;
+    final private Firestore         firestore;
+          private CountDownLatch    countDownLatch;
 
-    public InteractorFirestoreImpl(Context context, GlobalPresenter presenterMaster, Activity activity) {
+    public InteractorFirestoreImpl(Context context, GlobalPresenter presenterMaster) {
         firestore = new Firestore(context);
-        firestore.setActivity(activity);
         this.presenterMaster = presenterMaster;
 
     }
@@ -36,7 +32,7 @@ public class InteractorFirestoreImpl implements Interactor{
     @Override
     public void Login(User user, LoginPresenter presenter) {
         countDownLatch = new CountDownLatch(1);
-        firestore.login(user,countDownLatch);
+        firestore.login(new String[]{user.getEmail(),user.getPass()},countDownLatch);
         try {
             countDownLatch.await();
         } catch (InterruptedException e) { e.printStackTrace(); }
@@ -46,14 +42,14 @@ public class InteractorFirestoreImpl implements Interactor{
             presenter.getMyDataRemote();
             presenter.nextActivity();
         }
-        else { presenter.showMessage(firestore.getInputResult().getResult());
+        else { presenter.showMessage("");
         }
     }
 
     @Override
     public void validateUser(User user, LoginPresenter presenter) {
         countDownLatch = new CountDownLatch(1);
-        firestore.login(user,countDownLatch);
+        firestore.login(new String[]{user.getEmail(),user.getPass()},countDownLatch);
         try {
             countDownLatch.await();
         } catch (InterruptedException e) { e.printStackTrace(); }
@@ -65,24 +61,24 @@ public class InteractorFirestoreImpl implements Interactor{
     }
 
     @Override
-    public void insertUserRemote(User user, LoginPresenter presenter) {
+    public void insertUserRemote(Map<String, Object> map, LoginPresenter presenter) {
         countDownLatch = new CountDownLatch(1);
-        firestore.registerUserDataBase(user,countDownLatch);
+        firestore.registerUserDataBase(new String[]{map.get("email").toString(), map.get("pass").toString()},countDownLatch);
         try {
             countDownLatch.await();
 
             if (firestore.getInputResult().getResponse()) {
-                user.setIdUser(firestore.getInputResult().getResult());
+                map.put("idUser", firestore.getInputResult().getResult());
                 countDownLatch = new CountDownLatch(1);
-                firestore.updateUserDataBase(user,countDownLatch);
+                firestore.updateUserDataBase(map,map.get("idUser").toString(),countDownLatch);
                 countDownLatch.await();
                 if (firestore.getInputResult().getResponse()) {
                     presenter.showMessage("Bienvenido");
-                    presenter.insertUserLocal();
+                    presenter.insertUserLocal(map.get("idUser").toString());
                     presenter.nextActivity();}
                 else { presenter.showMessage(firestore.getInputResult().getResult()); }
             }
-            else { presenter.showMessage(firestore.getInputResult().getResult()); }
+            else { presenter.showMessage(""); }
         } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
@@ -96,56 +92,60 @@ public class InteractorFirestoreImpl implements Interactor{
             e.printStackTrace();
         }
         if (firestore.getInputResult().getResponse()) {
-            presenter      .showState(firestore.getEstados());
-            System.out.println("SIZE "+firestore.getEstados().size());
+            presenter      .showState(firestore.getInputResult().getResult());
         } else {
             presenterMaster.showMessage(firestore.getInputResult().getResult());
         }
     }
 
     @Override
-    public void getMyData(LoginPresenter presenter) {
+    public void getMyData(LoginPresenter presenter, String idUser) {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        firestore.getMyData(countDownLatch, this, presenter);
+        firestore.getMyData(countDownLatch, idUser);
         try {
             countDownLatch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         if (firestore.getInputResult().getResponse()) {
-            presenter.insertUserOwner();
+            presenter.insertUserOwner(firestore.getInputResult().getResult());
         } else {
-            presenterMaster.showMessage(firestore.getInputResult().getResult());
+            presenterMaster.showMessage("");
         }
     }
 
     @Override
-    public void searchChat(Chat chat, MessagePresenter messagePresenter) {
+    public void searchChat(Map<String, Object> chat, MessagePresenter messagePresenter) {
         countDownLatch = new CountDownLatch(1);
-        firestore.searchChat(chat,countDownLatch);
+        String[] users = (String[]) chat.get("users");
+        firestore.searchChat(users, countDownLatch);
         try {
             countDownLatch.await();
         } catch (InterruptedException e) { e.printStackTrace(); }
         //si encontro que este usuario ya habia hablado con este usuario obtener el id de ese chat
         if (firestore.getInputResult().getResponse()){
-            chat.setIdChat(firestore.getInputResult().getResult());
+            chat.put("id", firestore.getInputResult().getResult());
             messagePresenter.getMessages(chat);
         }else{
-            firestore.listenerStatusUser(chat.getUsers()[1],messagePresenter);
+            firestore.listenerStatusUser(users[1], response -> {
+                messagePresenter.showStateUser( response);
+                return null;
+            });
         }
     }
 
     @Override
-    public void createChat(Chat chat, User friend, Message message, MessagePresenter messagePresenter) {
+    public void createChat(Map<String, Object> chat, User friend, Message message, MessagePresenter messagePresenter) {
         countDownLatch = new CountDownLatch(1);
         firestore.createChat(chat,countDownLatch);
+
         try {
             countDownLatch.await();
         } catch (InterruptedException e) { e.printStackTrace(); }
         if (firestore.getInputResult().getResponse()){
-            chat.setIdChat(firestore.getInputResult().getResult());
-            messagePresenter.insertFriendLocal(friend, chat.getIdChat());
-            messagePresenter.sendMessages(chat.getIdChat(),message);
+            chat.put(firestore.getInputResult().getResult(),"id");
+            messagePresenter.insertFriendLocal(friend, chat.get("idChat").toString());
+            messagePresenter.sendMessages(chat.get("idChat").toString(),message);
             messagePresenter.getMessages(chat);
         }else{
             System.out.println("NO CREADO");
@@ -154,23 +154,28 @@ public class InteractorFirestoreImpl implements Interactor{
     }
 
     @Override
-    public void getMessages(MessagePresenter presenter, Chat chat) {
-        firestore.getMessagesByIdChat(chat, list ->
-                presenter.showMessages(firestore.getMensajes(), chat.getIdChat() ),presenter );
-        firestore.listenerStatusUser(chat.getUsers()[1],presenter);
+    public void getMessages(MessagePresenter presenter, Map<String, Object> chat) {
+        String[] users = (String[]) chat.get("users");
+        firestore.getMessagesByIdChat(chat.get("id").toString(),users[1], respChat->{
+            presenter.showMessages(respChat, chat.get("id").toString() );
+            return  null;
+        },respStatus->{
+            presenter.showStateUser(respStatus);
+            return  null;
+        });
     }
 
     @Override
-    public void getAllUsers(ContactsPresenter contactsPresenter) {
+    public void getAllUsers(ContactsPresenter contactsPresenter, String idUser) {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        firestore.getAllUsers(countDownLatch);
+        firestore.getAllUsers(countDownLatch,idUser);
         try {
             countDownLatch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         if (firestore.getInputResult().getResponse()) {
-            contactsPresenter.showContacts(firestore.getUsers());
+            contactsPresenter.showContacts(firestore.getInputResult().getResult());
         } else {
 
         }
@@ -187,11 +192,12 @@ public class InteractorFirestoreImpl implements Interactor{
     }
 
     @Override
-    public void cancelListener() {firestore.cancelListener(); }
+    public void cancelListener() {
+        firestore.cancelListener(); }
 
     @Override
-    public void updateEstado(String idUser, Estado_User estado_user) {
-        firestore.updateState(idUser,estado_user);
+    public void updateState(String idUser, String state) {
+        firestore.updateState(idUser, state);
     }
 
     @Override
@@ -209,8 +215,7 @@ public class InteractorFirestoreImpl implements Interactor{
             e.printStackTrace();
         }
         if (firestore.getInputResult().getResponse()) {
-            User friend = new Gson().fromJson(firestore.getInputResult().getResult(),User.class) ;
-            presenter.addChats(friend);
+            presenter.addChats(firestore.getInputResult().getResult());
         } else {
 
         }
@@ -218,8 +223,11 @@ public class InteractorFirestoreImpl implements Interactor{
     }
 
     @Override
-    public void listenerChatFriend(FriendEntity friendEntity, MenuPresenter menuPresenter) {
-        firestore.listenerChatFriend(friendEntity,this,menuPresenter);
+    public void listenerChatFriend(FriendEntity friend, MenuPresenter menuPresenter) {
+        firestore.listenerChatFriend(friend.idChat,(response)->{
+            friendIsWriting(friend, menuPresenter, response);
+            return null;
+        });
     }
 
     @Override
@@ -228,7 +236,7 @@ public class InteractorFirestoreImpl implements Interactor{
     }
 
     @Override
-    public void friendIsWriting(FriendEntity friendEntity, MenuPresenter menuPresenter, Message message) {
+    public void friendIsWriting(FriendEntity friendEntity, MenuPresenter menuPresenter, String message) {
         menuPresenter.friendIsWriting(friendEntity, message);
     }
 
@@ -244,6 +252,11 @@ public class InteractorFirestoreImpl implements Interactor{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void downloadFile(String message, Message.TypesMessages record) {
+        firestore.downloadFile(message,record.toString());
     }
 
 }
