@@ -2,11 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="isEmpty"
             type="Boolean" />
@@ -21,8 +18,9 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:backgroundTint="@color/items_background"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_floppy_background" />
+            android:src="@drawable/ic_fondo_uno" />
 
         <LinearLayout
             android:layout_width="match_parent"

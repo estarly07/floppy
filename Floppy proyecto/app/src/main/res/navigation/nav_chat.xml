@@ -23,4 +23,12 @@
         android:name="com.example.floppy.ui.aboutfriend.AboutFriendFragment"
         android:label="fragment_about_friend"
         tools:layout="@layout/fragment_about_friend" />
+    <fragment
+        android:id="@+id/wallpapersFragment"
+        android:name="com.example.floppy.ui.wallpapers.WallpapersFragment"
+        android:label="WallpapersFragment" >
+        <action
+            android:id="@+id/action_wallpapersFragment_to_messageFragment"
+            app:destination="@id/messageFragment" />
+    </fragment>
 </navigation>

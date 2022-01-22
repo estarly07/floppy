@@ -64,5 +64,7 @@
     <string name="errorGetData">Hubo un error \nal obtener los estados</string>
     <string name="empty_chat">No has enviado mensajes...</string>
     <string name="send_message">Envia un mensaje :)</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
