@@ -212,14 +212,15 @@ class Firestore (val context:Context) : ConnectionFirestore {
         callbackStatus: (String) -> Unit
     ) {
         if (listenerChat == null) {
+            println("IG $idChat ")
             listenerChat = firebaseFirestore.collection(GlobalUtils.COLLECTIONS[2]).document(idChat)
                 .addSnapshotListener(initListenerChat(callbackChat))
             listenerStatusUser(idFriend, callbackStatus)
         }
     }
-    override fun listenerStatusUser(idFriend: String?, callback: (String) -> Unit) {
+    override fun listenerStatusUser(idFriend: String, callback: (String) -> Unit) {
         listenerStateFriend = firebaseFirestore.collection(GlobalUtils.COLLECTIONS[0]).document(
-            idFriend!!
+            idFriend
         ).addSnapshotListener { value: DocumentSnapshot?, _: FirebaseFirestoreException? ->
             if (value!!.exists()) {
                 callback.invoke(value.data!!["estado_user"] as String)
@@ -323,6 +324,7 @@ class Firestore (val context:Context) : ConnectionFirestore {
                         stringBuilder.append("'idMessage': '${messagesList[0]["idMessage"]}',")
                         stringBuilder.append("'message': '${messagesList[0]["message"]}',")
                         stringBuilder.append("'user': '${messagesList[0]["user"]}',")
+                        stringBuilder.append("'state': '${messagesList[0]["state"]}',")
 
                         stringBuilder.append("'hora': '${messagesList[0]["hora"]}',")
                         stringBuilder.append("'typeMessage': '${messagesList[0]["typeMessage"]}'")

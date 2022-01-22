@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import com.estarly.data.remote.Firestore;
 import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.Chat;
 import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.models.User;
@@ -15,6 +16,7 @@ import com.example.floppy.ui.login.LoginPresenter;
 import com.example.floppy.ui.menu.MenuPresenter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
@@ -124,7 +126,7 @@ public class InteractorFirestoreImpl implements Interactor{
         } catch (InterruptedException e) { e.printStackTrace(); }
         //si encontro que este usuario ya habia hablado con este usuario obtener el id de ese chat
         if (firestore.getInputResult().getResponse()){
-            chat.put("id", firestore.getInputResult().getResult());
+            chat.put("idChat", firestore.getInputResult().getResult());
             messagePresenter.getMessages(chat);
         }else{
             firestore.listenerStatusUser(users[1], response -> {
@@ -137,13 +139,15 @@ public class InteractorFirestoreImpl implements Interactor{
     @Override
     public void createChat(Map<String, Object> chat, User friend, Message message, MessagePresenter messagePresenter) {
         countDownLatch = new CountDownLatch(1);
+        String[] users = (String[]) chat.get("users");
+        chat.put("users", Arrays.asList(users));
         firestore.createChat(chat,countDownLatch);
-
         try {
             countDownLatch.await();
         } catch (InterruptedException e) { e.printStackTrace(); }
         if (firestore.getInputResult().getResponse()){
-            chat.put(firestore.getInputResult().getResult(),"id");
+            chat.put("users", users);
+            chat.put("idChat",firestore.getInputResult().getResult());
             messagePresenter.insertFriendLocal(friend, chat.get("idChat").toString());
             messagePresenter.sendMessages(chat.get("idChat").toString(),message);
             messagePresenter.getMessages(chat);
@@ -156,8 +160,8 @@ public class InteractorFirestoreImpl implements Interactor{
     @Override
     public void getMessages(MessagePresenter presenter, Map<String, Object> chat) {
         String[] users = (String[]) chat.get("users");
-        firestore.getMessagesByIdChat(chat.get("id").toString(),users[1], respChat->{
-            presenter.showMessages(respChat, chat.get("id").toString() );
+        firestore.getMessagesByIdChat(chat.get("idChat").toString(),users[1], respChat->{
+            presenter.showMessages(respChat, chat.get("idChat").toString() );
             return  null;
         },respStatus->{
             presenter.showStateUser(respStatus);

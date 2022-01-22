@@ -99,7 +99,6 @@ public class MessageFragment extends Fragment implements MessageView {
         });
         presenter.getStateUser(user.getIdUser());
 
-
         binding.btnLogin.setOnClickListener(view1 -> {
 
             if(binding.edtMensaje.getText().toString().trim().length() == 0){
@@ -111,7 +110,7 @@ public class MessageFragment extends Fragment implements MessageView {
             }
         });
 
-        binding.includeSticker.btnShowDialogAddSticker.setOnClickListener(view13 -> { presenter.showDialogAddSticker(); });
+        binding.includeSticker.btnShowDialogAddSticker.setOnClickListener(view13 -> presenter.showDialogAddSticker());
         Extensions.Companion.listenerEditText(binding.edtMensaje,s -> {
             if(s.length() > 0){
                 binding.btnLogin.setImageResource(R.drawable.ic_send);
@@ -130,6 +129,9 @@ public class MessageFragment extends Fragment implements MessageView {
             presenter.showMessagesChat(friendEntity);
             presenter.showDataFriend(friendEntity.nick, user.getPhoto());
         }else{
+            //mostrar animacion
+            binding.setIsEmpty(true);
+            binding.containerNoMessages.anim.setAnimation(Animations.Companion.animationRandom());
             presenter.searchChat(user);
             presenter.showDataFriend(user.getName(), user.getPhoto());
         }
@@ -163,6 +165,9 @@ public class MessageFragment extends Fragment implements MessageView {
 
     public void showMessages(ArrayList<Message> messages, String myId, String idChat) {
         activity.runOnUiThread(() -> {
+            System.out.println("MNEEEs "+messages.isEmpty());
+            binding.setIsEmpty(messages.isEmpty());
+
             this.idChat = idChat;
             AdapterMessage adapterMessage = new AdapterMessage(messages, myId);
             adapterMessage.setClick((view, position, message,viewHolder)-> {

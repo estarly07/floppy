@@ -62,5 +62,7 @@
     <string name="existEmail">No se pudo registrar\n(Puede que ya exista ese Email)</string>
     <string name="noRegisterData">No se pudo registrar los datos</string>
     <string name="errorGetData">Hubo un error \nal obtener los estados</string>
+    <string name="empty_chat">No has enviado mensajes...</string>
+    <string name="send_message">Envia un mensaje :)</string>
 
 </resources>

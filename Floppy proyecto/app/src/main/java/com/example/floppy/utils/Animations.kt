@@ -8,9 +8,17 @@ import com.example.floppy.R
 import com.example.floppy.utils.Animations.Companion.animAppearAndVanish
 import kotlinx.coroutines.Delay
 import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 class Animations {
+
     companion object {
+        val animations = listOf(
+            R.raw.uno   ,
+            R.raw.dos   ,
+            R.raw.tres  ,
+            R.raw.cuatro,
+        )
         /**its function is appear an any view*/
         fun View.animAppear() {
             val animation = AnimationUtils.loadAnimation(this.context, R.anim.anim_aparecer)
@@ -42,5 +50,8 @@ class Animations {
             val moveY = if (translate)  this.height else 0
             this.animate().translationY(moveY.toFloat()).setDuration(300).setStartDelay(100).start()
         }
+
+
+        fun animationRandom():Int = animations[Random.nextInt(animations.size)]
     }
 }

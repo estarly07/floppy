@@ -206,7 +206,7 @@ public class MessagePresenterImpl implements MessagePresenter {
 
         new Thread(() -> interactor.searchChat(new HashMap<String,Object>(){
             {
-                put("id","");
+                put("idChat","");
                 put("mensajes", "[]" );
                 put("users", users);
             }
@@ -222,7 +222,7 @@ public class MessagePresenterImpl implements MessagePresenter {
         new Thread(() -> interactor.createChat(new HashMap<String,Object>(){
             {
                 put("mensajes", "[]" );
-                put("users", Arrays.asList(users));
+                put("users",users);
             }
         }, userSelect, message, this)).start();
     }
@@ -347,7 +347,7 @@ public class MessagePresenterImpl implements MessagePresenter {
         new Thread(() -> interactor.getMessages(this, new HashMap<String,Object>(){
             {
                 put("mensajes", "[]" );
-                put("id", (friendEntity.idChat) );
+                put("idChat", (friendEntity.idChat) );
                 put("users", users);
             }
         })).start();

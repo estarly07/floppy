@@ -40,7 +40,7 @@ interface ConnectionFirestore {
 
     fun getFriends(countDownLatch: CountDownLatch, idFriend: String?)
 
-    fun listenerStatusUser(idFriend: String?, callback: (String) -> Unit)
+    fun listenerStatusUser(idFriend: String, callback: (String) -> Unit)
 
     fun listenerChatFriend(
         idChat: String,
