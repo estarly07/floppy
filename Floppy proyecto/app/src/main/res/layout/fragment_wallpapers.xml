@@ -1,17 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <data>
+
+        <variable
+            name="isDefault"
+            type="Boolean" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.wallpapers.WallpapersFragment">
+        android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerWallpaper"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:background="@color/fondo"
+            android:orientation="vertical"
+            tools:context=".ui.wallpapers.WallpapersFragment">
 
-    </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_40dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_55dp"
+                    android:layout_height="@dimen/_55dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_marginBottom="@dimen/_15dp"
+                    android:src="@drawable/ic_floppy"
+                    app:tint="@color/naranja" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_2dp">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/christmas_cat"
+                        android:gravity="center_vertical"
+                        android:letterSpacing="0.1"
+                        android:text="@string/app_name"
+                        android:textColor="@color/blanco1"
+                        android:textSize="@dimen/_30sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10dp">
+
+                <Button
+                    android:id="@+id/btnDefault"
+                    style="@style/subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/boton_redondeado"
+                    android:backgroundTint="@{isDefault? @color/naranja:@color/fondo,default=@color/naranja}"
+                    android:text="@string/defaul_pictures"
+                    android:textSize="@dimen/_15sp" />
+
+                <Button
+                    android:id="@+id/btnAll"
+                    style="@style/subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/boton_redondeado"
+                    android:backgroundTint="@{isDefault? @color/fondo:@color/naranja,default=@color/fondo}"
+                    android:text="@string/pictures_user"
+                    android:textSize="@dimen/_15sp" />
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerWallpaper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

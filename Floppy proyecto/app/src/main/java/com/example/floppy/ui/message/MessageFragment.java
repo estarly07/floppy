@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -109,6 +111,12 @@ public class MessageFragment extends Fragment implements MessageView {
                 sendMessage();
             }
         });
+        binding.toolbar2.getMenu().findItem(R.id.action_wallpaper).setOnMenuItemClickListener(menuItem -> {
+            NavHostFragment.findNavController(this).navigate(R.id.action_messageFragment_to_wallpapersFragment);
+
+            return false;
+        });
+        
 
         binding.includeSticker.btnShowDialogAddSticker.setOnClickListener(view13 -> presenter.showDialogAddSticker());
         Extensions.Companion.listenerEditText(binding.edtMensaje,s -> {

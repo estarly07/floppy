@@ -17,6 +17,13 @@
             app:exitAnim="@anim/anim_traslate_center_to_down"
             app:popEnterAnim="@anim/anim_traslateup"
             app:popExitAnim="@anim/anim_traslate_center_to_up" />
+        <action
+            android:id="@+id/action_messageFragment_to_wallpapersFragment"
+            app:destination="@id/wallpapersFragment"
+            app:enterAnim="@anim/anim_traslaterleft_two"
+            app:exitAnim="@anim/anim_traslaterleft"
+            app:popEnterAnim="@anim/anim_traslateright"
+            app:popExitAnim="@anim/anim_traslateright_two" />
     </fragment>
     <fragment
         android:id="@+id/aboutFriendFragment"
@@ -26,9 +33,5 @@
     <fragment
         android:id="@+id/wallpapersFragment"
         android:name="com.example.floppy.ui.wallpapers.WallpapersFragment"
-        android:label="WallpapersFragment" >
-        <action
-            android:id="@+id/action_wallpapersFragment_to_messageFragment"
-            app:destination="@id/messageFragment" />
-    </fragment>
+        android:label="WallpapersFragment" />
 </navigation>

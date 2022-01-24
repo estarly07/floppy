@@ -63,11 +63,16 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == Permission.RECORD_CODE_PERMISSION){
-            if(Permission.Companion.validateResultsPermissions(grantResults)){
-                presenter.showMessage(getString(R.string.permission));
+        switch (requestCode){
+            case Permission.RECORD_CODE_PERMISSION:
+            case Permission.GALLERY_CODE_PERMISSION: {
+                if(Permission.Companion.validateResultsPermissions(grantResults)){
+                    presenter.showMessage(getString(R.string.permission));
+                }
             }
+            break;
         }
+
     }
 
     @Override
