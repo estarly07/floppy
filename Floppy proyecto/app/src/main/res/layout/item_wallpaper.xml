@@ -20,6 +20,7 @@
             app:tint="@color/naranja" />
         <ImageView
             android:id="@+id/img2"
+            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_100dp"
          />

@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="isDefault"
             type="Boolean" />
@@ -85,6 +87,7 @@
                     android:backgroundTint="@{isDefault? @color/fondo:@color/naranja,default=@color/fondo}"
                     android:text="@string/pictures_user"
                     android:textSize="@dimen/_15sp" />
+
                 <ProgressBar
                     android:id="@+id/progress"
                     android:layout_width="wrap_content"
@@ -100,6 +103,14 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerWallpaper"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{isDefault? View.VISIBLE : View.GONE}"
+                    android:nestedScrollingEnabled="false" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerWallpaperUser"
+                    android:layout_width="match_parent"
+                    android:visibility="@{isDefault? View.GONE : View.VISIBLE}"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false" />
 

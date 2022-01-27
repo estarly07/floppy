@@ -1,5 +1,6 @@
 package com.example.floppy.ui.wallpapers;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 public class WallpapersFragment extends Fragment implements WallpaperView{
     private FragmentWallpapersBinding binding;
     private AdapterWallpaper          adapterWallpaper;
+    private AdapterWallpaper          adapterWallpaperUser;
     private WallpaperPresenter        wallpaperPresenter;
 
     @Override
@@ -37,23 +39,22 @@ public class WallpapersFragment extends Fragment implements WallpaperView{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         wallpaperPresenter = new WallpaperPresenterImpl(this);
+        binding.setIsDefault(true);
 
-        adapterWallpaper   = new AdapterWallpaper();
+        adapterWallpaper       = new AdapterWallpaper();
         binding.recyclerWallpaper.setHasFixedSize (true);
         binding.recyclerWallpaper.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
-        binding.setIsDefault(true);
-        binding.btnDefault.setOnClickListener(v->{
+        adapterWallpaperUser   = new AdapterWallpaper();
+        binding.recyclerWallpaperUser.setHasFixedSize (true);
+        binding.recyclerWallpaperUser.setLayoutManager(new GridLayoutManager(view.getContext(),2));
+
+        binding.btnDefault.setOnClickListener(v ->{
             binding.setIsDefault(true);
-            binding.recyclerWallpaper.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-            wallpaperPresenter.showDefaultWallpapers();
-        });
-        binding.btnAll.setOnClickListener(v->{
+            wallpaperPresenter.showDefaultWallpapers();});
+        binding.btnAll.setOnClickListener(v -> {
             binding.setIsDefault(false);
-            binding.recyclerWallpaper.setLayoutManager(new GridLayoutManager( getContext(),3));
-            adapterWallpaper.cleanData();
-            wallpaperPresenter.showUserWallpapers(v.getContext(), ChatActivity.activity);
-        });
+                wallpaperPresenter.showUserWallpapers(v.getContext(), ChatActivity.activity);});
 
         wallpaperPresenter.showDefaultWallpapers();
     }
@@ -70,36 +71,28 @@ public class WallpapersFragment extends Fragment implements WallpaperView{
         wallpapers.add(R.drawable.ic_floppy_background);
         wallpapers.add(R.drawable.ic_fondo_uno);
         wallpapers.add(R.drawable.ic_floppy_background);
-        binding.recyclerWallpaper.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
-        adapterWallpaper = new AdapterWallpaper();
         adapterWallpaper.setWallpapersDefaults(wallpapers,true);
         binding.recyclerWallpaper.setAdapter(adapterWallpaper);
-        Animations.Companion.animVanish(binding.progress);
-        Animations.Companion.animAppear(binding.recyclerWallpaper);
-
     }
 
     @Override
-    public void showUserWallpapers(String paths) {
+    public void showUserWallpapers(Uri path) {
         ChatActivity.activity.runOnUiThread(() -> {
-            binding.setIsDefault(false);
-//            adapterWallpaper = new AdapterWallpaper();
-
-
-            adapterWallpaper.setWallpapersDefaults(paths,false);
-//            binding.recyclerWallpaper.setAdapter(adapterWallpaper);
+            adapterWallpaperUser.setWallpapersDefaults(path,false);
+            binding.recyclerWallpaperUser.setAdapter(adapterWallpaperUser);
         });
     }
+
+    @Override
+    public void changeView(Boolean show) { binding.setIsDefault(show); }
 
     @Override
     public void showHandling(Boolean show) {
         ChatActivity.activity.runOnUiThread(() -> {
             if(show){
                 Animations.Companion.animAppear(binding.progress);
-                Animations.Companion.animVanish(binding.recyclerWallpaper);
             }else{
-                Animations.Companion.animAppear(binding.recyclerWallpaper);
                 Animations.Companion.animVanish(binding.progress);
             }
         });

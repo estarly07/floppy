@@ -2,6 +2,8 @@ package com.example.floppy.utils
 
 import android.content.Context
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import kotlinx.coroutines.Dispatchers
@@ -10,16 +12,30 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.ArrayList
 
 class FilesLocal {
     companion object{
-         fun getAllImages(context: Context,callback: (String) -> Unit){
-             GlobalScope.launch(Dispatchers.IO) {
+        var mutableList = mutableListOf<String>();
+         fun getAllImages(context: Context,callback: (Uri) -> Unit){
+             GlobalScope.launch(Dispatchers.Main) {
                 image(context).collect { callback.invoke(it) }
              }
         }
-        private fun image(context:Context)= flow<String>{
+        private fun image(context:Context)= flow<Uri>{
+            if(mutableList.isNotEmpty()){
+                mutableList.forEach {
+                    val imgFile = File(it)
+                    emit(Uri.fromFile(imgFile))
+                    delay(50)
+                }
+                return@flow
+            }
+
+
             val cursor: Cursor
             val uri: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             val projection =
@@ -31,28 +47,16 @@ class FilesLocal {
                 "$orderBy DESC"
             )!!
             val columnIndexData: Int = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
+            println("Columnas ${cursor.columnCount}")
             while (cursor.moveToNext()) {
-               emit(cursor.getString(columnIndexData))
-                delay(500)
+                mutableList.add(cursor.getString(columnIndexData))
+                val imgFile = File(cursor.getString(columnIndexData))
+                val uri =Uri.fromFile(imgFile)
 
 
-//                val imgFile = File(absolutePathOfImage)
-//                                Uri imageUri = Uri.fromFile(imgFile);
-//
-//                try {
-//
-//                    BitmapFactory.decodeFile(String.valueOf(MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri)));
-//                    Bitmap resizedBitmap =
-//                            BitmapFactory.decodeFile(String.valueOf(MediaStore.Images.Media.getBitmap(context.getContentResolver(),
-//                                    imageUri)) );
-//                    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getPath());
-//                   Bitmap resizedBitmap= Bitmap.createScaledBitmap(bitmap, 100 , 100, false);
-//
-//
-//                    listOfAllImages.add(resizedBitmap);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
+                emit(uri )
+                delay(50)
+
             }
 
         }

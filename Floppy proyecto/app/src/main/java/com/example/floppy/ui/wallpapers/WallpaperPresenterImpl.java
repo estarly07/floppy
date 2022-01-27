@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class WallpaperPresenterImpl implements WallpaperPresenter {
     private WallpaperView wallpaperView;
-    private ArrayList<Object> paths = new ArrayList<>();
+    private Boolean       firstTimer = false;//cargar solamente una vex las imagenes del almacenamiento del movil
 
     public WallpaperPresenterImpl(WallpaperView wallpaperView) {
         wallpaperView.showHandling(true);
@@ -26,23 +26,24 @@ public class WallpaperPresenterImpl implements WallpaperPresenter {
     }
 
     @Override
-    public void showDefaultWallpapers() { wallpaperView.showDefaultWallpapers(); }
+    public void showDefaultWallpapers() {
+        wallpaperView.changeView(true);
+        wallpaperView.showDefaultWallpapers(); }
 
     @Override
     public void showUserWallpapers(Context context, Activity activity) {
         if(Permission.Companion.validatePermissionToGallery(context)){
             wallpaperView.showHandling(true);
             new Thread(() -> {
-                FilesLocal.Companion.getAllImages(context,s -> {
-                    System.out.println(".showUserWallpapers "+s);
-                    wallpaperView.showUserWallpapers(s);
-//                    wallpaperView.showHandling(false);
-                    return null;
-                });
-
-//                paths = paths.size() == 0
-//                        ? FilesLocal.Companion.getAllImages(context)
-//                        : paths;
+                if(!firstTimer){
+                    FilesLocal.Companion.getAllImages(context,s -> {
+                        wallpaperView.showUserWallpapers(s);
+                        return null;
+                    });
+                }
+                wallpaperView.changeView(false);
+                firstTimer = true;
+                wallpaperView.showHandling(false);
 
             }).start();
         }else{

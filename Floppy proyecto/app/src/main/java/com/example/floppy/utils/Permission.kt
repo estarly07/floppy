@@ -29,7 +29,6 @@ class Permission {
 
          fun Context.validatePermissionToGallery():Boolean
                  =  ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE  ) == PackageManager.PERMISSION_GRANTED
-                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE ) == PackageManager.PERMISSION_GRANTED
          fun Activity.initValidatePermissionToGallery(){
              ActivityCompat.requestPermissions(
                  this,

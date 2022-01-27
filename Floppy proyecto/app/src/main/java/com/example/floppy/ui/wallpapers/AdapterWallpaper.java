@@ -1,5 +1,6 @@
 package com.example.floppy.ui.wallpapers;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Hold
     public void setWallpapersDefaults(Object wallpaper,Boolean isDefault) {
         this.wallpapersDefaults.add(wallpaper);
         this.isDefault = isDefault;
-        notifyItemInserted(wallpapersDefaults.size()-1);
+        notifyItemInserted(wallpapersDefaults.size());
     }
 
     @NonNull
@@ -48,11 +49,14 @@ public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Hold
             holder.binding.img2.setVisibility(View.GONE);
             holder.binding.img.setImageDrawable(holder.binding.getRoot().getContext().getDrawable((Integer) wallpapersDefaults.get(position)));
         }else{
+
+
             holder.binding.img.setVisibility(View .GONE);
             holder.binding.img2.setVisibility(View.VISIBLE);
 //            holder.binding.img.setImageBitmap((Bitmap) wallpapersDefaults.get(position));
             Glide.with(holder.binding.getRoot().getContext())
                     .load(wallpapersDefaults.get(position))
+                    .asBitmap()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.binding.img2);
         }
