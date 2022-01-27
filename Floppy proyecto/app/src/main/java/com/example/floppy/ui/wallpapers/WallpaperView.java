@@ -1,11 +1,11 @@
 package com.example.floppy.ui.wallpapers;
 
-import android.net.Uri;
+import java.util.ArrayList;
 
 public interface WallpaperView {
 
     void showDefaultWallpapers();
-    void showUserWallpapers(Uri path);
+    void showUserWallpapers(ArrayList<String> path);
     void changeView(Boolean show);
     void showHandling(Boolean show);
 }

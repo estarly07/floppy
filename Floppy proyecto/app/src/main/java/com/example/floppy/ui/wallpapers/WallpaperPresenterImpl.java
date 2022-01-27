@@ -29,7 +29,6 @@ public class WallpaperPresenterImpl implements WallpaperPresenter {
     public void showDefaultWallpapers() {
         wallpaperView.changeView(true);
         wallpaperView.showDefaultWallpapers(); }
-
     @Override
     public void showUserWallpapers(Context context, Activity activity) {
         if(Permission.Companion.validatePermissionToGallery(context)){
@@ -38,12 +37,15 @@ public class WallpaperPresenterImpl implements WallpaperPresenter {
                 if(!firstTimer){
                     FilesLocal.Companion.getAllImages(context,s -> {
                         wallpaperView.showUserWallpapers(s);
+                        wallpaperView.showHandling(false);
+                        wallpaperView.changeView(false);
                         return null;
                     });
+                }else{
+                    wallpaperView.showHandling(false);
+                    wallpaperView.changeView(false);
                 }
-                wallpaperView.changeView(false);
                 firstTimer = true;
-                wallpaperView.showHandling(false);
 
             }).start();
         }else{

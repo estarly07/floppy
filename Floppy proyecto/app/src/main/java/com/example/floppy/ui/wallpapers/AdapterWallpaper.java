@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.floppy.R;
 import com.example.floppy.databinding.ItemWallpaperBinding;
 
@@ -18,10 +19,14 @@ import java.util.ArrayList;
 
 public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Holder> {
 
-    private ArrayList<Object> wallpapersDefaults = new ArrayList<>();
+    private ArrayList<String> wallpapersDefaults = new ArrayList<>();
     private Boolean isDefault;
+    RequestOptions options = new RequestOptions()
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+            .override(200, 150)
+            .centerCrop();
 
-    public void setWallpapersDefaults(ArrayList<Object> wallpapersDefaults,Boolean isDefault) {
+    public void setWallpapersDefaults(ArrayList<String> wallpapersDefaults,Boolean isDefault) {
         this.wallpapersDefaults = wallpapersDefaults;
         this.isDefault = isDefault;
         notifyDataSetChanged();
@@ -29,11 +34,11 @@ public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Hold
     public void cleanData(){
         wallpapersDefaults.clear();
     }
-    public void setWallpapersDefaults(Object wallpaper,Boolean isDefault) {
-        this.wallpapersDefaults.add(wallpaper);
-        this.isDefault = isDefault;
-        notifyItemInserted(wallpapersDefaults.size());
-    }
+//    public void setWallpapersDefaults(Object wallpaper,Boolean isDefault) {
+//        this.wallpapersDefaults.add(wallpaper);
+//        this.isDefault = isDefault;
+//        notifyItemInserted(wallpapersDefaults.size()-1);
+//    }
 
     @NonNull
     @Override
@@ -47,7 +52,7 @@ public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Hold
         if(isDefault){
             holder.binding.img.setVisibility(View .VISIBLE);
             holder.binding.img2.setVisibility(View.GONE);
-            holder.binding.img.setImageDrawable(holder.binding.getRoot().getContext().getDrawable((Integer) wallpapersDefaults.get(position)));
+            holder.binding.img.setImageDrawable(holder.binding.getRoot().getContext().getDrawable(Integer.parseInt(wallpapersDefaults.get(position))));
         }else{
 
 
@@ -56,8 +61,7 @@ public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Hold
 //            holder.binding.img.setImageBitmap((Bitmap) wallpapersDefaults.get(position));
             Glide.with(holder.binding.getRoot().getContext())
                     .load(wallpapersDefaults.get(position))
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .apply(options)
                     .into(holder.binding.img2);
         }
     }

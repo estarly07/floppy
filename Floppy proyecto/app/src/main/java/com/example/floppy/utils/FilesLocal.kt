@@ -2,8 +2,6 @@ package com.example.floppy.utils
 
 import android.content.Context
 import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import kotlinx.coroutines.Dispatchers
@@ -12,28 +10,25 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.ArrayList
 
 class FilesLocal {
     companion object{
-        var mutableList = mutableListOf<String>();
-         fun getAllImages(context: Context,callback: (Uri) -> Unit){
+        var mutableList = arrayListOf<String>()
+         fun getAllImages(context: Context,callback: (ArrayList<String>) -> Unit){
              GlobalScope.launch(Dispatchers.Main) {
                 image(context).collect { callback.invoke(it) }
              }
         }
-        private fun image(context:Context)= flow<Uri>{
-            if(mutableList.isNotEmpty()){
-                mutableList.forEach {
-                    val imgFile = File(it)
-                    emit(Uri.fromFile(imgFile))
-                    delay(50)
-                }
-                return@flow
-            }
+        private fun image(context:Context)= flow<ArrayList<String>>{
+//            if(mutableList.isNotEmpty()){
+//                mutableList.forEach {
+//                    val imgFile = File(it)
+//                    emit(Uri.fromFile(imgFile))
+//                    delay(50)
+//                }
+//                return@flow
+//            }
 
 
             val cursor: Cursor
@@ -50,14 +45,14 @@ class FilesLocal {
             println("Columnas ${cursor.columnCount}")
             while (cursor.moveToNext()) {
                 mutableList.add(cursor.getString(columnIndexData))
-                val imgFile = File(cursor.getString(columnIndexData))
-                val uri =Uri.fromFile(imgFile)
+//                val imgFile = File(cursor.getString(columnIndexData))
+//                val uri =Uri.fromFile(imgFile)
 
 
-                emit(uri )
-                delay(50)
+//                emit(mutableList)
 
             }
+            emit(mutableList)
 
         }
     }

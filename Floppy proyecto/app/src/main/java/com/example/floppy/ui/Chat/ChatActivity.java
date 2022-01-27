@@ -47,8 +47,6 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     private       ActivityChatBinding binding;
     public  static ChatActivity activity;
 
-    private final int RECORD_CODE_PERMISSION = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

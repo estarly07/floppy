@@ -1,6 +1,5 @@
 package com.example.floppy.ui.wallpapers;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -64,20 +63,20 @@ public class WallpapersFragment extends Fragment implements WallpaperView{
 
     @Override
     public void showDefaultWallpapers() {
-        ArrayList<Object> wallpapers = new ArrayList();
-        wallpapers.add(R.drawable.ic_floppy_background);
-        wallpapers.add(R.drawable.ic_fondo_uno);
-        wallpapers.add(R.drawable.ic_fondo_uno);
-        wallpapers.add(R.drawable.ic_floppy_background);
-        wallpapers.add(R.drawable.ic_fondo_uno);
-        wallpapers.add(R.drawable.ic_floppy_background);
+        ArrayList<String> wallpapers = new ArrayList();
+        wallpapers.add(R.drawable.ic_floppy_background+"");
+        wallpapers.add(R.drawable.ic_fondo_uno+"");
+        wallpapers.add(R.drawable.ic_fondo_uno+"");
+        wallpapers.add(R.drawable.ic_floppy_background+"");
+        wallpapers.add(R.drawable.ic_fondo_uno+"");
+        wallpapers.add(R.drawable.ic_floppy_background+"");
 
         adapterWallpaper.setWallpapersDefaults(wallpapers,true);
         binding.recyclerWallpaper.setAdapter(adapterWallpaper);
     }
 
     @Override
-    public void showUserWallpapers(Uri path) {
+    public void showUserWallpapers(ArrayList<String> path) {
         ChatActivity.activity.runOnUiThread(() -> {
             adapterWallpaperUser.setWallpapersDefaults(path,false);
             binding.recyclerWallpaperUser.setAdapter(adapterWallpaperUser);
