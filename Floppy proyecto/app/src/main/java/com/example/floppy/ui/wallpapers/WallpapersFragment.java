@@ -46,8 +46,10 @@ public class WallpapersFragment extends Fragment implements WallpaperView{
 
         adapterWallpaperUser   = new AdapterWallpaper();
         binding.recyclerWallpaperUser.setHasFixedSize (true);
-        binding.recyclerWallpaperUser.setLayoutManager(new GridLayoutManager(view.getContext(),2));
-
+        binding.recyclerWallpaperUser.setLayoutManager(new GridLayoutManager(view.getContext(),3));
+        binding.recyclerWallpaperUser.setItemViewCacheSize(20);
+        binding.recyclerWallpaperUser.setDrawingCacheEnabled(true);
+        binding.recyclerWallpaperUser.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         binding.btnDefault.setOnClickListener(v ->{
             binding.setIsDefault(true);
             wallpaperPresenter.showDefaultWallpapers();});
@@ -78,6 +80,7 @@ public class WallpapersFragment extends Fragment implements WallpaperView{
     @Override
     public void showUserWallpapers(ArrayList<String> path) {
         ChatActivity.activity.runOnUiThread(() -> {
+            adapterWallpaperUser = new AdapterWallpaper();
             adapterWallpaperUser.setWallpapersDefaults(path,false);
             binding.recyclerWallpaperUser.setAdapter(adapterWallpaperUser);
         });

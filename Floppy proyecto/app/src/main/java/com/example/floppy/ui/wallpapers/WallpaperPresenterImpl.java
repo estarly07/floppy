@@ -35,18 +35,14 @@ public class WallpaperPresenterImpl implements WallpaperPresenter {
             wallpaperView.showHandling(true);
             new Thread(() -> {
                 if(!firstTimer){
-                    FilesLocal.Companion.getAllImages(context,s -> {
-                        wallpaperView.showUserWallpapers(s);
-                        wallpaperView.showHandling(false);
-                        wallpaperView.changeView(false);
-                        return null;
-                    });
-                }else{
+                    wallpaperView.showUserWallpapers(FilesLocal.Companion.getImages(context));
                     wallpaperView.showHandling(false);
                     wallpaperView.changeView(false);
+                    firstTimer = true;
+                    return ;
                 }
-                firstTimer = true;
-
+                wallpaperView.showHandling(false);
+                wallpaperView.changeView(false);
             }).start();
         }else{
             Permission.Companion.initValidatePermissionToGallery(activity);

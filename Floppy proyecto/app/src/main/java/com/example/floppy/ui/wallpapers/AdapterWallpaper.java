@@ -6,14 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.floppy.R;
 import com.example.floppy.databinding.ItemWallpaperBinding;
+import com.example.floppy.ui.Chat.ChatActivity;
 
 import java.util.ArrayList;
 
@@ -23,22 +26,14 @@ public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Hold
     private Boolean isDefault;
     RequestOptions options = new RequestOptions()
             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-            .override(200, 150)
+            .override(500, 500)
             .centerCrop();
 
     public void setWallpapersDefaults(ArrayList<String> wallpapersDefaults,Boolean isDefault) {
         this.wallpapersDefaults = wallpapersDefaults;
         this.isDefault = isDefault;
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
     }
-    public void cleanData(){
-        wallpapersDefaults.clear();
-    }
-//    public void setWallpapersDefaults(Object wallpaper,Boolean isDefault) {
-//        this.wallpapersDefaults.add(wallpaper);
-//        this.isDefault = isDefault;
-//        notifyItemInserted(wallpapersDefaults.size()-1);
-//    }
 
     @NonNull
     @Override
@@ -49,6 +44,7 @@ public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Hold
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
+
         if(isDefault){
             holder.binding.img.setVisibility(View .VISIBLE);
             holder.binding.img2.setVisibility(View.GONE);
@@ -56,13 +52,17 @@ public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Hold
         }else{
 
 
+
             holder.binding.img.setVisibility(View .GONE);
             holder.binding.img2.setVisibility(View.VISIBLE);
 //            holder.binding.img.setImageBitmap((Bitmap) wallpapersDefaults.get(position));
-            Glide.with(holder.binding.getRoot().getContext())
+            Glide.with(ChatActivity.activity.getBaseContext())
                     .load(wallpapersDefaults.get(position))
                     .apply(options)
+                    .format(DecodeFormat.PREFER_RGB_565)
+                    .thumbnail(0.5f)
                     .into(holder.binding.img2);
+        ViewCompat.setTransitionName(holder.binding.img2, position + "_image");
         }
     }
 
