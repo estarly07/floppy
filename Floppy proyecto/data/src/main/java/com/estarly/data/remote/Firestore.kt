@@ -154,13 +154,14 @@ class Firestore (val context:Context) : ConnectionFirestore {
         }
     }
 
-    override fun createChat(map: Map<String, Any>, countDownLatch: CountDownLatch) {
+    override fun createChat(map: MutableMap<String, Any>, countDownLatch: CountDownLatch) {
         val id = firebaseFirestore.collection(GlobalUtils.COLLECTIONS[2]).document().id
+        map.put("idChat",id)
         firebaseFirestore.collection(GlobalUtils.COLLECTIONS[2]).document(id).set(map)
             .addOnCompleteListener { task: Task<Void?> ->
                 if (task.isSuccessful) {
                     inputResult.response = true
-                    inputResult.result = id
+                    inputResult.result   = id
                 } else {
                     inputResult.response = false
                 }

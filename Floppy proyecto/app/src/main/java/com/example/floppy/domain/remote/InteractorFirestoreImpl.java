@@ -160,6 +160,7 @@ public class InteractorFirestoreImpl implements Interactor{
     @Override
     public void getMessages(MessagePresenter presenter, Map<String, Object> chat) {
         String[] users = (String[]) chat.get("users");
+        System.out.println("ID CHAT INTERATOR "+chat.get("idChat").toString());
         firestore.getMessagesByIdChat(chat.get("idChat").toString(),users[1], respChat->{
             presenter.showMessages(respChat, chat.get("idChat").toString() );
             return  null;

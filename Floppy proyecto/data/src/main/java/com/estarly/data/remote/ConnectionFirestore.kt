@@ -26,7 +26,7 @@ interface ConnectionFirestore {
 
     fun searchChat(data: Array<String>, countDownLatch: CountDownLatch)
 
-    fun createChat(map: Map<String, Any>, countDownLatch: CountDownLatch)
+    fun createChat(map: MutableMap<String, Any>, countDownLatch: CountDownLatch)
 
     fun getAllUsers(countDownLatch: CountDownLatch, idUser: String)
 
