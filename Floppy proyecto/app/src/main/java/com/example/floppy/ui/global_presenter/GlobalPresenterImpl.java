@@ -111,28 +111,27 @@ public class GlobalPresenterImpl implements GlobalPresenter {
     }
 
     @Override
-    public void recordAudio(String idChat, MessagePresenter messagePresenter) {
+    public void recordAudio(String idChat, User friend, MessagePresenter messagePresenter) {
         if(!Permission.Companion.validatePermissionToRecord(activity)){
             Permission.Companion.initValidatePermissionToRecord(activity);
         }else
-            globalView.recordAudio(GlobalUtils.getDateNow()+idChat, idChat, messagePresenter );
+            globalView.recordAudio(GlobalUtils.getDateNow()+idChat, idChat, friend, messagePresenter);
     }
 
     @Override
-    public void stopRecord(String[] data, String idChat, MessagePresenter messagePresenter) {
+    public void stopRecord(String[] data, String idChat, User friend, MessagePresenter messagePresenter) {
         globalView.stopAudio();
         globalView.showHandlingGeneral(true);
-        new Thread(() -> interactor.savedAudio(data[1], Uri.fromFile(new File(data[0]+"/"+data[1]+".mp3")),idChat,messagePresenter)).start();
+        new Thread(() -> interactor.savedAudio(data[1], Uri.fromFile(new File(data[0]+"/"+data[1]+".mp3")),idChat, friend, messagePresenter)).start();
     }
 
     @Override
-    public void sendMessage(String name, String idChat, MessagePresenter messagePresenter) {
+    public void sendMessage(String name, String idChat, User friend, MessagePresenter messagePresenter) {
         Message message = new Message();
         message.setMessage(name);
         message.setTypeMessage(Message.TypesMessages.RECORD);
-        messagePresenter.sendMessages(idChat,message);
+        if(idChat.equals("")){ messagePresenter.createChat(friend,message); }
+        else{ messagePresenter.sendMessages(idChat,message); }
         globalView.showHandlingGeneral(false);
     }
-
-
 }

@@ -44,7 +44,7 @@ public interface GlobalView {
 
     void beginDownload(BroadcastReceiver broadcastReceiver);
 
-    void recordAudio(String name, String idChat, MessagePresenter messagePresenter);
+    void recordAudio(String name, String idChat,User friend, MessagePresenter messagePresenter);
 
     void stopAudio();
 }

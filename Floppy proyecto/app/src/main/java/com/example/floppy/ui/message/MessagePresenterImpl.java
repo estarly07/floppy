@@ -34,7 +34,6 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -324,7 +323,7 @@ public class MessagePresenterImpl implements MessagePresenter {
     }
 
     @Override
-    public void recordAudio(String idChat) { globalPresenter.recordAudio(idChat,this); }
+    public void recordAudio(String idChat, User friend) { globalPresenter.recordAudio(idChat,friend, this); }
 
     @Override
     public void showDialogAddOrDeleteSticker(Message message) {

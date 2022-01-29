@@ -54,7 +54,7 @@ public interface Interactor {
 
     void friendIsWriting(FriendEntity friendEntity, MenuPresenter menuPresenter, String message);
 
-    void savedAudio(String name, Uri uri, String idChat, MessagePresenter messagePresenter);
+    void savedAudio(String name, Uri uri, String idChat,User friend, MessagePresenter messagePresenter);
 
     void downloadFile(String message, Message.TypesMessages record);
 }

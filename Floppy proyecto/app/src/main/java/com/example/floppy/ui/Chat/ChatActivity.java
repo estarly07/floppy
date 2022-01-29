@@ -2,20 +2,14 @@ package com.example.floppy.ui.Chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 
-import android.Manifest;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.floppy.R;
 import com.example.floppy.databinding.ActivityChatBinding;
@@ -29,9 +23,7 @@ import com.example.floppy.ui.global_presenter.GlobalPresenterImpl;
 import com.example.floppy.ui.message.MessageFragment;
 import com.example.floppy.ui.message.MessagePresenter;
 import com.example.floppy.utils.Animations;
-import com.example.floppy.utils.Extensions;
 import com.example.floppy.utils.Permission;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.io.IOException;
@@ -150,7 +142,7 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     }
     File file;
     @Override
-    public void recordAudio(String name, String idChat, MessagePresenter messagePresenter) {
+    public void recordAudio(String name, String idChat, User friend, MessagePresenter messagePresenter) {
         binding.setIsStop(false);
         Animations.Companion.animAppear(binding.btnStop);
         binding.setIsStop(false);
@@ -166,7 +158,7 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
         try {
             recorder.prepare();
             recorder.start();
-            initTimerRecord(new String[]{file.getAbsolutePath(),name}, idChat,messagePresenter);
+            initTimerRecord(new String[]{file.getAbsolutePath(),name}, idChat,friend,messagePresenter);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -175,14 +167,14 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
 
         binding.btnStop.setOnClickListener(v -> {
             if(!binding.getIsStop()){
-                presenter.stopRecord(new String[]{file.getAbsolutePath(),name}, idChat,messagePresenter);
+                presenter.stopRecord(new String[]{file.getAbsolutePath(),name}, idChat, friend, messagePresenter);
             }
         });
 
     }
     CountDownTimer countDownTimer;
 
-    private void initTimerRecord(String[] data, String idChat, MessagePresenter messagePresenter) {
+    private void initTimerRecord(String[] data, String idChat,User friend, MessagePresenter messagePresenter) {
         countDownTimer = new CountDownTimer(30000,1000) {
             @Override
             public void onTick(long l) {
@@ -191,7 +183,7 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
 
             @Override
             public void onFinish() {
-                presenter.stopRecord(data, idChat,messagePresenter);
+                presenter.stopRecord(data, idChat, friend, messagePresenter);
             }
         }.start();
     }

@@ -102,7 +102,7 @@ public class MessageFragment extends Fragment implements MessageView {
         binding.btnLogin.setOnClickListener(view1 -> {
 
             if(binding.edtMensaje.getText().toString().trim().length() == 0){
-                presenter.recordAudio(idChat);
+                presenter.recordAudio(idChat,user );
             }else{
                 message.setMessage(binding.edtMensaje.getText().toString().trim());
                 message.setTypeMessage(Message.TypesMessages.TEXT);

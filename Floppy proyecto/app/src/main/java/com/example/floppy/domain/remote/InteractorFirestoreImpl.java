@@ -5,7 +5,6 @@ import android.net.Uri;
 
 import com.estarly.data.remote.Firestore;
 import com.example.floppy.domain.entities.FriendEntity;
-import com.example.floppy.domain.models.Chat;
 import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.models.User;
@@ -246,13 +245,13 @@ public class InteractorFirestoreImpl implements Interactor{
     }
 
     @Override
-    public void savedAudio(String name, Uri uri, String idChat, MessagePresenter messagePresenter) {
+    public void savedAudio(String name, Uri uri, String idChat, User friend, MessagePresenter messagePresenter) {
         countDownLatch = new CountDownLatch(1);
         firestore.savedAudio(uri, countDownLatch);
         try {
             countDownLatch.await();
             if(firestore.getInputResult().getResponse()){
-                presenterMaster.sendMessage(name,idChat,messagePresenter);
+                presenterMaster.sendMessage(name,idChat, friend, messagePresenter);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

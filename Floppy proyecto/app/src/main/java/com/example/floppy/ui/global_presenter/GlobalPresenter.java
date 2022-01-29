@@ -33,14 +33,14 @@ public interface GlobalPresenter {
 
     void beginDownloadApp(BroadcastReceiver onDownloadComplete);
 
-    void recordAudio(String idChat, MessagePresenter messagePresenter);
+    void recordAudio(String idChat,User friend, MessagePresenter messagePresenter);
 
     /**
-     *@param  data data[0] => path
+     * @param  data data[0] => path
      *             data[1] => name del archivo
-     * */
-    void stopRecord(String[] data, String idChat, MessagePresenter messagePresenter);
+     * @param friend  */
+    void stopRecord(String[] data, String idChat,User friend, MessagePresenter messagePresenter);
 
-    void sendMessage(String name,String idChat, MessagePresenter messagePresenter);
+    void sendMessage(String name,String idChat,User friend, MessagePresenter messagePresenter);
 
 }

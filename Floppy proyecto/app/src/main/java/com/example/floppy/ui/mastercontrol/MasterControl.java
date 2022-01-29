@@ -168,7 +168,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
         else animDesaparecer(binding.progressGeneral);
     }
 
-
+    private  CountDownTimer countDownTimer;
     private void showStates(Estado estado, TextView txtMensaje, ProgressBar progressEstado, View[] botones, View dialogoEstado,
                             ImageView imagenEstado, boolean finish, CallBack callBack, LottieAnimationView like) {
         like.setVisibility(View.GONE);
@@ -180,7 +180,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
                 .into(imagenEstado);
 
         txtMensaje.setText(estado.getMensaje());
-        CountDownTimer countDownTimer = new CountDownTimer(10_000, 1) {
+        countDownTimer = new CountDownTimer(10_000, 1) {
             @Override
             public void onTick(long l) {
                 progressEstado.setProgress((int) l);
@@ -262,7 +262,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
     }
 
     @Override
-    public void recordAudio(String name, String idChat, MessagePresenter messagePresenter) {
+    public void recordAudio(String name, String idChat, User friend, MessagePresenter messagePresenter) {
 
     }
 
@@ -300,7 +300,10 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
     @Override
     public void onBackPressed() {
         if(MessageFragment.presenter!=null){ MessageFragment.presenter.cancelListener(); }
-        System.out.println(".onBackPressed");
-        super.onBackPressed();
+
+        if(binding.includeEstado.getRoot().getVisibility() == View.VISIBLE){
+            Animations.Companion.animVanish(binding.includeEstado.getRoot());
+            cancelar(countDownTimer);
+        }else{ super.onBackPressed(); }
     }
 }
