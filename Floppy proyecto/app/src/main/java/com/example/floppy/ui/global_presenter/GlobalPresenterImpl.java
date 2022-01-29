@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.local.InteractorLocal;
@@ -22,6 +24,9 @@ import com.example.floppy.utils.Permission;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -119,20 +124,50 @@ public class GlobalPresenterImpl implements GlobalPresenter {
     }
 
     @Override
-    public void stopRecord(String[] data, String idChat, MessagePresenter messagePresenter) {
-        globalView.stopAudio();
+    public void sendImage(String idChat, Uri uri, MessagePresenter messagePresenter) {
         globalView.showHandlingGeneral(true);
-        new Thread(() -> interactor.savedAudio(data[1], Uri.fromFile(new File(data[0]+"/"+data[1]+".mp3")),idChat,messagePresenter)).start();
+        final String name = uri.getLastPathSegment();
+        File file= new File(context.getExternalFilesDir(null), "/"+com.estarly.data.Global.GlobalUtils.TypeFile.IMAGE.getDir());
+        file.mkdirs();
+        try {
+            FileOutputStream out = new FileOutputStream(name);
+            MediaStore.Images.Media.getBitmap(this.activity.getContentResolver(), uri)
+                    .compress(Bitmap.CompressFormat.PNG, 100, out);
+        } catch (IOException e) { e.printStackTrace(); }
+        new Thread(() -> interactor.savedFile(
+                name,
+                uri,
+                idChat,
+                Message.TypesMessages.IMAGE,
+                com.estarly.data.Global.GlobalUtils.TypeFile.IMAGE, messagePresenter)).start();
     }
 
     @Override
-    public void sendMessage(String name, String idChat, MessagePresenter messagePresenter) {
+    public void showImage(boolean send, Uri uri) { globalView.showImage(send,uri); }
+
+    @Override
+    public void stopRecord(String[] data, String idChat, MessagePresenter messagePresenter) {
+        globalView.stopAudio();
+        globalView.showHandlingGeneral(true);
+        new Thread(() -> interactor.savedFile(
+                data[1],
+                Uri.fromFile(new File(data[0]+"/"+data[1]+".mp3")),
+                idChat,
+                Message.TypesMessages.RECORD,
+                com.estarly.data.Global.GlobalUtils.TypeFile.AUDIO, messagePresenter)).start();
+    }
+
+    @Override
+    public void sendMessage(String name, String idChat, Message.TypesMessages typesMessage, MessagePresenter messagePresenter) {
         Message message = new Message();
         message.setMessage(name);
-        message.setTypeMessage(Message.TypesMessages.RECORD);
+        message.setTypeMessage(typesMessage);
         messagePresenter.sendMessages(idChat,message);
         globalView.showHandlingGeneral(false);
     }
+
+    @Override
+    public void getImage(String idChat, MessagePresenter messagePresenter) { globalView.getMessage(idChat,messagePresenter ); }
 
 
 }

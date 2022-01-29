@@ -2,9 +2,11 @@ package com.example.floppy.ui.global_presenter;
 
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.net.Uri;
 
 import com.example.floppy.domain.models.Estado;
 import com.example.floppy.domain.models.Estado_User;
+import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.message.MessagePresenter;
 
@@ -35,12 +37,17 @@ public interface GlobalPresenter {
 
     void recordAudio(String idChat, MessagePresenter messagePresenter);
 
+    void sendImage(String idChat,Uri uri, MessagePresenter messagePresenter);
+
+    void showImage(boolean send, Uri uri);
+
     /**
      *@param  data data[0] => path
      *             data[1] => name del archivo
      * */
     void stopRecord(String[] data, String idChat, MessagePresenter messagePresenter);
 
-    void sendMessage(String name,String idChat, MessagePresenter messagePresenter);
+    void sendMessage(String name, String idChat, Message.TypesMessages typesMessage, MessagePresenter messagePresenter);
 
+    void getImage(String idChat, MessagePresenter messagePresenter);
 }

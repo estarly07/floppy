@@ -12,6 +12,7 @@ import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -63,9 +64,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
             presenter.insertStickers(stickersReceiver);
         }
         presenter.updateState(Estado_User.ONLINE);
-        binding.btnAddFriend.setOnClickListener(view -> {
-            MenuFragment.getCallbackNavigationFragments().navigateTo();
-        });
+        binding.btnAddFriend.setOnClickListener(view -> MenuFragment.getCallbackNavigationFragments().navigateTo());
     }
 
     @Override
@@ -246,6 +245,11 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
     }
 
     @Override
+    public void showImage(boolean send, Uri image) {
+
+    }
+
+    @Override
     public void showContacts(ArrayList<User> users) {
 
     }
@@ -268,6 +272,11 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
 
     @Override
     public void stopAudio() {
+
+    }
+
+    @Override
+    public void getMessage(String idChat, MessagePresenter messagePresenter) {
 
     }
 

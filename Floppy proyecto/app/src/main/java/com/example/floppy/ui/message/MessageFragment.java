@@ -150,6 +150,7 @@ public class MessageFragment extends Fragment implements MessageView {
             layoutAnimation.scheduleLayoutAnimation(); }
         Animations.Companion.animationTranslate(view,translate);
         translate = !translate;
+        binding.containerOptions.btnImage.setOnClickListener(v -> presenterMaster.getImage(idChat,presenter ));
     }
 
 

@@ -346,12 +346,12 @@ class Firestore (val context:Context) : ConnectionFirestore {
         val localFile: File
         when (typeMessage) {
             "RECORD" -> {
-                val file = File(context.getExternalFilesDir(null), "/audios/")
+                val file = File(context.getExternalFilesDir(null), "/${GlobalUtils.TypeFile.AUDIO.dir}/")
                 if (!file.exists()) {
                     file.mkdirs()
                 }
-                localFile = File(context.getExternalFilesDir(null), "/audios/$nameFile.mp3")
-                storageReference.child("audios/$nameFile.mp3").getFile(localFile)
+                localFile = File(context.getExternalFilesDir(null), "/${GlobalUtils.TypeFile.AUDIO.dir}/$nameFile.mp3")
+                storageReference.child("${GlobalUtils.TypeFile.AUDIO.dir}/$nameFile.mp3").getFile(localFile)
                     .addOnSuccessListener {
                         println(
                             "LIUSTOOOO"
@@ -370,8 +370,9 @@ class Firestore (val context:Context) : ConnectionFirestore {
         }
     }
 
-    fun savedAudio(uri: Uri, countDownLatch: CountDownLatch) {
-        storageReference.child("audios/" + uri.lastPathSegment).putFile(uri)
+    fun savedFile(uri: Uri, dir: GlobalUtils.TypeFile, countDownLatch: CountDownLatch) {
+//        storageReference.child("audios/" + uri.lastPathSegment).putFile(uri)
+        storageReference.child("${dir.dir}/${uri.lastPathSegment}").putFile(uri)
             .addOnCompleteListener { task: Task<UploadTask.TaskSnapshot?> ->
                 inputResult.response = task.isSuccessful
                 countDownLatch.countDown()

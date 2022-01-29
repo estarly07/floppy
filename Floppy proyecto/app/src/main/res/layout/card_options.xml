@@ -47,6 +47,7 @@
                     android:layout_width="@dimen/_40dp"
                     android:layout_height="@dimen/_40dp"
                     android:layout_marginLeft="@dimen/_10dp"
+                    android:id="@+id/btnImage"
                     android:layout_marginRight="@dimen/_10dp"
                     android:background="@drawable/ic_image" />
 

@@ -2,7 +2,7 @@ package com.example.floppy.domain.models;
 
 public class Message {
 
-    public enum TypesMessages{TEXT,STICKER,RECORD}
+    public enum TypesMessages{TEXT,STICKER,RECORD, IMAGE}
 
     private String idMessage;
     private String message;
