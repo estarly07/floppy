@@ -3,6 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <import type="com.example.floppy.utils.global.GlobalUtils.Routes" />
+        <import type="android.view.View" />
+
+        <variable
+            name="route"
+            type="Routes" />
+    </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,9 +22,18 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+            android:visibility="@{(route == Routes.MENU)? View.VISIBLE:View.GONE}"
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_principal" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentAboutMe"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{(route == Routes.ME)? View.VISIBLE:View.GONE}"
+            app:defaultNavHost="false"
+            app:navGraph="@navigation/nav_about" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,6 +49,7 @@
                 android:layout_gravity="right"
                 android:layout_marginEnd="@dimen/_15dp"
                 android:layout_marginBottom="@dimen/_15dp"
+                android:visibility="@{(route == Routes.MENU)? View.VISIBLE:View.GONE}"
                 android:layout_weight="1"
                 android:background="@drawable/circle"
                 android:backgroundTint="@color/fondoToolbar"
@@ -39,11 +58,11 @@
                 <com.airbnb.lottie.LottieAnimationView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:lottie_rawRes="@raw/addfriend"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true"
-                    />
+                    app:lottie_rawRes="@raw/addfriend" />
             </RelativeLayout>
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -62,7 +81,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/btnChats"
+                        android:id="@+id/btnHome"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -90,6 +109,7 @@
                         android:textSize="10sp" />
 
                     <Button
+                        android:id="@+id/btnSettings"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -120,9 +140,10 @@
             android:indeterminate="true"
             android:indeterminateTint="@color/naranja"
             android:visibility="gone" />
-        <include layout="@layout/message_custom"
+
+        <include
             android:id="@+id/messageCustom"
-            android:visibility="gone"
-            />
+            layout="@layout/message_custom"
+            android:visibility="gone" />
     </RelativeLayout>
 </layout>

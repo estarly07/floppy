@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.example.floppy.domain.models.User" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fondo"
+        android:orientation="vertical"
+        tools:context=".ui.about.AboutMeFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:layout_weight="1">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/imgUser"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:layout_marginEnd="@dimen/_10dp"
+                android:layout_marginStart="@dimen/_10dp"
+                android:layout_marginTop="@dimen/_25dp"
+                app:riv_corner_radius="@dimen/_20dp" />
+
+            <RelativeLayout
+                android:id="@+id/triangleContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/btnUpdateFriend"
+                android:layout_width="@dimen/_55dp"
+                android:layout_height="@dimen/_55dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="@dimen/_10dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="@color/verde">
+
+                <ImageView
+                    android:layout_width="@dimen/_20dp"
+                    android:layout_height="@dimen/_20dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_camera"
+                    app:tint="@color/white" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/_20dp"
+            android:paddingTop="@dimen/_70dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="@dimen/_25dp"
+                    android:layout_height="@dimen/_25dp"
+                    android:src="@drawable/ic_user"
+                    app:tint="@color/blanco2" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10dp"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/name_user"
+                        android:textColor="@color/gris5"
+                        style="@style/subtitle"
+                        />
+                   <EditText
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:background="@color/fondo"
+                       android:textColor="@color/white"
+                       android:text="@{user.name}"
+                       android:textColorHint="@color/gris5"
+                       android:hint="@string/points"
+                       android:layout_gravity="center"
+                       />
+                </LinearLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_2dp"
+                android:layout_margin="@dimen/_10dp"
+                android:background="@color/traslucidoNegro3"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="@dimen/_25dp"
+                    android:layout_height="@dimen/_25dp"
+                    android:src="@drawable/ic_nube"
+                    app:tint="@color/blanco2" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10dp"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mensage"
+                        android:textColor="@color/gris5"
+                        style="@style/subtitle"
+                        />
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{user.messageUser}"
+                        android:background="@color/fondo"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/gris5"
+                        android:hint="@string/points"
+                        android:layout_gravity="center"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

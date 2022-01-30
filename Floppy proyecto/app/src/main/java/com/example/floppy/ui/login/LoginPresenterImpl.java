@@ -13,7 +13,7 @@ import com.example.floppy.domain.remote.InteractorFirestoreImpl;
 import com.example.floppy.domain.models.Estado_User;
 import com.example.floppy.domain.models.User;
 import com.example.floppy.utils.Extensions;
-import com.example.floppy.utils.Global.FactoryJson;
+import com.example.floppy.utils.global.FactoryJson;
 
 import java.io.ByteArrayOutputStream;
 

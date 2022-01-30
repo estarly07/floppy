@@ -12,7 +12,7 @@ import com.example.floppy.domain.remote.InteractorFirestoreImpl;
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
-import com.example.floppy.utils.Global.FactoryJson;
+import com.example.floppy.utils.global.FactoryJson;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

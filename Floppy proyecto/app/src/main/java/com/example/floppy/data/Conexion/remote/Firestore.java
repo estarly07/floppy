@@ -5,8 +5,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.example.floppy.Callbacks.CallbackList;
 import com.example.floppy.R;
 import com.example.floppy.domain.entities.FriendEntity;
@@ -15,7 +13,7 @@ import com.example.floppy.domain.remote.InteractorFirestoreImpl;
 import com.example.floppy.ui.login.LoginPresenter;
 import com.example.floppy.ui.menu.MenuPresenter;
 import com.example.floppy.ui.message.MessagePresenter;
-import com.example.floppy.utils.Global.GlobalUtils;
+import com.example.floppy.utils.global.GlobalUtils;
 import com.example.floppy.domain.remote.Interactor;
 import com.example.floppy.domain.models.Chat;
 import com.example.floppy.domain.models.Estado;
@@ -23,8 +21,6 @@ import com.example.floppy.domain.models.Estado_User;
 import com.example.floppy.domain.models.InputResult;
 import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,7 +30,6 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
 import java.io.File;

@@ -33,6 +33,7 @@ import com.example.floppy.ui.mastercontrol.MasterControl;
 import com.example.floppy.ui.menu.adapters.AdapterChat;
 import com.example.floppy.ui.menu.adapters.AdapterEstado;
 import com.example.floppy.utils.Extensions;
+import com.example.floppy.utils.global.GlobalUtils;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -63,7 +64,6 @@ public class MenuFragment extends Fragment implements MenuView{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         callbackNavigationFragments = () -> {
             presenterMaster.showTollbar(false);
             NavHostFragment.findNavController(this).navigate(R.id.navContacts);

@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 
 import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.models.StateMessage;
-import com.example.floppy.utils.Global.GlobalUtils;
+import com.example.floppy.utils.global.GlobalUtils;
 
 @Entity(
         tableName   = GlobalUtils.messageTable,

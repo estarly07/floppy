@@ -28,8 +28,8 @@ import com.example.floppy.domain.models.User;
 import com.example.floppy.data.Services.ServiceDownload;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.utils.Extensions;
-import com.example.floppy.utils.Global.FactoryJson;
-import com.example.floppy.utils.Global.GlobalUtils;
+import com.example.floppy.utils.global.FactoryJson;
+import com.example.floppy.utils.global.GlobalUtils;
 import com.google.gson.Gson;
 
 import java.io.File;

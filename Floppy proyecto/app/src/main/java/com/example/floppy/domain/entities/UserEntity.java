@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.example.floppy.utils.Global.GlobalUtils;
+import com.example.floppy.utils.global.GlobalUtils;
 
 @Entity(tableName = GlobalUtils.userTable)
 public class UserEntity {

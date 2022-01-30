@@ -1,19 +1,14 @@
 package com.example.floppy.data.Services;
 
 import android.app.DownloadManager;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 
-import androidx.core.content.FileProvider;
-
-import com.example.floppy.BuildConfig;
 import com.example.floppy.ui.message.MessagePresenter;
-import com.example.floppy.utils.Global.GlobalUtils;
+import com.example.floppy.utils.global.GlobalUtils;
 
 import java.io.File;
 

@@ -17,7 +17,7 @@ import com.example.floppy.domain.models.Estado_User;
 import com.example.floppy.domain.models.User;
 import com.example.floppy.ui.GlobalView;
 import com.example.floppy.ui.message.MessagePresenter;
-import com.example.floppy.utils.Global.GlobalUtils;
+import com.example.floppy.utils.global.GlobalUtils;
 import com.example.floppy.utils.Permission;
 import com.google.gson.Gson;
 

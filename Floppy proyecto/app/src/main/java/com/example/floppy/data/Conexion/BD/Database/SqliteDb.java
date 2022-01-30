@@ -16,7 +16,7 @@ import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.entities.MessageEntity;
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.entities.UserEntity;
-import com.example.floppy.utils.Global.GlobalUtils;
+import com.example.floppy.utils.global.GlobalUtils;
 
 @Database(
         entities = {

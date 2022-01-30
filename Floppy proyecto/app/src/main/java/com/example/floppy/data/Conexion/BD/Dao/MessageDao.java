@@ -5,7 +5,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.example.floppy.domain.entities.MessageEntity;
-import com.example.floppy.utils.Global.GlobalUtils;
+import com.example.floppy.utils.global.GlobalUtils;
 
 import java.util.List;
 

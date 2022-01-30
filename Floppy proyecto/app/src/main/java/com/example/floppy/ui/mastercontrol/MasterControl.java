@@ -38,6 +38,7 @@ import com.example.floppy.ui.GlobalView;
 import com.example.floppy.ui.menu.MenuFragment;
 import com.example.floppy.ui.message.MessagePresenter;
 import com.example.floppy.utils.Animations;
+import com.example.floppy.utils.global.GlobalUtils;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
         presenter = new GlobalPresenterImpl(this, this, this);
         activity  = this;
         binding = DataBindingUtil.setContentView(this,R.layout.activity_master_control);
+        binding.setRoute(GlobalUtils.Routes.MENU);
 
         if(!stickersReceiver.equals("")){
             presenter.insertStickers(stickersReceiver);
@@ -66,6 +68,9 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
         binding.btnAddFriend.setOnClickListener(view -> {
             MenuFragment.getCallbackNavigationFragments().navigateTo();
         });
+        binding.btnSettings.setOnClickListener(view -> binding.setRoute(GlobalUtils.Routes.ME));
+        binding.btnHome.setOnClickListener(view -> binding.setRoute(GlobalUtils.Routes.MENU));
+
     }
 
     @Override
