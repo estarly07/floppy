@@ -70,6 +70,7 @@ public class InteractorFirestoreImpl implements Interactor{
 
             if (firestore.getInputResult().getResponse()) {
                 map.put("idUser", firestore.getInputResult().getResult());
+                map.remove("pass");
                 countDownLatch = new CountDownLatch(1);
                 firestore.updateUserDataBase(map,map.get("idUser").toString(),countDownLatch);
                 countDownLatch.await();

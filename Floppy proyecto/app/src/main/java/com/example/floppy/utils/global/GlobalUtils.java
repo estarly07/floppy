@@ -6,10 +6,6 @@ import java.util.Calendar;
 
 public class GlobalUtils {
     public enum Routes {MENU,GROUPS,ME}
-
-    public GlobalUtils() {
-    }
-
     public static String[] COLLECTIONS = {
             "Users",
             "States",

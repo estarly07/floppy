@@ -24,22 +24,22 @@ class FactoryJson {
     fun Any.toJson(): String =  gson.toJson(this)
 
     fun String.fromJson(typeObject: TypeObject):Any = when (typeObject) {
-        TypeObject.USER       -> gson.fromJson(this, User::class.java)
+        TypeObject.USER -> gson.fromJson(this, User::class.java)
         TypeObject.USERENTITY -> gson.fromJson(this, UserEntity::class.java)
-        TypeObject.MESSAGE    -> gson.fromJson(this, Message::class.java)
+        TypeObject.MESSAGE -> gson.fromJson(this, Message::class.java)
 
-        TypeObject.STATES     -> {
+        TypeObject.STATES -> {
             val type = object : TypeToken<ArrayList<ArrayList<Estado>>>() {}.type
             val arrayStates: ArrayList<ArrayList<Estado>> = gson.fromJson(this, type)
             arrayStates
         }
-        TypeObject.USERS      -> {
+        TypeObject.USERS -> {
             val type = object : TypeToken<ArrayList<User>>() {}.type
             println(this)
             val arrayUser: ArrayList<User> = gson.fromJson(this, type)
             arrayUser
         }
-        TypeObject.MESSAGES   -> {
+        TypeObject.MESSAGES -> {
             val type = object : TypeToken<ArrayList<Message>>() {}.type
             val messages: ArrayList<Message> = gson.fromJson(this, type)
             messages

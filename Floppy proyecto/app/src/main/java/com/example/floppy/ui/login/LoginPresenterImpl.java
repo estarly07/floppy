@@ -122,6 +122,9 @@ public class LoginPresenterImpl implements LoginPresenter {
     public void insertUserOwner(String data) {
         UserEntity userEntity = (UserEntity) new FactoryJson().fromJson(data, FactoryJson.TypeObject.USERENTITY);
         User user         = User.getInstance();
+        user.setName       (userEntity.name);
+        user.setPhoto      (userEntity.photo);
+        user.setMessageUser(userEntity.messageUser);
         userEntity.idUser = user.getIdUser();
         interactorLocal.insertUser(userEntity);
     }

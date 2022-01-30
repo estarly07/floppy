@@ -33,7 +33,6 @@ import com.example.floppy.ui.mastercontrol.MasterControl;
 import com.example.floppy.ui.menu.adapters.AdapterChat;
 import com.example.floppy.ui.menu.adapters.AdapterEstado;
 import com.example.floppy.utils.Extensions;
-import com.example.floppy.utils.global.GlobalUtils;
 
 import java.util.ArrayList;
 import java.util.Random;
