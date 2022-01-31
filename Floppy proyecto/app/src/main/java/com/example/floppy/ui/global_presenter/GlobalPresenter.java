@@ -39,7 +39,7 @@ public interface GlobalPresenter {
 
     void sendImage(String idChat,Uri uri, MessagePresenter messagePresenter);
 
-    void showImage(boolean send, Uri uri);
+    void showImage(boolean send, String uri);
 
     /**
      *@param  data data[0] => path

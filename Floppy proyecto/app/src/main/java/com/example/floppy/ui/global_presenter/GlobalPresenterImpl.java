@@ -24,7 +24,6 @@ import com.example.floppy.utils.Permission;
 import com.google.gson.Gson;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -143,7 +142,7 @@ public class GlobalPresenterImpl implements GlobalPresenter {
     }
 
     @Override
-    public void showImage(boolean send, Uri uri) { globalView.showImage(send,uri); }
+    public void showImage(boolean send, String uri) { globalView.showImage(send,Uri.parse(uri)); }
 
     @Override
     public void stopRecord(String[] data, String idChat, MessagePresenter messagePresenter) {

@@ -23,6 +23,10 @@
             android:id="@+id/msgAudio"
             layout="@layout/message_type_record"
             android:visibility="@{typeMessage==TypesMessages.RECORD ? View.VISIBLE : View.GONE, default= gone}" />
+        <include
+            android:id="@+id/msgImage"
+            layout="@layout/message_type_image"
+            android:visibility="@{typeMessage==TypesMessages.IMAGE ? View.VISIBLE : View.GONE, default= gone}" />
 
         <RelativeLayout
             android:id="@+id/messageTypeSticker"

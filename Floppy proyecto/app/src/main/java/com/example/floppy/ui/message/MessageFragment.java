@@ -179,6 +179,9 @@ public class MessageFragment extends Fragment implements MessageView {
                     case RECORD:
                         presenter.audio(message,viewHolder);
                         break;
+                    case IMAGE:
+                        presenterMaster.showImage(false,message.getMessage());
+                        break;
                 }
                 });
 //            adapterMensage.setHasStableIds(true);

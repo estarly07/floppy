@@ -107,6 +107,32 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
                 }
 
                 break;
+            case IMAGE:
+                holder.binding.msgImage.setDate(messages.get(position).getHora());
+                if (messages.get(position).getUser().equals(myId)){
+                    holder.binding.msgImage.messageLeft .setVisibility(View.GONE);
+                    holder.binding.msgImage.messageRight.setVisibility(View.VISIBLE);
+
+
+                    Extensions.Companion.changeDoubleCheckColor(
+                            holder.binding.msgImage.imgCheck,
+                            messages.get(position).getState() == StateMessage.CHECK);
+
+                    Glide.with(holder.binding.getRoot().getContext())
+                            .load(messages.get(position).getMessage())
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(holder.binding.msgImage.imgMensajeEnviado);
+                }else{
+                    holder.binding.msgImage.messageRight.setVisibility(View.GONE);
+                    holder.binding.msgImage.messageLeft .setVisibility(View.VISIBLE);
+
+                    Glide.with(holder.binding.getRoot().getContext())
+                            .load(messages.get(position).getMessage())
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(holder.binding.msgImage.imgMensaje);
+                }
+
+                break;
         }
         holder.binding.getRoot().setOnClickListener(view -> {
           if(click != null) { click.clickMessage(view,position,messages.get(position),holder); }
