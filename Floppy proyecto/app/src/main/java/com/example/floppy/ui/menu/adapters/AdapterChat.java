@@ -86,6 +86,8 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
                     .load(friends.get(position).getPhoto())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.binding.imgUserItemChat);
+        else
+            holder.binding.imgUserItemChat.setImageDrawable(holder.binding.getRoot().getContext().getDrawable(R.drawable.ic_sinuser));
 
         holder.binding.txtNombreUser.setText(
                 (friendEntities.get(position).nick.equals(""))?
