@@ -16,6 +16,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.core.widget.addTextChangedListener
 import com.example.floppy.R
 import com.example.floppy.utils.Extensions.Companion.showKeyboard
+import java.io.File
 import java.util.regex.Pattern
 
 class Extensions {
@@ -107,9 +108,10 @@ class Extensions {
         fun String.validateInstallApk(context: Context) :Boolean{
             val packageManager = context.packageManager
             return try{
-                packageManager.getPackageInfo(this,PackageManager.GET_ACTIVITIES)
+                packageManager.getPackageInfo(this,PackageManager.GET_META_DATA)
                 true
             } catch (e : PackageManager.NameNotFoundException ) {
+                e.printStackTrace()
                 false
             }
         }
