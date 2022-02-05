@@ -38,6 +38,7 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     private       MediaRecorder       recorder;
     private       ActivityChatBinding binding;
     public  static ChatActivity activity;
+    private Boolean backPressed = false;
 
     private final int RECORD_CODE_PERMISSION = 1;
 
@@ -70,7 +71,8 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     @Override
     protected void onPause() {
         super.onPause();
-        presenter . updateState(Estado_User.OFFLINE);
+        if(!backPressed)
+            presenter . updateState(Estado_User.OFFLINE);
     }
 
     @Override
@@ -78,7 +80,8 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
         if(broadcastReceiver != null){
             unregisterReceiver(broadcastReceiver);
         }
-        presenter.updateState(Estado_User.OFFLINE);
+        if(!backPressed)
+            presenter.updateState(Estado_User.OFFLINE);
 
         super.onDestroy();
     }
@@ -87,6 +90,7 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     @Override
     public void onBackPressed() {
         MessageFragment.getCloseListeners().closeListeners();
+        backPressed = !backPressed;
         super.onBackPressed();
     }
 

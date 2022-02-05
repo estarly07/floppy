@@ -287,11 +287,11 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
         super.onResume();
         presenter . updateState(Estado_User.ONLINE);
     }
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        presenter . updateState(Estado_User.OFFLINE);
-//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter . updateState(Estado_User.OFFLINE);
+    }
 
     @Override
     protected void onDestroy() {
