@@ -38,10 +38,12 @@ public class AboutMeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Glide.with(view.getContext())
-                .load(User.getInstance().getPhoto())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(binding.imgUser);
+        if (!User.getInstance().getPhoto().equals(""))
+            Glide.with(view.getContext())
+                    .load(User.getInstance().getPhoto())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.ic_profile_picture)
+                    .into(binding.imgUser);
         binding.setUser(User.getInstance());
         Triangle triangle = new Triangle(view.getContext());
         binding.triangleContainer.addView(triangle);
