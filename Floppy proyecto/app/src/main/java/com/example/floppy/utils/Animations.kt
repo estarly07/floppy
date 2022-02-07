@@ -18,6 +18,8 @@ class Animations {
             R.raw.dos   ,
             R.raw.tres  ,
             R.raw.cuatro,
+            R.raw.oso   ,
+            R.raw.five   ,
         )
         /**its function is appear an any view*/
         fun View.animAppear() {
