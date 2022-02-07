@@ -6,4 +6,5 @@ import android.content.Context;
 public interface WallpaperPresenter {
     void showDefaultWallpapers();
     void showUserWallpapers(Context context, Activity activity);
+    void chosenBackground  (String background);
 }

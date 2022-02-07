@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import com.example.floppy.data.Conexion.preferences.Preferences;
+import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.utils.FilesLocal;
 import com.example.floppy.utils.Permission;
 
@@ -16,13 +18,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class WallpaperPresenterImpl implements WallpaperPresenter {
-    private WallpaperView wallpaperView;
-    private Boolean       firstTimer = false;//cargar solamente una vex las imagenes del almacenamiento del movil
+    private WallpaperView   wallpaperView;
+    private Boolean         firstTimer = false;//cargar solamente una vex las imagenes del almacenamiento del movil
+    private Preferences     preferences;
+    private GlobalPresenter globalPresenter;
 
-    public WallpaperPresenterImpl(WallpaperView wallpaperView) {
+    public WallpaperPresenterImpl(Context context, WallpaperView wallpaperView, GlobalPresenter globalPresenter) {
         wallpaperView.showHandling(true);
         this.wallpaperView = wallpaperView;
         wallpaperView.showHandling(false);
+        preferences = new Preferences(context);
+        this.globalPresenter = globalPresenter;
     }
 
     @Override
@@ -47,7 +53,12 @@ public class WallpaperPresenterImpl implements WallpaperPresenter {
         }else{
             Permission.Companion.initValidatePermissionToGallery(activity);
         }
+    }
 
+    @Override
+    public void chosenBackground(String background) {
+        preferences.saveBackground(background);
+        globalPresenter.showMessage("Fondo cambiado");
     }
 
 //    private static class ImagesGallery {

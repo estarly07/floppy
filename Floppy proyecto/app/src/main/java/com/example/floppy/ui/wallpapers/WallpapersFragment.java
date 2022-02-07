@@ -16,11 +16,10 @@ import android.view.ViewGroup;
 import com.example.floppy.R;
 import com.example.floppy.databinding.FragmentWallpapersBinding;
 import com.example.floppy.ui.Chat.ChatActivity;
+import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.utils.Animations;
 
 import java.util.ArrayList;
-
-import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class WallpapersFragment extends Fragment implements WallpaperView{
     private FragmentWallpapersBinding binding;
@@ -39,9 +38,11 @@ public class WallpapersFragment extends Fragment implements WallpaperView{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        wallpaperPresenter = new WallpaperPresenterImpl(this);
+        wallpaperPresenter = new WallpaperPresenterImpl(view.getContext(),this,ChatActivity.presenter);
         binding.setIsDefault(true);
         adapterWallpaper       = new AdapterWallpaper();
+        adapterWallpaper.setClick((background, v) -> wallpaperPresenter.chosenBackground(background));
+
         binding.recyclerWallpaper.setHasFixedSize (true);
         binding.recyclerWallpaper.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
@@ -69,10 +70,9 @@ public class WallpapersFragment extends Fragment implements WallpaperView{
         ArrayList<String> wallpapers = new ArrayList();
         wallpapers.add(R.drawable.ic_floppy_background+"");
         wallpapers.add(R.drawable.ic_fondo_uno+"");
-        wallpapers.add(R.drawable.ic_fondo_uno+"");
-        wallpapers.add(R.drawable.ic_floppy_background+"");
-        wallpapers.add(R.drawable.ic_fondo_uno+"");
-        wallpapers.add(R.drawable.ic_floppy_background+"");
+        wallpapers.add(R.drawable.ic_fondo_tres+"");
+        wallpapers.add(R.drawable.ic_fondo_dos+"");
+        wallpapers.add(R.drawable.ic_fondo_cuatro+"");
 
         adapterWallpaper.setWallpapersDefaults(wallpapers,true);
         binding.recyclerWallpaper.setAdapter(adapterWallpaper);

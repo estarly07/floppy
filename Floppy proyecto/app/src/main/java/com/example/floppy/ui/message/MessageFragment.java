@@ -79,6 +79,7 @@ public class MessageFragment extends Fragment implements MessageView {
 
         closeListeners = () -> presenter.cancelListener();
         presenter.getColorBackground();
+        presenter.getBackground();
 
         dialog = new AmbilWarnaDialog(view.getContext(), 0xff000000,true, new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
@@ -328,5 +329,16 @@ public class MessageFragment extends Fragment implements MessageView {
 
     @Override
     public void setColorBackground(int color) { binding.background.setColorFilter(color); }
+
+    @Override
+    public void setBackgroundDrawable(int backgroundDrawable) { binding.background.setImageDrawable(getContext().getDrawable(backgroundDrawable)); }
+
+    @Override
+    public void setBackgroundPath(String backgroundPath) {
+        Glide.with(getContext())
+                .load(backgroundPath)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(binding.background);
+    }
 
 }

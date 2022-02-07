@@ -29,4 +29,7 @@ public interface MessageView {
     void cleanEdittext();
 
     void setColorBackground(int color);
+
+    void setBackgroundDrawable(int    backgroundDrawable);
+    void setBackgroundPath    (String backgroundPath);
 }

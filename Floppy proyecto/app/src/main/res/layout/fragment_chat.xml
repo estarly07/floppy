@@ -20,8 +20,8 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:id="@+id/background"
-            android:src="@drawable/ic_fondo_uno"
-            app:tint="@color/items_background" />
+            android:src="@drawable/ic_floppy_background"
+            app:tint="@color/items_background"/>
 
         <LinearLayout
             android:layout_width="match_parent"

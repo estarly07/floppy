@@ -34,6 +34,7 @@ import com.example.floppy.utils.Global.GlobalUtils;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -411,5 +412,15 @@ public class MessagePresenterImpl implements MessagePresenter {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public void getBackground() {
+        String background = preferences.getBackground();
+        if(!background.equals("")){
+            try { messageView.setBackgroundDrawable(Integer.parseInt(background)); }
+            catch (Exception e){ messageView.setBackgroundPath(background); }
+        }
+
     }
 }

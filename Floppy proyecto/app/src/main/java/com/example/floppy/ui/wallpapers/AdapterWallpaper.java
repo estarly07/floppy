@@ -1,6 +1,5 @@
 package com.example.floppy.ui.wallpapers;
 
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,16 @@ public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Hold
             .override(500, 500)
             .centerCrop();
 
-    public void setWallpapersDefaults(ArrayList<String> wallpapersDefaults,Boolean isDefault) {
+    public interface  Click{
+        void click(String background,View view);
+    }
+    private Click click;
+
+    public void setClick(Click click) {
+        this.click = click;
+    }
+
+    public void setWallpapersDefaults(ArrayList<String> wallpapersDefaults, Boolean isDefault) {
         this.wallpapersDefaults = wallpapersDefaults;
         this.isDefault = isDefault;
 //        notifyDataSetChanged();
@@ -48,6 +56,10 @@ public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Hold
         if(isDefault){
             holder.binding.img.setVisibility(View .VISIBLE);
             holder.binding.img2.setVisibility(View.GONE);
+            holder.binding.getRoot().setOnClickListener(v -> {
+                if(click!=null)
+                    click.click(wallpapersDefaults.get(position),v);
+            });
             holder.binding.img.setImageDrawable(holder.binding.getRoot().getContext().getDrawable(Integer.parseInt(wallpapersDefaults.get(position))));
         }else{
 
