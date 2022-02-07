@@ -5,5 +5,9 @@
         android:id="@+id/action_wallpaper"
         android:icon="@drawable/ic_baseline_wallpaper_24"
         android:title="@string/fondo" />
+    <item
+        android:id="@+id/action_color"
+        android:icon="@drawable/ic_baseline_wallpaper_24"
+        android:title="@string/choose_color" />
 
 </menu>

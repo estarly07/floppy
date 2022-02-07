@@ -6,8 +6,9 @@ import android.content.SharedPreferences;
 public class Preferences {
     SharedPreferences sharedPreferences;
 
-    final String KEY    = "info" ;
+    final String KEY      = "info"   ;
     final String IDOWNER  = "idOwner";
+    final String COLOR    = "color"  ;
 
     public Preferences(Context context) {
         this.sharedPreferences = context.getSharedPreferences(KEY,Context.MODE_PRIVATE);
@@ -23,6 +24,13 @@ public class Preferences {
         editor.putString(IDOWNER, idOwner );
         editor.apply();
     }
+    /**COLOR BACKGROUND ESCOGIDO POR EL USER*/
+    public void chooseColor(int color){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(COLOR,color);
+        editor.apply();
+    }
 
     public String getIdOwner(){ return sharedPreferences.getString(IDOWNER,""); }
+    public int getColorBackground(){ return sharedPreferences.getInt(COLOR,0); }
 }

@@ -14,6 +14,10 @@ public interface MessagePresenter {
 
     void getChatLocal(String idChat);
 
+    void chooseColor(int color);
+    /**COLOR DE FONDO QUE ESCOGIO EL USER*/
+    void getColorBackground();
+
     void showStateUser(String response);
 
     void sendMessages(String idChat, Message message);

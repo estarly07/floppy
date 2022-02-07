@@ -27,4 +27,6 @@ public interface MessageView {
     void sendAndInsertFriend(Boolean insertFriend);
 
     void cleanEdittext();
+
+    void setColorBackground(int color);
 }

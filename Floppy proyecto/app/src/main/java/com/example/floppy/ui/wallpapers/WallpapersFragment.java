@@ -20,6 +20,8 @@ import com.example.floppy.utils.Animations;
 
 import java.util.ArrayList;
 
+import yuku.ambilwarna.AmbilWarnaDialog;
+
 public class WallpapersFragment extends Fragment implements WallpaperView{
     private FragmentWallpapersBinding binding;
     private AdapterWallpaper          adapterWallpaper;
@@ -39,7 +41,6 @@ public class WallpapersFragment extends Fragment implements WallpaperView{
         super.onViewCreated(view, savedInstanceState);
         wallpaperPresenter = new WallpaperPresenterImpl(this);
         binding.setIsDefault(true);
-
         adapterWallpaper       = new AdapterWallpaper();
         binding.recyclerWallpaper.setHasFixedSize (true);
         binding.recyclerWallpaper.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
