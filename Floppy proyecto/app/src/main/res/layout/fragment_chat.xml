@@ -19,6 +19,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:id="@+id/backgroundPath" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
             android:id="@+id/background"
             android:src="@drawable/ic_floppy_background"
             app:tint="@color/items_background"/>

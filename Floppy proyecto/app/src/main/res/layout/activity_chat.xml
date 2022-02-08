@@ -76,7 +76,7 @@
         </RelativeLayout>
         <include layout="@layout/message_custom"
             android:id="@+id/messageCustom"
-            android:visibility="gone"
+            android:visibility="invisible"
             />
     </RelativeLayout>
 

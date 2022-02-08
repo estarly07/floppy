@@ -109,7 +109,8 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     @Override
     public void showToast(String msg) {
         binding.messageCustom.setMsg(msg);
-        Animations.Companion.animAppearAndVanish(binding.messageCustom.getRoot());
+        if(binding.messageCustom.getRoot().getVisibility()==View.INVISIBLE)
+            Animations.Companion.animAppearAndVanish(binding.messageCustom.getRoot());
     }
 
     @Override

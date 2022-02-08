@@ -6,6 +6,6 @@ public interface WallpaperView {
 
     void showDefaultWallpapers();
     void showUserWallpapers(ArrayList<String> path);
-    void changeView(Boolean show);
     void showHandling(Boolean show);
+    void showWallpaperApi(ArrayList<String> body);
 }

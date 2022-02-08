@@ -335,10 +335,12 @@ public class MessageFragment extends Fragment implements MessageView {
 
     @Override
     public void setBackgroundPath(String backgroundPath) {
+        binding.background    .setVisibility(View.GONE);
+        binding.backgroundPath.setVisibility(View.VISIBLE);
         Glide.with(getContext())
                 .load(backgroundPath)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(binding.background);
+                .into(binding.backgroundPath);
     }
 
 }

@@ -24,8 +24,8 @@ public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Hold
     private ArrayList<String> wallpapersDefaults = new ArrayList<>();
     private Boolean isDefault;
     RequestOptions options = new RequestOptions()
-            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-            .override(500, 500)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+//            .override(500, 500)
             .centerCrop();
 
     public interface  Click{
@@ -56,10 +56,6 @@ public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Hold
         if(isDefault){
             holder.binding.img.setVisibility(View .VISIBLE);
             holder.binding.img2.setVisibility(View.GONE);
-            holder.binding.getRoot().setOnClickListener(v -> {
-                if(click!=null)
-                    click.click(wallpapersDefaults.get(position),v);
-            });
             holder.binding.img.setImageDrawable(holder.binding.getRoot().getContext().getDrawable(Integer.parseInt(wallpapersDefaults.get(position))));
         }else{
 
@@ -71,11 +67,15 @@ public class AdapterWallpaper extends RecyclerView.Adapter<AdapterWallpaper.Hold
             Glide.with(ChatActivity.activity.getBaseContext())
                     .load(wallpapersDefaults.get(position))
                     .apply(options)
-                    .format(DecodeFormat.PREFER_RGB_565)
-                    .thumbnail(0.5f)
+//                    .format(DecodeFormat.PREFER_RGB_565)
+//                    .thumbnail(0.5f)
                     .into(holder.binding.img2);
         ViewCompat.setTransitionName(holder.binding.img2, position + "_image");
         }
+            holder.binding.getRoot().setOnClickListener(v -> {
+                if(click!=null)
+                    click.click(wallpapersDefaults.get(position),v);
+            });
     }
 
     @Override

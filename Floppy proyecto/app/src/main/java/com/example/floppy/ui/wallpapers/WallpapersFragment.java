@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import com.example.floppy.R;
 import com.example.floppy.databinding.FragmentWallpapersBinding;
 import com.example.floppy.ui.Chat.ChatActivity;
-import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.utils.Animations;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class WallpapersFragment extends Fragment implements WallpaperView{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         wallpaperPresenter = new WallpaperPresenterImpl(view.getContext(),this,ChatActivity.presenter);
-        binding.setIsDefault(true);
+        binding.setIsDefault("default");
         adapterWallpaper       = new AdapterWallpaper();
         adapterWallpaper.setClick((background, v) -> wallpaperPresenter.chosenBackground(background));
 
@@ -53,11 +52,14 @@ public class WallpapersFragment extends Fragment implements WallpaperView{
         binding.recyclerWallpaperUser.setDrawingCacheEnabled(true);
         binding.recyclerWallpaperUser.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         binding.btnDefault.setOnClickListener(v ->{
-            binding.setIsDefault(true);
+            binding.setIsDefault("default");
             wallpaperPresenter.showDefaultWallpapers();});
         binding.btnAll.setOnClickListener(v -> {
-            binding.setIsDefault(false);
+//            binding.setIsDefault("gallery");
                 wallpaperPresenter.showUserWallpapers(v.getContext(), ChatActivity.activity);});
+        binding.btnRemotes.setOnClickListener(v -> {
+            binding.setIsDefault("Remotes");
+                wallpaperPresenter.getImagesBackground();});
 
         wallpaperPresenter.showDefaultWallpapers();
     }
@@ -88,9 +90,6 @@ public class WallpapersFragment extends Fragment implements WallpaperView{
     }
 
     @Override
-    public void changeView(Boolean show) { binding.setIsDefault(show); }
-
-    @Override
     public void showHandling(Boolean show) {
         ChatActivity.activity.runOnUiThread(() -> {
             if(show){
@@ -98,6 +97,15 @@ public class WallpapersFragment extends Fragment implements WallpaperView{
             }else{
                 Animations.Companion.animVanish(binding.progress);
             }
+        });
+    }
+
+    @Override
+    public void showWallpaperApi(ArrayList<String> body) {
+        ChatActivity.activity.runOnUiThread(() -> {
+            binding.recyclerWallpaperUser.setLayoutManager(new GridLayoutManager(getContext(),2));
+            adapterWallpaper.setWallpapersDefaults(body,false);
+            binding.recyclerWallpaperUser.setAdapter(adapterWallpaper);
         });
     }
 
