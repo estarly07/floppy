@@ -7,8 +7,7 @@ import com.example.floppy.data.Conexion.preferences.Preferences;
 import com.example.floppy.data.Conexion.retrofit.RetrofitHelper;
 import com.example.floppy.data.Conexion.retrofit.WallpapersApi;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
-import com.example.floppy.utils.FilesLocal;
-import com.example.floppy.utils.Permission;
+import com.example.floppy.utils.Extensions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,10 +19,12 @@ public class WallpaperPresenterImpl implements WallpaperPresenter {
     private Boolean         firstTimer = false;//cargar solamente una vex las imagenes del almacenamiento del movil
     private Preferences     preferences;
     private GlobalPresenter globalPresenter;
+    private Context         context;
 
     public WallpaperPresenterImpl(Context context, WallpaperView wallpaperView, GlobalPresenter globalPresenter) {
         wallpaperView.showHandling(true);
         this.wallpaperView = wallpaperView;
+        this.context = context;
         wallpaperView.showHandling(false);
         preferences = new Preferences(context);
         this.globalPresenter = globalPresenter;
@@ -62,9 +63,10 @@ public class WallpaperPresenterImpl implements WallpaperPresenter {
         wallpaperView.showHandling(true);
         new Thread(() -> {
             WallpapersApi api = RetrofitHelper.INSTANCE.getRetrofit().create(WallpapersApi.class);
-            Call<ArrayList<String>> array = api.getImages();
+            Call<ArrayList<String>> array =
+                    Extensions.Companion.getTypeRotation(context)? api.getImages() : api.getImagesLandscape();
             try {
-                wallpaperView.showWallpaperApi(array.execute().body());
+                wallpaperView.showWallpaperApi(array.execute().body(), Extensions.Companion.getTypeRotation(context)? 2 : 3);
                 wallpaperView.showHandling(false);
             } catch (IOException e) {
                 e.printStackTrace();
