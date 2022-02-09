@@ -45,7 +45,7 @@ public class AdapterContacts extends RecyclerView.Adapter<AdapterContacts.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.binding.fontoItemChat.setBackgroundColor(holder.binding.getRoot().getContext().getResources().getColor((color)?R.color.fondoItem1:R.color.fondoItem2));
+        holder.binding.fontoItemChat.setBackgroundColor(holder.binding.getRoot().getContext().getResources().getColor((color)?R.color.fondoItem1:R.color.fondo));
         color = !color;
 
         if (!users.get(position).getPhoto().equals(""))

@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 
 import com.example.floppy.R;
 import com.example.floppy.databinding.ActivityChatBinding;
@@ -40,8 +41,6 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     public  static ChatActivity activity;
     private Boolean backPressed = false;
 
-    private final int RECORD_CODE_PERMISSION = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +55,16 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == Permission.RECORD_CODE_PERMISSION){
-            if(Permission.Companion.validateResultsPermissions(grantResults)){
-                presenter.showMessage(getString(R.string.permission));
+        switch (requestCode){
+            case Permission.RECORD_CODE_PERMISSION:
+            case Permission.GALLERY_CODE_PERMISSION: {
+                if(Permission.Companion.validateResultsPermissions(grantResults)){
+                    presenter.showMessage(getString(R.string.permission));
+                }
             }
+            break;
         }
+
     }
 
     @Override
@@ -102,7 +106,8 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     @Override
     public void showToast(String msg) {
         binding.messageCustom.setMsg(msg);
-        Animations.Companion.animAppearAndVanish(binding.messageCustom.getRoot());
+        if(binding.messageCustom.getRoot().getVisibility()== View.INVISIBLE)
+            Animations.Companion.animAppearAndVanish(binding.messageCustom.getRoot());
     }
 
     @Override

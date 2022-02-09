@@ -78,7 +78,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.binding.fontoItemChat.setBackgroundColor(holder.binding.getRoot().getContext().getResources().getColor((color)? R.color.fondoItem1:R.color.fondoItem2));
+        holder.binding.fontoItemChat.setBackgroundColor(holder.binding.getRoot().getContext().getResources().getColor((color)? R.color.fondoItem1:R.color.fondo));
         color = !color;
 
         if (!friends.get(position).getPhoto().equals("")){

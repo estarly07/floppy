@@ -2,11 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="isEmpty"
             type="Boolean" />
@@ -22,7 +19,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_floppy_background" />
+            android:visibility="gone"
+            android:id="@+id/backgroundPath" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:id="@+id/background"
+            android:src="@drawable/ic_floppy_background"
+            app:tint="@color/items_background"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -161,6 +166,8 @@
             android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:menu="@menu/settings_main"
+
             android:background="@color/fondoToolbar"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme">
@@ -252,13 +259,14 @@
 
                     <ImageView
                         android:id="@+id/btnOptions"
-                        android:layout_width="60dp"
+                        android:layout_width="@dimen/_55dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:src="@drawable/ic_adjuntar"
                         app:tint="@color/naranja" />
+
                 </LinearLayout>
 
 

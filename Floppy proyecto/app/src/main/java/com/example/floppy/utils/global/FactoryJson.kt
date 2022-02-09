@@ -4,8 +4,8 @@ import com.example.floppy.domain.entities.UserEntity
 import com.example.floppy.domain.models.Estado
 import com.example.floppy.domain.models.Message
 import com.example.floppy.domain.models.User
-import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.util.ArrayList
 
 class FactoryJson {

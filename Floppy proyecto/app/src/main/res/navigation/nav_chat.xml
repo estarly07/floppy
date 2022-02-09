@@ -17,10 +17,21 @@
             app:exitAnim="@anim/anim_traslate_center_to_down"
             app:popEnterAnim="@anim/anim_traslateup"
             app:popExitAnim="@anim/anim_traslate_center_to_up" />
+        <action
+            android:id="@+id/action_messageFragment_to_wallpapersFragment"
+            app:destination="@id/wallpapersFragment"
+            app:enterAnim="@anim/anim_traslaterleft_two"
+            app:exitAnim="@anim/anim_traslaterleft"
+            app:popEnterAnim="@anim/anim_traslateright"
+            app:popExitAnim="@anim/anim_traslateright_two" />
     </fragment>
     <fragment
         android:id="@+id/aboutFriendFragment"
         android:name="com.example.floppy.ui.aboutfriend.AboutFriendFragment"
         android:label="fragment_about_friend"
         tools:layout="@layout/fragment_about_friend" />
+    <fragment
+        android:id="@+id/wallpapersFragment"
+        android:name="com.example.floppy.ui.wallpapers.WallpapersFragment"
+        android:label="WallpapersFragment" />
 </navigation>

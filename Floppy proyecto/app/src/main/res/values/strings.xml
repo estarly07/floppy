@@ -64,9 +64,12 @@
     <string name="errorGetData">Hubo un error \nal obtener los estados</string>
     <string name="empty_chat">No has enviado mensajes...</string>
     <string name="send_message">Envia un mensaje :)</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="name_user">Nombre</string>
     <string name="points">...</string>
+    <string name="fondo">fondo</string>
+    <string name="defaul_pictures">Por defecto</string>
+    <string name="pictures_user">tus fotos</string>
+    <string name="choose_color">Cambiar color</string>
+    <string name="im_genes">Imágenes</string>
 
 </resources>

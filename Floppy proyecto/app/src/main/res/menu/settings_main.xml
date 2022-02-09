@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_wallpaper"
+        android:icon="@drawable/ic_baseline_wallpaper_24"
+        android:title="@string/fondo" />
+    <item
+        android:id="@+id/action_color"
+        android:icon="@drawable/ic_baseline_wallpaper_24"
+        android:title="@string/choose_color" />
+
+</menu>

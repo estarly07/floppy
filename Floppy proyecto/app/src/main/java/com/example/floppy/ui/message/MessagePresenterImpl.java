@@ -13,6 +13,7 @@ import android.os.Build;
 import androidx.core.content.FileProvider;
 
 import com.example.floppy.BuildConfig;
+import com.example.floppy.data.Conexion.preferences.Preferences;
 import com.example.floppy.domain.entities.ChatEntity;
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.entities.MessageEntity;
@@ -33,6 +34,7 @@ import com.example.floppy.utils.global.GlobalUtils;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +50,7 @@ public class MessagePresenterImpl implements MessagePresenter {
     private GlobalPresenter    globalPresenter;
     private ArrayList<Message> messages = new ArrayList<>();
     private MediaPlayer        player;
+    private Preferences        preferences;
 
     public MessagePresenterImpl(Context context, Activity activity, MessageView messageView, GlobalPresenter globalPresenter) {
         player               = new MediaPlayer();
@@ -56,6 +59,8 @@ public class MessagePresenterImpl implements MessagePresenter {
         this.interactor      = new InteractorFirestoreImpl(context, globalPresenter);
         this.interactorLocal = new InteractorSqlite(context);
         this.globalPresenter = globalPresenter;
+        this.preferences     = new Preferences(context);
+
     }
 
     public void showStateUser(String response) {
@@ -193,6 +198,17 @@ public class MessagePresenterImpl implements MessagePresenter {
 
             messageView.showMessages(messages,User.getInstance().getIdUser(),idChat);
         }).start();
+    }
+
+    @Override
+    public void chooseColor(int color) { preferences.chooseColor(color); }
+
+    @Override
+    public void getColorBackground() {
+        int color = preferences.getColorBackground();
+        if(color!=0){
+            messageView.setColorBackground(color);
+        }
     }
 
     public void showStickers(ArrayList<StickersEntity> list) { messageView.showStickers(list); }
@@ -396,5 +412,15 @@ public class MessagePresenterImpl implements MessagePresenter {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public void getBackground() {
+        String background = preferences.getBackground();
+        if(!background.equals("")){
+            try { messageView.setBackgroundDrawable(Integer.parseInt(background)); }
+            catch (Exception e){ messageView.setBackgroundPath(background); }
+        }
+
     }
 }

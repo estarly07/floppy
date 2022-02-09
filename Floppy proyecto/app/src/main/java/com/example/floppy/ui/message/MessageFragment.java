@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -41,6 +43,8 @@ import com.example.floppy.utils.Extensions;
 
 import java.util.ArrayList;
 
+import yuku.ambilwarna.AmbilWarnaDialog;
+
 
 public class MessageFragment extends Fragment implements MessageView {
     public static MessagePresenter presenter;
@@ -51,6 +55,8 @@ public class MessageFragment extends Fragment implements MessageView {
     private GlobalPresenter  presenterMaster;
     private Activity         activity;
     private Message          message = new Message();//Create just one message and change it its properties
+
+    private AmbilWarnaDialog dialog;
 
     private FragmentChatBinding binding;
 
@@ -72,6 +78,21 @@ public class MessageFragment extends Fragment implements MessageView {
         presenter = new MessagePresenterImpl(view.getContext(), activity, this, presenterMaster);
 
         closeListeners = () -> presenter.cancelListener();
+        presenter.getColorBackground();
+        presenter.getBackground();
+
+        dialog = new AmbilWarnaDialog(view.getContext(), 0xff000000,true, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
+                setColorBackground   (color);
+                presenter.chooseColor(color);
+            }
+
+            @Override
+            public void onCancel(AmbilWarnaDialog dialog) {
+                // cancel was selected by the user
+            }
+        });
 
         binding.includeSticker.recyclerStickers . setHasFixedSize(true);
         binding.includeSticker.recyclerStickers . setLayoutManager(new GridLayoutManager(view.getContext(), 4));
@@ -109,6 +130,15 @@ public class MessageFragment extends Fragment implements MessageView {
                 sendMessage();
             }
         });
+        binding.toolbar2.getMenu().findItem(R.id.action_wallpaper).setOnMenuItemClickListener(menuItem -> {
+            NavHostFragment.findNavController(this).navigate(R.id.action_messageFragment_to_wallpapersFragment);
+            return false;
+        });
+        binding.toolbar2.getMenu().findItem(R.id.action_color).setOnMenuItemClickListener(menuItem -> {
+            dialog.show();
+            return false;
+        });
+
 
         binding.includeSticker.btnShowDialogAddSticker.setOnClickListener(view13 -> presenter.showDialogAddSticker());
         Extensions.Companion.listenerEditText(binding.edtMensaje,s -> {
@@ -295,6 +325,22 @@ public class MessageFragment extends Fragment implements MessageView {
     @Override
     public void cleanEdittext() {
         activity.runOnUiThread(() -> binding.edtMensaje.setText(""));
+    }
+
+    @Override
+    public void setColorBackground(int color) { binding.background.setColorFilter(color); }
+
+    @Override
+    public void setBackgroundDrawable(int backgroundDrawable) { binding.background.setImageDrawable(getContext().getDrawable(backgroundDrawable)); }
+
+    @Override
+    public void setBackgroundPath(String backgroundPath) {
+        binding.background    .setVisibility(View.GONE);
+        binding.backgroundPath.setVisibility(View.VISIBLE);
+        Glide.with(getContext())
+                .load(backgroundPath)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(binding.backgroundPath);
     }
 
 }
