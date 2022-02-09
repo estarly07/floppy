@@ -101,9 +101,9 @@ public class WallpapersFragment extends Fragment implements WallpaperView{
     }
 
     @Override
-    public void showWallpaperApi(ArrayList<String> body) {
+    public void showWallpaperApi(ArrayList<String> body, int columns) {
         ChatActivity.activity.runOnUiThread(() -> {
-            binding.recyclerWallpaperUser.setLayoutManager(new GridLayoutManager(getContext(),2));
+            binding.recyclerWallpaperUser.setLayoutManager(new GridLayoutManager(getContext(),columns));
             adapterWallpaper.setWallpapersDefaults(body,false);
             binding.recyclerWallpaperUser.setAdapter(adapterWallpaper);
         });

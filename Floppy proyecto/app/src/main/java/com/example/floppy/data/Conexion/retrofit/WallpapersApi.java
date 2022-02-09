@@ -8,4 +8,6 @@ import retrofit2.http.GET;
 public interface WallpapersApi {
     @GET("/images.json")
     Call<ArrayList<String>> getImages();
+    @GET("/images_landscape.json")
+    Call<ArrayList<String>> getImagesLandscape();
 }

@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
 import android.view.LayoutInflater
+import android.view.Surface
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -115,6 +116,19 @@ class Extensions {
                 false
             }
         }
+        /**
+         * return true  => Vertical
+         *        false => Horizontal
+         * */
+        fun Context.getTypeRotation():Boolean =
+            when (( getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.orientation) {
+                Surface.ROTATION_0, Surface.ROTATION_180->
+                    true
+                else ->
+                    false
+            }
+
+
 
     }
 
