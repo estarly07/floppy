@@ -29,6 +29,7 @@ import com.example.floppy.domain.models.User;
 import com.example.floppy.data.Services.ServiceDownload;
 import com.example.floppy.ui.global_presenter.GlobalPresenter;
 import com.example.floppy.utils.Extensions;
+import com.example.floppy.utils.global.Encryption;
 import com.example.floppy.utils.global.FactoryJson;
 import com.example.floppy.utils.global.GlobalUtils;
 import com.google.gson.Gson;
@@ -69,16 +70,17 @@ public class MessagePresenterImpl implements MessagePresenter {
 
     public void sendMessages(String idChat, Message message) {
         if (message.getMessage().trim().isEmpty()) { return; }
+        message.setMessage(Encryption.Companion.encrypt(message.getMessage()));
         message.setUser(User.getInstance().getIdUser());
         message.setHora(GlobalUtils.getHour());
         message.setIdMessage(UUID.randomUUID().toString());
         message.setState(StateMessage.DELIVERED);
-        allMessages.add(0,message);
+        allMessagesEncrypt.add(0,message);
 
         Gson gson = new Gson();
 
         new Thread(() -> {
-            interactor.sendMessages(idChat,gson.toJson(allMessages));
+            interactor.sendMessages(idChat,gson.toJson(allMessagesEncrypt));
             messageView.cleanEdittext();
         }).start();
     }
@@ -130,12 +132,16 @@ public class MessagePresenterImpl implements MessagePresenter {
 
 
     ArrayList<Message> allMessages = new ArrayList<>();
+    ArrayList<Message> allMessagesEncrypt = new ArrayList<>();
 
     @Override
     public void showMessages(String messages, String idChat) {
-        allMessages = (ArrayList<Message>) new FactoryJson().fromJson(messages, FactoryJson.TypeObject.MESSAGES);
+        allMessagesEncrypt = (ArrayList<Message>) new FactoryJson().fromJson(messages, FactoryJson.TypeObject.MESSAGES);
+        allMessages = allMessagesEncrypt;
         updateMessages(idChat);
-
+        for (int i = 0; i <allMessagesEncrypt.size() ; i++) {
+            allMessages.get(i).setMessage(Encryption.Companion.decrypt(allMessagesEncrypt.get(i).getMessage()));
+        }
         messageView.showMessages(allMessages, User.getInstance().getIdUser(), idChat);
 
 //        new Thread(() -> {

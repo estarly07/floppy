@@ -4,6 +4,7 @@ import com.example.floppy.domain.entities.UserEntity
 import com.example.floppy.domain.models.Estado
 import com.example.floppy.domain.models.Message
 import com.example.floppy.domain.models.User
+import com.example.floppy.utils.global.Encryption.Companion.decrypt
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.ArrayList
@@ -30,8 +31,7 @@ class FactoryJson {
 
         TypeObject.STATES -> {
             val type = object : TypeToken<ArrayList<ArrayList<Estado>>>() {}.type
-            val arrayStates: ArrayList<ArrayList<Estado>> = gson.fromJson(this, type)
-            arrayStates
+            gson.fromJson(this, type)
         }
         TypeObject.USERS -> {
             val type = object : TypeToken<ArrayList<User>>() {}.type
