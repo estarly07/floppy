@@ -121,7 +121,10 @@ public class MessageFragment extends Fragment implements MessageView {
         presenter.getStateUser(user.getIdUser());
 
         binding.btnLogin.setOnClickListener(view1 -> {
-
+            if(!Extensions.Companion.validateConnection()){
+                presenterMaster.showMessage("No tienes acceso a internet");
+                return;
+            }
             if(binding.edtMensaje.getText().toString().trim().length() == 0){
                 presenter.recordAudio(idChat,user );
             }else{
@@ -265,6 +268,10 @@ public class MessageFragment extends Fragment implements MessageView {
             adapterSticker.setClick((view, stickersEntity) -> {
                message.setTypeMessage(Message.TypesMessages.STICKER);
                message.setMessage(stickersEntity.urlImage);
+               if(!Extensions.Companion.validateConnection()){
+                   presenterMaster.showMessage("No tienes acceso a internet");
+                   return;
+               }
                sendMessage();
             });
             binding.includeSticker.recyclerStickers.setAdapter(adapterSticker);

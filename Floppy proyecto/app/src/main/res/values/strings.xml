@@ -71,5 +71,7 @@
     <string name="pictures_user">tus fotos</string>
     <string name="choose_color">Cambiar color</string>
     <string name="im_genes">Imágenes</string>
+    <string name="connection_establecida">Conexión establecida</string>
+    <string name="sin_connection">Sin conexión</string>
 
 </resources>

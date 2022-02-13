@@ -67,6 +67,7 @@ public class MenuFragment extends Fragment implements MenuView{
             presenterMaster.showTollbar(false);
             NavHostFragment.findNavController(this).navigate(R.id.navContacts);
         };
+        binding.wifi.setConnected(Extensions.Companion.validateConnection());
 
         presenterMaster = MasterControl.presenter;
         activity        = MasterControl.activity;

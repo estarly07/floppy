@@ -14,10 +14,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
-import androidx.core.widget.addTextChangedListener
 import com.example.floppy.R
-import com.example.floppy.utils.Extensions.Companion.showKeyboard
-import java.io.File
+import java.lang.Exception
 import java.util.regex.Pattern
 
 class Extensions {
@@ -127,6 +125,21 @@ class Extensions {
                 else ->
                     false
             }
+
+        /**
+         * access connection validate
+         * return true  => Connection
+         *        false => No connection
+         * */
+        fun validateConnection(): Boolean {
+            try {
+                val p = Runtime.getRuntime().exec("ping -c 1 www.google.es")
+                return p.waitFor() == 0
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return false
+        }
 
 
 

@@ -90,6 +90,9 @@
                                     android:textColor="@color/blanco1"
                                     android:textSize="@dimen/_30sp"
                                     android:textStyle="bold" />
+                                <include layout="@layout/no_wifi"
+                                    android:id="@+id/wifi"
+                                    />
 
                                 <RelativeLayout
                                     android:id="@+id/nube"
