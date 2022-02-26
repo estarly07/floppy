@@ -142,6 +142,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             Uri uri = null;
             if (data != null) {
                 uri = data.getData();
+                System.out.println("IMAGENN"+uri.getPath());
             }
             try {
                 bitmapImageUser = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);

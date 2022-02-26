@@ -119,7 +119,7 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
                             messages.get(position).getState() == StateMessage.CHECK);
 
                     Glide.with(holder.binding.getRoot().getContext())
-                            .load(messages.get(position).getMessage())
+                            .load(holder.binding.getRoot().getContext().getExternalFilesDir(null)+"/images/"+messages.get(position).getMessage())
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(holder.binding.msgImage.imgMensajeEnviado);
                 }else{
@@ -127,7 +127,7 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
                     holder.binding.msgImage.messageLeft .setVisibility(View.VISIBLE);
 
                     Glide.with(holder.binding.getRoot().getContext())
-                            .load(messages.get(position).getMessage())
+                            .load(holder.binding.getRoot().getContext().getExternalFilesDir(null)+"/images/"+messages.get(position).getMessage())
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(holder.binding.msgImage.imgMensaje);
                 }

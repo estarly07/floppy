@@ -156,7 +156,7 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
 
         binding.image.getRoot().setVisibility(View.VISIBLE);
         Glide.with(this)
-                .load(image)
+                .load((send)? image:getExternalFilesDir(null)+"/images/"+image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.image.img);
 

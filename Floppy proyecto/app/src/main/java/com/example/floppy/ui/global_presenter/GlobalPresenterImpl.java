@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.provider.MediaStore;
 
@@ -125,13 +126,19 @@ public class GlobalPresenterImpl implements GlobalPresenter {
     @Override
     public void sendImage(String idChat, Uri uri, MessagePresenter messagePresenter) {
         globalView.showHandlingGeneral(true);
-        final String name = uri.getLastPathSegment();
-        File file= new File(context.getExternalFilesDir(null), "/"+com.estarly.data.Global.GlobalUtils.TypeFile.IMAGE.getDir());
+
+        File file= new File(context.getExternalFilesDir(null), "/"+ com.estarly.data.Global.GlobalUtils.TypeFile.IMAGE.getDir());
         file.mkdirs();
+        String name = GlobalUtils.getDateNow()+"_"+idChat+".jpg";
         try {
-            FileOutputStream out = new FileOutputStream(name);
+            File img = new File(file.getPath(),name);
+            FileOutputStream out = new FileOutputStream(img);
             MediaStore.Images.Media.getBitmap(this.activity.getContentResolver(), uri)
                     .compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+            saveImageInStorage(img);
+
         } catch (IOException e) { e.printStackTrace(); }
         new Thread(() -> interactor.savedFile(
                 name,
@@ -139,6 +146,13 @@ public class GlobalPresenterImpl implements GlobalPresenter {
                 idChat,
                 Message.TypesMessages.IMAGE,
                 com.estarly.data.Global.GlobalUtils.TypeFile.IMAGE, messagePresenter)).start();
+    }
+
+    private void saveImageInStorage(File file){
+        MediaScannerConnection.scanFile(context,
+                new String[] { file.toString() } , null,
+                (path, uri) -> {
+                });
     }
 
     @Override

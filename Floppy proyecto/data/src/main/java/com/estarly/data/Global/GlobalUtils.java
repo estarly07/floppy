@@ -11,7 +11,9 @@ public class GlobalUtils {
     };
 
     public enum TypeFile{
-        AUDIO("audios" ),IMAGE("images"),IMAGE_USER("");
+        AUDIO("audios" ),
+        IMAGE("images"),
+        IMAGE_USER("");
 
         private String dir;
 
