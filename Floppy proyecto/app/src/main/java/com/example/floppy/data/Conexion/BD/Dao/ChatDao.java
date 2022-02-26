@@ -7,6 +7,8 @@ import androidx.room.Query;
 import com.example.floppy.domain.entities.ChatEntity;
 import com.example.floppy.utils.global.GlobalUtils;
 
+import java.util.ArrayList;
+
 @Dao
 public interface ChatDao {
 

@@ -7,6 +7,7 @@ import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.entities.UserEntity;
 import com.example.floppy.ui.message.MessagePresenterImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface InteractorLocal {

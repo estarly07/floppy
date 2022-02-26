@@ -20,4 +20,6 @@ public interface MenuView  {
     void showChats(ArrayList<User> friends, ArrayList<FriendEntity> friendEntities);
 
     void friendIsWriting(FriendEntity friendEntity, Message message);
+
+    void showChatFounds(ArrayList<FriendEntity> friendSearch,ArrayList<User> users);
 }

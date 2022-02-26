@@ -7,6 +7,7 @@ import androidx.room.Query;
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.utils.global.GlobalUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao

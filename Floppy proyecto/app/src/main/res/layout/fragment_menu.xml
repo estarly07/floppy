@@ -5,9 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
             name="adapterChats"
             type="com.example.floppy.ui.menu.adapters.AdapterChat" />
+
+        <variable
+            name="isSearch"
+            type="Boolean" />
 
         <variable
             name="adapterStates"
@@ -90,9 +97,10 @@
                                     android:textColor="@color/blanco1"
                                     android:textSize="@dimen/_30sp"
                                     android:textStyle="bold" />
-                                <include layout="@layout/no_wifi"
+
+                                <include
                                     android:id="@+id/wifi"
-                                    />
+                                    layout="@layout/no_wifi" />
 
                                 <RelativeLayout
                                     android:id="@+id/nube"
@@ -145,6 +153,7 @@
                                     android:background="@drawable/edit_sign"
                                     android:hint="@string/buscar"
                                     android:padding="@dimen/_15dp"
+                                    android:id="@+id/edtSearch"
                                     android:textColorHint="@color/blanco1" />
 
                                 <androidx.cardview.widget.CardView
@@ -183,13 +192,13 @@
                                     app:tint="@color/blanco" />
                             </androidx.cardview.widget.CardView>
                         </LinearLayout>
-
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/_15dp"
                             android:fontFamily="@font/roboto_medium"
                             android:text="@string/estado"
+                            android:visibility="@{isSearch? View.GONE : View.VISIBLE, default=visible}"
                             android:textColor="@color/blanco1"
                             android:textSize="@dimen/_25sp" />
 
@@ -198,18 +207,16 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
                                 <androidx.recyclerview.widget.RecyclerView
                                     android:id="@+id/reciclerEstados"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:adapter="@{adapterStates}"
+                                    android:visibility="@{isSearch? View.GONE : View.VISIBLE, default=visible}"
                                     android:layoutAnimation="@anim/layoutanim_recycler_estado"
                                     app:layoutManager="@{layoutState}" />
-                            </RelativeLayout>
+
+
 
                         </LinearLayout>
                     </LinearLayout>
@@ -221,15 +228,24 @@
                         android:background="@color/fondo" />
 
                 </LinearLayout>
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/reciclerSearchChats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20dp"
+                    android:layoutAnimation="@anim/layoutanim_recycler_chats"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="@{!isSearch? View.GONE : View.VISIBLE, default=gone}"
+                    />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/reciclerChats"
-                    android:nestedScrollingEnabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20dp"
                     android:adapter="@{adapterChats}"
+                    android:visibility="@{isSearch? View.GONE : View.VISIBLE, default=visible}"
                     android:layoutAnimation="@anim/layoutanim_recycler_chats"
+                    android:nestedScrollingEnabled="false"
                     app:layoutManager="@{layoutChat}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

@@ -1,6 +1,9 @@
 package com.example.floppy.ui.menu;
 
 import com.example.floppy.domain.entities.FriendEntity;
+import com.example.floppy.domain.models.User;
+
+import java.util.ArrayList;
 
 public interface MenuPresenter {
 
@@ -25,4 +28,6 @@ public interface MenuPresenter {
     void listenerChatFriend(FriendEntity friendEntity);
 
     void destroyAllListenersFriends();
+
+    void searchChat(ArrayList<FriendEntity> friendEntities, ArrayList<User> friends,String name);
 }

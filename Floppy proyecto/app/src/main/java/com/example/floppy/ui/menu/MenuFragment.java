@@ -79,10 +79,16 @@ public class MenuFragment extends Fragment implements MenuView{
         binding.reciclerEstados.setHasFixedSize(true);
         binding.setLayoutChat(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         binding.reciclerChats.setHasFixedSize(true);
+        binding.reciclerSearchChats.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
 
         Extensions.Companion.listenerScroll(binding.scrollMenuFragment, up -> {
             presenterMaster.showTollbar(up);
             return  null;
+        });
+        Extensions.Companion.listenerEditText(binding.edtSearch,chat -> {
+            binding.setIsSearch(!chat.equals(""));
+            presenter.searchChat(friendEntities, friends,chat );
+            return null;
         });
 
         binding.btnAddUser.setOnClickListener(view1 -> {
@@ -212,5 +218,26 @@ public class MenuFragment extends Fragment implements MenuView{
         if(adapterChat!=null){
             activity.runOnUiThread(() -> adapterChat.setFriendEntities(friendEntity, message));
         }
+    }
+    AdapterChat adapterChatSearch;
+    @Override
+    public void showChatFounds(ArrayList<FriendEntity> friendSearch, ArrayList<User> users) {
+        activity.runOnUiThread(() -> {
+             adapterChatSearch  = new AdapterChat(users,friendSearch);
+            adapterChatSearch.setClick(new AdapterChat.Click() {
+                @Override
+                public void clickPhoto(View view, int position, User friend) {
+                    if (!friend.getPhoto().equals("")) presenterMaster.showUserImageDialog(friend);
+                }
+
+                @Override
+                public void clickChat(View view, int position, User friend, FriendEntity friendEntity) {
+                    ChatActivity.friend       = friend;
+                    ChatActivity.friendEntity = friendEntity;
+                    presenterMaster.nextActivity();
+                }
+            });
+            binding.reciclerSearchChats.setAdapter(adapterChatSearch);
+        });
     }
 }

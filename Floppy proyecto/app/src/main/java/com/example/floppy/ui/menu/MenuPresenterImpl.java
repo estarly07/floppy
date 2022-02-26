@@ -78,4 +78,20 @@ public class MenuPresenterImpl implements MenuPresenter {
 
     @Override
     public void destroyAllListenersFriends() { interactor.destroyAllListenersFriends(); }
+
+    @Override
+    public void searchChat(ArrayList<FriendEntity> friendEntities, ArrayList<User> friends, String name) {
+        ArrayList<FriendEntity> friendEntitiesSearch = new ArrayList<>();
+        ArrayList<User>         friendsSearch = new ArrayList<>();
+        for (int i = 0; i < friendEntities.size(); i++) {
+            if(friendEntities.get(i).nick.toUpperCase().contains(name.toUpperCase())){
+                friendEntitiesSearch.add(friendEntities.get(i));
+                friendsSearch.add(friends.get(i));
+            }else if(friends.get(i).getName().toUpperCase().contains(name.toUpperCase())){
+                friendEntitiesSearch.add(friendEntities.get(i));
+                friendsSearch.add(friends.get(i));
+            }
+        }
+        view.showChatFounds(friendEntitiesSearch,friendsSearch );
+    }
 }
