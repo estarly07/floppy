@@ -43,9 +43,12 @@
             android:backgroundTint="@color/verde"
             android:padding="@dimen/_10dp">
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <ImageView
+                android:layout_width="@dimen/_30dp"
+                android:layout_height="@dimen/_30dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_send"
+                app:tint="@color/white" />
         </RelativeLayout>
 
     </RelativeLayout>

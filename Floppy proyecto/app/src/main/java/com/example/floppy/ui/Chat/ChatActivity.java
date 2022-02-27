@@ -126,8 +126,9 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     @Override
     public void showHandlingGeneral(boolean show) {
         runOnUiThread(() ->{
-            if (show)
-                binding.setIsStop(show);
+            if (show){
+                Animations.Companion.animAppear(binding.btnStop);
+                binding.setIsStop(show);}
             else
                 Animations.Companion.animVanish(binding.btnStop);
         });
@@ -181,7 +182,6 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     public void recordAudio(String name, String idChat, MessagePresenter messagePresenter) {
         binding.setIsStop(false);
         Animations.Companion.animAppear(binding.btnStop);
-        binding.setIsStop(false);
         recorder = new MediaRecorder();
         recorder.setAudioSource (MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -238,6 +238,8 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, Permission.CODE_GALLERY);
-        binding.image.btnSend.setOnClickListener(view -> presenter.sendImage(idChat, uri, messagePresenter));
+        binding.image.btnSend.setOnClickListener(view ->{
+            binding.image.getRoot().setVisibility(View.GONE);
+            presenter.sendImage(idChat, uri, messagePresenter);});
     }
 }

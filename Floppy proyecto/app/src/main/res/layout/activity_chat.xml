@@ -22,10 +22,7 @@
 
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_chat" />
-        <include layout="@layout/layout_image"
-            android:id="@+id/image"
-            android:visibility="gone"
-            />
+
         <RelativeLayout
             android:id="@+id/btnStop"
             android:layout_width="match_parent"
@@ -77,6 +74,10 @@
                     />
             </LinearLayout>
         </RelativeLayout>
+        <include layout="@layout/layout_image"
+            android:id="@+id/image"
+            android:visibility="gone"
+            />
         <include layout="@layout/message_custom"
             android:id="@+id/messageCustom"
             android:visibility="gone"

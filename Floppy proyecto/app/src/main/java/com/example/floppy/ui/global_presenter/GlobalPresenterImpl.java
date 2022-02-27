@@ -130,19 +130,21 @@ public class GlobalPresenterImpl implements GlobalPresenter {
         File file= new File(context.getExternalFilesDir(null), "/"+ com.estarly.data.Global.GlobalUtils.TypeFile.IMAGE.getDir());
         file.mkdirs();
         String name = GlobalUtils.getDateNow()+"_"+idChat+".jpg";
+
         try {
             File img = new File(file.getPath(),name);
             FileOutputStream out = new FileOutputStream(img);
             MediaStore.Images.Media.getBitmap(this.activity.getContentResolver(), uri)
-                    .compress(Bitmap.CompressFormat.PNG, 100, out);
+                    .compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.flush();
             out.close();
             saveImageInStorage(img);
-
+            uri = Uri.fromFile(img);
         } catch (IOException e) { e.printStackTrace(); }
+        Uri finalUri = uri;
         new Thread(() -> interactor.savedFile(
                 name,
-                uri,
+                finalUri,
                 idChat,
                 Message.TypesMessages.IMAGE,
                 com.estarly.data.Global.GlobalUtils.TypeFile.IMAGE, messagePresenter)).start();

@@ -162,9 +162,19 @@ public class MessagePresenterImpl implements MessagePresenter {
             if(!allMessages.get(i).getUser().equals(User.getInstance().getIdUser()) && allMessages.get(i).getState() == StateMessage.DELIVERED){
                 allMessages.get(i).setState(StateMessage.CHECK);
                 update = true;
-                if(allMessages.get(i).getTypeMessage()== Message.TypesMessages.RECORD){
-                    interactor.downloadFile(allMessages.get(i).getMessage(),Message.TypesMessages.RECORD);
+                switch (allMessages.get(i).getTypeMessage()){
+
+                    case TEXT:
+                    case STICKER:
+                        break;
+                    case RECORD:
+                        interactor.downloadFile(allMessages.get(i).getMessage(),Message.TypesMessages.RECORD);
+                        break;
+                    case IMAGE:
+                        interactor.downloadFile(allMessages.get(i).getMessage(),Message.TypesMessages.IMAGE);
+                        break;
                 }
+
             }
         }
         if(update){ interactor.sendMessages(idChat,new Gson().toJson(allMessages) ); }

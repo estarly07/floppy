@@ -1,7 +1,9 @@
 package com.estarly.data.remote
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import com.estarly.data.Global.GlobalUtils
 import com.estarly.data.Global.InputResult
@@ -14,6 +16,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.google.gson.Gson
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.lang.Exception
 import java.util.ArrayList
 import java.util.concurrent.CountDownLatch
@@ -352,6 +356,20 @@ class Firestore (val context:Context) : ConnectionFirestore {
                 }
                 localFile = File(context.getExternalFilesDir(null), "/${GlobalUtils.TypeFile.AUDIO.dir}/$nameFile.mp3")
                 storageReference.child("${GlobalUtils.TypeFile.AUDIO.dir}/$nameFile.mp3").getFile(localFile)
+                    .addOnSuccessListener {
+                        println(
+                            "LIUSTOOOO"
+                        )
+                    }
+                    .addOnFailureListener { exception: Exception -> println("ERROR " + exception.message) }
+            }
+            "IMAGE"->{
+                val file = File(context.getExternalFilesDir(null), "/${GlobalUtils.TypeFile.IMAGE.dir}")
+                if (!file.exists()) {
+                    file.mkdirs()
+                }
+                localFile = File(file.path, nameFile)
+                storageReference.child("${GlobalUtils.TypeFile.IMAGE.dir}/$nameFile").getFile(localFile)
                     .addOnSuccessListener {
                         println(
                             "LIUSTOOOO"
