@@ -2,6 +2,7 @@ package com.example.floppy.domain.remote;
 
 import android.net.Uri;
 
+import com.estarly.data.Global.GlobalUtils;
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.models.Message;
 import com.example.floppy.domain.entities.StickersEntity;
@@ -54,7 +55,7 @@ public interface Interactor {
 
     void friendIsWriting(FriendEntity friendEntity, MenuPresenter menuPresenter, String message);
 
-    void savedAudio(String name, Uri uri, String idChat,User friend, MessagePresenter messagePresenter);
+    void savedFile(String name, Uri uri, String idChat,User friend,Message.TypesMessages typesMessages, GlobalUtils.TypeFile typeFile, MessagePresenter messagePresenter);
 
     void downloadFile(String message, Message.TypesMessages record);
 }

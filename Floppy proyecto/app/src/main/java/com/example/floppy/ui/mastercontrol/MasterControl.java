@@ -12,6 +12,7 @@ import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -71,6 +72,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
         binding.btnSettings.setOnClickListener(view -> binding.setRoute(GlobalUtils.Routes.ME));
         binding.btnHome.setOnClickListener(view -> binding.setRoute(GlobalUtils.Routes.MENU));
 
+        binding.btnAddFriend.setOnClickListener(view -> MenuFragment.getCallbackNavigationFragments().navigateTo());
     }
 
     @Override
@@ -168,7 +170,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
 
 
     @Override
-    public void showHandlingGeneral(boolean show) {
+    public void showHandlingGeneral(boolean show, String title) {
         if (show) animAparecer(binding.progressGeneral);
         else animDesaparecer(binding.progressGeneral);
     }
@@ -251,6 +253,11 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
     }
 
     @Override
+    public void showImage(boolean send, Uri image) {
+
+    }
+
+    @Override
     public void showContacts(ArrayList<User> users) {
 
     }
@@ -273,6 +280,11 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
 
     @Override
     public void stopAudio() {
+
+    }
+
+    @Override
+    public void getMessage(String idChat, User friend, MessagePresenter messagePresenter) {
 
     }
 

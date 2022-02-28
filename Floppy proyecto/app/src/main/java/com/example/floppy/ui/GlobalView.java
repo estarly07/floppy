@@ -1,6 +1,7 @@
 package com.example.floppy.ui;
 
 import android.content.BroadcastReceiver;
+import android.net.Uri;
 
 import com.example.floppy.domain.models.Estado;
 import com.example.floppy.domain.models.User;
@@ -14,9 +15,9 @@ public interface GlobalView {
     void showToast(String msg);
 
     /**
-     * VISTA DEUN PROGRESS EL CUAL ESTA EN LA MITAD DE LA VISTA
+     * VISTA DE UN PROGRESS EL CUAL ESTA EN LA MITAD DE LA VISTA
      */
-    void showHandlingGeneral(boolean show);
+    void showHandlingGeneral(boolean show,String title);
 
     /**
      * MOSTRAR EN UN DIALOGO LOS ESTADOS QUE TIENE UN USUARIO
@@ -38,6 +39,8 @@ public interface GlobalView {
      */
     void animToolbar(boolean show);
 
+    void showImage(boolean send, Uri image);
+
     void showContacts(ArrayList<User> users);
 
     void nextActivity();
@@ -47,4 +50,6 @@ public interface GlobalView {
     void recordAudio(String name, String idChat,User friend, MessagePresenter messagePresenter);
 
     void stopAudio();
+
+    void getMessage(String idChat, User friend, MessagePresenter messagePresenter);
 }

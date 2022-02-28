@@ -11,6 +11,7 @@ class Permission {
      companion object{
          const val RECORD_CODE_PERMISSION  = 1
          const val GALLERY_CODE_PERMISSION = 2
+         const val CODE_GALLERY           = 3
 
          fun Context.validatePermissionToRecord():Boolean
                  =  ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO          ) == PackageManager.PERMISSION_GRANTED

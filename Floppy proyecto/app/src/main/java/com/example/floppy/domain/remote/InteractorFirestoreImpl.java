@@ -3,6 +3,7 @@ package com.example.floppy.domain.remote;
 import android.content.Context;
 import android.net.Uri;
 
+import com.estarly.data.Global.GlobalUtils;
 import com.estarly.data.remote.Firestore;
 import com.example.floppy.domain.entities.FriendEntity;
 import com.example.floppy.domain.models.Message;
@@ -246,13 +247,13 @@ public class InteractorFirestoreImpl implements Interactor{
     }
 
     @Override
-    public void savedAudio(String name, Uri uri, String idChat, User friend, MessagePresenter messagePresenter) {
+    public void savedFile(String name, Uri uri, String idChat, User friend, Message.TypesMessages typesMessages, GlobalUtils.TypeFile typeFile, MessagePresenter messagePresenter) {
         countDownLatch = new CountDownLatch(1);
-        firestore.savedAudio(uri, countDownLatch);
+        firestore.savedFile(uri, typeFile, countDownLatch);
         try {
             countDownLatch.await();
             if(firestore.getInputResult().getResponse()){
-                presenterMaster.sendMessage(name,idChat, friend, messagePresenter);
+                presenterMaster.sendMessage(name,idChat,friend, typesMessages, messagePresenter);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

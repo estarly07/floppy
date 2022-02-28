@@ -1,17 +1,22 @@
 package com.example.floppy.ui.Chat;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.floppy.R;
 import com.example.floppy.databinding.ActivityChatBinding;
 import com.example.floppy.domain.entities.FriendEntity;
@@ -64,7 +69,18 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
             }
             break;
         }
+    }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Permission.CODE_GALLERY && resultCode == RESULT_OK) {
+
+            if (data != null) {
+                presenter.showImage(true, data.getData().toString());
+            }
+        }
     }
 
     @Override
@@ -94,8 +110,11 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     @Override
     public void onBackPressed() {
         MessageFragment.getCloseListeners().closeListeners();
-        backPressed = !backPressed;
-        super.onBackPressed();
+        if(binding.image.getRoot().getVisibility()==View.VISIBLE){
+            Animations.Companion.animVanish(binding.image.getRoot());
+        }else{
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -111,10 +130,12 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     }
 
     @Override
-    public void showHandlingGeneral(boolean show) {
+    public void showHandlingGeneral(boolean show, String title) {
         runOnUiThread(() ->{
-            if (show)
-                binding.setIsStop(true);
+            if (show){
+                Animations.Companion.animAppear(binding.btnStop);
+                binding.titleProgress.setText(title);
+                binding.setIsStop(show);}
             else
                 Animations.Companion.animVanish(binding.btnStop);
         });
@@ -132,6 +153,20 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
 
     @Override
     public void animToolbar(boolean show) {
+
+    }
+    private Uri uri;
+    @Override
+    public void showImage(boolean send, Uri image) {
+        this.uri = image;
+        binding.image.setIsSend(send);
+        binding.image.btnBack.setOnClickListener(view -> onBackPressed());
+
+        binding.image.getRoot().setVisibility(View.VISIBLE);
+        Glide.with(this)
+                .load((send)? image:getExternalFilesDir(null)+"/images/"+image)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(binding.image.img);
 
     }
 
@@ -152,9 +187,9 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     File file;
     @Override
     public void recordAudio(String name, String idChat, User friend, MessagePresenter messagePresenter) {
-        binding.setIsStop(false);
         Animations.Companion.animAppear(binding.btnStop);
         binding.setIsStop(false);
+        binding.titleProgress.setText(getString(R.string.stopRecord));
         recorder = new MediaRecorder();
         recorder.setAudioSource (MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -206,5 +241,15 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
             recorder.stop();
             recorder.release();
         }
+    }
+
+    @Override
+    public void getMessage(String idChat, User friend, MessagePresenter messagePresenter) {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, Permission.CODE_GALLERY);
+        binding.image.btnSend.setOnClickListener(view ->{
+            binding.image.getRoot().setVisibility(View.GONE);
+            presenter.sendImage(idChat, uri,friend , messagePresenter);});
     }
 }

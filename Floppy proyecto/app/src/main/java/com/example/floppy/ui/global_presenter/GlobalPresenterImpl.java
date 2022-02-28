@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.provider.MediaStore;
 
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.local.InteractorLocal;
@@ -22,6 +25,8 @@ import com.example.floppy.utils.Permission;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -52,8 +57,8 @@ public class GlobalPresenterImpl implements GlobalPresenter {
     }
 
     @Override
-    public void showHandlingGeneral(boolean show) {
-        globalView.showHandlingGeneral(show);
+    public void showHandlingGeneral(boolean show, String title) {
+        globalView.showHandlingGeneral(show, title);
     }
 
 
@@ -119,19 +124,72 @@ public class GlobalPresenterImpl implements GlobalPresenter {
     }
 
     @Override
-    public void stopRecord(String[] data, String idChat, User friend, MessagePresenter messagePresenter) {
-        globalView.stopAudio();
-        globalView.showHandlingGeneral(true);
-        new Thread(() -> interactor.savedAudio(data[1], Uri.fromFile(new File(data[0]+"/"+data[1]+".mp3")),idChat, friend, messagePresenter)).start();
+    public void sendImage(String idChat, Uri uri, User friend, MessagePresenter messagePresenter) {
+        globalView.showHandlingGeneral(true, "Espera a que \ntermine de enviar la imagen");
+        System.out.println("CHAT "+idChat);
+        File file= new File(context.getExternalFilesDir(null), "/"+ com.estarly.data.Global.GlobalUtils.TypeFile.IMAGE.getDir());
+        file.mkdirs();
+        String name = GlobalUtils.getDateNow()+"_"+idChat+".jpg";
+
+        try {
+            File img = new File(file.getPath(),name);
+            FileOutputStream out = new FileOutputStream(img);
+            MediaStore.Images.Media.getBitmap(this.activity.getContentResolver(), uri)
+                    .compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            saveImageInStorage(img);
+            uri = Uri.fromFile(img);
+        } catch (IOException e) { e.printStackTrace(); }
+        Uri finalUri = uri;
+        new Thread(() -> interactor.savedFile(
+                name,
+                finalUri,
+                idChat,
+                friend,
+                Message.TypesMessages.IMAGE, com.estarly.data.Global.GlobalUtils.TypeFile.IMAGE, messagePresenter)).start();
+    }
+
+    private void saveImageInStorage(File file){
+        MediaScannerConnection.scanFile(context,
+                new String[] { file.toString() } , null,
+                (path, uri) -> {
+                });
     }
 
     @Override
-    public void sendMessage(String name, String idChat, User friend, MessagePresenter messagePresenter) {
+    public void showImage(boolean send, String uri) { globalView.showImage(send,Uri.parse(uri)); }
+
+    @Override
+    public void stopRecord(String[] data, String idChat, User friend, MessagePresenter messagePresenter) {
+        globalView.stopAudio();
+        globalView.showHandlingGeneral(true,"Espera a que se envie el audio" );
+        new Thread(() -> interactor.savedFile(
+                data[1],
+                Uri.fromFile(new File(data[0]+"/"+data[1]+".mp3")),
+                idChat,
+                friend ,
+                Message.TypesMessages.RECORD, com.estarly.data.Global.GlobalUtils.TypeFile.AUDIO, messagePresenter)).start();
+    }
+
+    @Override
+    public void sendMessage(String name, String idChat, User friend, Message.TypesMessages typesMessage, MessagePresenter messagePresenter) {
         Message message = new Message();
         message.setMessage(name);
-        message.setTypeMessage(Message.TypesMessages.RECORD);
+        message.setTypeMessage(typesMessage);
         if(idChat.equals("")){ messagePresenter.createChat(friend,message); }
-        else{ messagePresenter.sendMessages(idChat,message); }
-        globalView.showHandlingGeneral(false);
+        else{
+            if (interactorLocal.getFriend(friend.getIdUser()) == null) {
+                System.out.println("HOLE");
+                messagePresenter.insertFriendLocal(friend, idChat);
+            }
+            messagePresenter.sendMessages(idChat, message);
+        }
+        globalView.showHandlingGeneral(false,"" );
     }
+
+    @Override
+    public void getImage(String idChat, User friend, MessagePresenter messagePresenter) { globalView.getMessage(idChat,friend, messagePresenter); }
+
+
 }

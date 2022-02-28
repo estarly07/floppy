@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -183,6 +181,7 @@ public class MessageFragment extends Fragment implements MessageView {
             layoutAnimation.scheduleLayoutAnimation(); }
         Animations.Companion.animationTranslate(view,translate);
         translate = !translate;
+        binding.containerOptions.btnImage.setOnClickListener(v -> presenterMaster.getImage(idChat,user , presenter));
     }
 
 
@@ -210,6 +209,9 @@ public class MessageFragment extends Fragment implements MessageView {
                         break;
                     case RECORD:
                         presenter.audio(message,viewHolder);
+                        break;
+                    case IMAGE:
+                        presenterMaster.showImage(false,message.getMessage());
                         break;
                 }
                 });

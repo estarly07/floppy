@@ -115,6 +115,14 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.ViewHolder> {
                             .into(holder.binding.txtSticker);
                     Animations.Companion.animAppear(holder.binding.txtSticker);}
                     break;
+                case IMAGE:{
+                    Glide.with(holder.itemView.getContext())
+                            .load(
+                                    holder.itemView.getContext().getExternalFilesDir(null)+"/images/"+messages.get(position).getMessage())
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(holder.binding.txtSticker);
+                    Animations.Companion.animAppear(holder.binding.txtSticker);}
+                    break;
                 case TEXT: {
                     if(User.getInstance().getIdUser().equals(messages.get(position).getUser())){
                         holder.binding.txtMessage.setText(messages.get(position).getMessage());

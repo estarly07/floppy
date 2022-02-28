@@ -23,6 +23,7 @@
 
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_chat" />
+
         <RelativeLayout
             android:id="@+id/btnStop"
             android:layout_width="match_parent"
@@ -56,7 +57,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{!isStop? @string/stopRecord: @string/wait_audio}"
+                    android:id="@+id/titleProgress"
                     android:gravity="center"
                     android:layout_gravity="center"
                     style="@style/Title"
@@ -66,18 +67,23 @@
                     android:id="@+id/txtTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="30s"
                     android:gravity="center"
+                    android:visibility="@{!isStop? View.VISIBLE:View.GONE}"
                     android:layout_gravity="center"
                     style="@style/subtitle"
                     android:textColor="@color/white"
                     />
             </LinearLayout>
         </RelativeLayout>
+        <include layout="@layout/layout_image"
+            android:id="@+id/image"
+            android:visibility="gone"
+            />
         <include layout="@layout/message_custom"
             android:id="@+id/messageCustom"
             android:visibility="invisible"
             />
+
     </RelativeLayout>
 
 </layout>

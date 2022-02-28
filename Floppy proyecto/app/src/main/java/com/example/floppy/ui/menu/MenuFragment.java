@@ -73,7 +73,7 @@ public class MenuFragment extends Fragment implements MenuView{
         activity        = MasterControl.activity;
         presenter       = new MenuPresenterImpl(this, view.getContext(), activity,presenterMaster);
 
-        presenterMaster.showHandlingGeneral(true);
+        presenterMaster.showHandlingGeneral(true, "" );
         presenterMaster.showTollbar(true);
         binding.setLayoutState(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.reciclerEstados.setHasFixedSize(true);
@@ -179,7 +179,7 @@ public class MenuFragment extends Fragment implements MenuView{
     @Override
     public void showState(ArrayList<ArrayList<Estado>> listEstados) {
         activity.runOnUiThread(() -> {
-            presenterMaster.showHandlingGeneral(false);
+            presenterMaster.showHandlingGeneral(false,"" );
             AdapterEstado adapterState = new AdapterEstado(listEstados);
             adapterState .notifyDataSetChanged();
             adapterState .setClick((vista, position, states) -> presenterMaster.showEstadoDialogo(states));
