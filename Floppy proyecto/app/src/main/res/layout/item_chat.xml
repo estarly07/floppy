@@ -78,7 +78,7 @@
                             android:id="@+id/imgCheck"
                             android:layout_width="@dimen/_15dp"
                             android:layout_height="@dimen/_15dp"
-                            android:visibility="gone"
+                      i      android:visibility="gone"
                             android:layout_marginStart="@dimen/_10dp"
                             android:layout_gravity="center|end"
                             android:src="@drawable/ic_double_check" />

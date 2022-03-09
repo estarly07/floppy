@@ -15,7 +15,7 @@
         android:layout_margin="5dp">
         <include
             android:id="@+id/messageTypeText"
-            android:visibility="@{typeMessage==TypesMessages.TEXT ? View.VISIBLE : View.GONE, default= visible}"
+            android:visibility="@{typeMessage==TypesMessages.TEXT ? View.VISIBLE : View.GONE, default= gone}"
             layout="@layout/message_type_text" />
 
 
@@ -31,7 +31,7 @@
         <RelativeLayout
             android:id="@+id/messageTypeSticker"
             android:layout_width="match_parent"
-            android:visibility="@{typeMessage==TypesMessages.STICKER ? View.VISIBLE : View.GONE, default= visible}"
+            android:visibility="@{typeMessage==TypesMessages.STICKER ? View.VISIBLE : View.GONE, default= gone}"
             android:layout_height="wrap_content">
 
             <RelativeLayout

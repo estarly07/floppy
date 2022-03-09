@@ -20,7 +20,7 @@
 
         <LinearLayout
             android:id="@+id/messageLeft"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/_400dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_50dp"
             android:background="@drawable/chat_recibido"
@@ -64,7 +64,7 @@
             android:visibility="gone">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/_400dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:orientation="vertical">

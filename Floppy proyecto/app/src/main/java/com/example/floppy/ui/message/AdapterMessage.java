@@ -121,6 +121,7 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
                     Glide.with(holder.binding.getRoot().getContext())
                             .load(holder.binding.getRoot().getContext().getExternalFilesDir(null)+"/images/"+messages.get(position).getMessage())
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .placeholder(R.drawable.no_image)
                             .into(holder.binding.msgImage.imgMensajeEnviado);
                 }else{
                     holder.binding.msgImage.messageRight.setVisibility(View.GONE);
@@ -129,6 +130,8 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.ViewHold
                     Glide.with(holder.binding.getRoot().getContext())
                             .load(holder.binding.getRoot().getContext().getExternalFilesDir(null)+"/images/"+messages.get(position).getMessage())
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .placeholder(R.drawable.no_image)
+
                             .into(holder.binding.msgImage.imgMensaje);
                 }
 
