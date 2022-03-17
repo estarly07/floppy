@@ -182,6 +182,7 @@ public class MessageFragment extends Fragment implements MessageView {
         Animations.Companion.animationTranslate(view,translate);
         translate = !translate;
         binding.containerOptions.btnImage.setOnClickListener(v -> presenterMaster.getImage(idChat,user , presenter));
+        binding.containerOptions.btnCamera.setOnClickListener(v -> presenterMaster.takePhoto(idChat,user , presenter));
     }
 
 
@@ -211,7 +212,7 @@ public class MessageFragment extends Fragment implements MessageView {
                         presenter.audio(message,viewHolder);
                         break;
                     case IMAGE:
-                        presenterMaster.showImage(false,message.getMessage());
+                        presenterMaster.showImage(false,false , message.getMessage());
                         break;
                 }
                 });

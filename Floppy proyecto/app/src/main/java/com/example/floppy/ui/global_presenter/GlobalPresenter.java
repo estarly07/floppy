@@ -2,6 +2,7 @@ package com.example.floppy.ui.global_presenter;
 
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.net.Uri;
 
 import com.example.floppy.domain.models.Estado;
@@ -39,7 +40,7 @@ public interface GlobalPresenter {
 
     void sendImage(String idChat,Uri uri, User friend, MessagePresenter messagePresenter);
 
-    void showImage(boolean send, String uri);
+    void showImage(boolean send,boolean isPhoto, String uri);
 
     /**
      * @param  data data[0] => path
@@ -50,4 +51,8 @@ public interface GlobalPresenter {
     void sendMessage(String name,String idChat,User friend,Message.TypesMessages typesMessage, MessagePresenter messagePresenter);
 
     void getImage(String idChat, User friend, MessagePresenter messagePresenter);
+
+    void takePhoto(String idChat, User friend, MessagePresenter messagePresenter);
+
+    void savePhoto(Intent takePictureIntent );
 }

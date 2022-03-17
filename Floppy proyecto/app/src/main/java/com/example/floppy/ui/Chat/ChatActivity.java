@@ -13,6 +13,7 @@ import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.MediaStore;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -62,6 +63,7 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode){
             case Permission.RECORD_CODE_PERMISSION:
+            case  Permission.WRITE_CODE_PERMISSION:
             case Permission.GALLERY_CODE_PERMISSION: {
                 if(Permission.Companion.validateResultsPermissions(grantResults)){
                     presenter.showMessage(getString(R.string.permission));
@@ -69,6 +71,7 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
             }
             break;
         }
+
     }
 
 
@@ -78,8 +81,14 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
         if (requestCode == Permission.CODE_GALLERY && resultCode == RESULT_OK) {
 
             if (data != null) {
-                presenter.showImage(true, data.getData().toString());
+                System.out.println("URI "+data.getData().toString());
+                presenter.showImage(true, false, data.getData().toString());
             }
+        }
+        if (requestCode == Permission.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            uri = Uri.parse("file:///"+getExternalFilesDir(null)+ "/"+ com.estarly.data.Global.GlobalUtils.TypeFile.IMAGE.getDir()+"/photo.png");
+            sendPhotoCallback.sendPhoto();
+
         }
     }
 
@@ -157,7 +166,7 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
     }
     private Uri uri;
     @Override
-    public void showImage(boolean send, Uri image) {
+    public void showImage(boolean send, boolean isPhoto, Uri image) {
         this.uri = image;
         binding.image.setIsSend(send);
         binding.image.btnBack.setOnClickListener(view -> onBackPressed());
@@ -252,5 +261,16 @@ public class ChatActivity extends AppCompatActivity implements GlobalView {
         binding.image.btnSend.setOnClickListener(view ->{
             binding.image.getRoot().setVisibility(View.GONE);
             presenter.sendImage(idChat, uri,friend , messagePresenter);});
+    }
+
+    private interface  SendPhoto{
+        void sendPhoto();
+    }
+    private SendPhoto sendPhotoCallback;
+
+    @Override
+    public void takePhoto(String idChat, User friend, MessagePresenter messagePresenter) {
+        presenter.savePhoto(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
+        sendPhotoCallback = () -> presenter.sendImage(idChat, uri, ChatActivity.friend, messagePresenter);
     }
 }

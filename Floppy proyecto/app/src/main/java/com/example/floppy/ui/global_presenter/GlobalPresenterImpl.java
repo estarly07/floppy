@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import androidx.core.content.FileProvider;
+
+import com.example.floppy.BuildConfig;
 import com.example.floppy.domain.entities.StickersEntity;
 import com.example.floppy.domain.local.InteractorLocal;
 import com.example.floppy.domain.local.InteractorSqlite;
@@ -128,7 +132,8 @@ public class GlobalPresenterImpl implements GlobalPresenter {
         globalView.showHandlingGeneral(true, "Espera a que \ntermine de enviar la imagen");
         System.out.println("CHAT "+idChat);
         File file= new File(context.getExternalFilesDir(null), "/"+ com.estarly.data.Global.GlobalUtils.TypeFile.IMAGE.getDir());
-        file.mkdirs();
+        if(!file.exists())
+            file.mkdirs();
         String name = GlobalUtils.getDateNow()+"_"+idChat+".jpg";
 
         try {
@@ -138,7 +143,9 @@ public class GlobalPresenterImpl implements GlobalPresenter {
                     .compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.flush();
             out.close();
-            saveImageInStorage(img);
+            if (!img.exists()) {
+                saveImageInStorage(img);
+            }
             uri = Uri.fromFile(img);
         } catch (IOException e) { e.printStackTrace(); }
         Uri finalUri = uri;
@@ -158,7 +165,7 @@ public class GlobalPresenterImpl implements GlobalPresenter {
     }
 
     @Override
-    public void showImage(boolean send, String uri) { globalView.showImage(send,Uri.parse(uri)); }
+    public void showImage(boolean send, boolean isPhoto, String uri) { globalView.showImage(send,isPhoto , Uri.parse(uri)); }
 
     @Override
     public void stopRecord(String[] data, String idChat, User friend, MessagePresenter messagePresenter) {
@@ -190,6 +197,30 @@ public class GlobalPresenterImpl implements GlobalPresenter {
 
     @Override
     public void getImage(String idChat, User friend, MessagePresenter messagePresenter) { globalView.getMessage(idChat,friend, messagePresenter); }
+
+    @Override
+    public void takePhoto(String idChat, User friend, MessagePresenter messagePresenter) {
+        if(!Permission.Companion.validatePermissionToWrite(activity)){
+            Permission.Companion.initValidatePermissionToWrite(activity);
+        }else
+            globalView.takePhoto(idChat, friend, messagePresenter);
+    }
+
+    @Override
+    public void savePhoto(Intent takePictureIntent) {
+        File dir= new File(context.getExternalFilesDir(null), "/"+ com.estarly.data.Global.GlobalUtils.TypeFile.IMAGE.getDir());
+        if (takePictureIntent.resolveActivity(context.getPackageManager()) != null) {
+            File photoFile   = new File(dir.getPath(),"photo.png");
+            if(photoFile.exists()){
+                photoFile.delete();
+            }
+            Uri photoURI = FileProvider.getUriForFile(activity.getApplicationContext(),
+                    BuildConfig.APPLICATION_ID + ".provider",
+                    photoFile);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            activity.startActivityForResult(takePictureIntent, Permission.REQUEST_IMAGE_CAPTURE);
+        }
+    }
 
 
 }

@@ -1,0 +1,17 @@
+
+:
+java:S3010""$Remove this assignment of "friends".(µÑûþ
+F
+java:S3010#"+Remove this assignment of "friendEntities".(›²¶žþÿÿÿÿ
+@
+java:S3010$"%Remove this assignment of "messages".(ü¢…›úÿÿÿÿ
+m
+java:S3776P"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.(¬‚çÃýÿÿÿÿ
+K
+java:S1874Q"0Remove this use of "getColor"; it is deprecated.(¯÷Ÿ“üÿÿÿÿ
+I
+java:S1874["3Remove this use of "getDrawable"; it is deprecated.(–ª’á
+‚
+java:S1319!"gThe type of "friends" should be an interface such as "List" rather than the implementation "ArrayList".(ØâÍÙýÿÿÿÿ
+‰
+java:S1319!"nThe type of "friendEntities" should be an interface such as "List" rather than the implementation "ArrayList".(ØâÍÙýÿÿÿÿ

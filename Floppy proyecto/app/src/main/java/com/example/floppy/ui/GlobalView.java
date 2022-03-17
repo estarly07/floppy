@@ -39,7 +39,7 @@ public interface GlobalView {
      */
     void animToolbar(boolean show);
 
-    void showImage(boolean send, Uri image);
+    void showImage(boolean send,boolean isPhoto, Uri image);
 
     void showContacts(ArrayList<User> users);
 
@@ -52,4 +52,6 @@ public interface GlobalView {
     void stopAudio();
 
     void getMessage(String idChat, User friend, MessagePresenter messagePresenter);
+
+    void takePhoto(String idChat, User friend, MessagePresenter messagePresenter);
 }

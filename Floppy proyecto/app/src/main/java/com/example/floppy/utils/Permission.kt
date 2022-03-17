@@ -11,7 +11,10 @@ class Permission {
      companion object{
          const val RECORD_CODE_PERMISSION  = 1
          const val GALLERY_CODE_PERMISSION = 2
-         const val CODE_GALLERY           = 3
+         const val WRITE_CODE_PERMISSION   = 5
+
+         const val CODE_GALLERY            = 3
+         const val REQUEST_IMAGE_CAPTURE   = 4;
 
          fun Context.validatePermissionToRecord():Boolean
                  =  ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO          ) == PackageManager.PERMISSION_GRANTED
@@ -30,6 +33,17 @@ class Permission {
 
          fun Context.validatePermissionToGallery():Boolean
                  =  ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE  ) == PackageManager.PERMISSION_GRANTED
+
+         fun Context.validatePermissionToWrite():Boolean
+                 =  ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE  ) == PackageManager.PERMISSION_GRANTED
+         fun Activity.initValidatePermissionToWrite(){
+             ActivityCompat.requestPermissions(
+                 this,
+                 listOf(
+                     Manifest.permission.WRITE_EXTERNAL_STORAGE).toTypedArray(),
+                 RECORD_CODE_PERMISSION)
+         }
+
          fun Activity.initValidatePermissionToGallery(){
              ActivityCompat.requestPermissions(
                  this,

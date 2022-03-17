@@ -253,7 +253,7 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
     }
 
     @Override
-    public void showImage(boolean send, Uri image) {
+    public void showImage(boolean send, boolean isPhoto, Uri image) {
 
     }
 
@@ -285,6 +285,11 @@ public class MasterControl extends AppCompatActivity implements GlobalView {
 
     @Override
     public void getMessage(String idChat, User friend, MessagePresenter messagePresenter) {
+
+    }
+
+    @Override
+    public void takePhoto(String idChat, User friend, MessagePresenter messagePresenter) {
 
     }
 

@@ -23,6 +23,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
+                    android:id="@+id/btnCamera"
                     android:layout_width="@dimen/_40dp"
                     android:layout_height="@dimen/_40dp"
                     android:layout_marginLeft="@dimen/_10dp"
